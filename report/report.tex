@@ -1,0 +1,184 @@
+% utf-8 ru, unix eolns
+\documentclass[12pt,a4paper,oneside]{extarticle}
+    \righthyphenmin=2 %минимально переносится 2 символа %%%
+    \sloppy
+
+% Рукопись оформлена в соответствии с правилами оформления 
+% электронной версии авторского оригинала, 
+% принятыми в Издательстве МГТУ им. Н.Э. Баумана.
+
+\usepackage{geometry} % А4, примерно 28-31 строк(а) на странице 
+    \geometry{paper=a4paper}
+    \geometry{includehead=false} % Нет верх. колонтитула
+    \geometry{includefoot=true}  % Есть номер страницы
+    \geometry{bindingoffset=0mm} % Переплет    : 0  мм
+    \geometry{top=20mm}          % Поле верхнее: 20 мм
+    \geometry{bottom=25mm}       % Поле нижнее : 25 мм 
+    \geometry{left=25mm}         % Поле левое  : 25 мм
+    \geometry{right=25mm}        % Поле правое : 25 мм
+    \geometry{headsep=10mm}  % От края до верх. колонтитула: 10 мм
+    \geometry{footskip=20mm} % От края до нижн. колонтитула: 20 мм 
+
+\usepackage{cmap}
+\usepackage[T2A]{fontenc} 
+\usepackage[utf8x]{inputenc}
+\usepackage[english,russian]{babel}
+\usepackage{misccorr}
+
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+
+%\usepackage{cm-super} %человеческий рендер русских шрифтов
+
+\setlength{\parindent}{1.25cm}  % Абзацный отступ: 1,25 см
+\usepackage{indentfirst}        % 1-й абзац имеет отступ
+
+\usepackage{setspace}   
+
+\onehalfspacing % Полуторный интервал между строками
+
+\makeatletter
+\renewcommand{\@oddfoot }{\hfil\thepage\hfil} % Номер стр.
+\renewcommand{\@evenfoot}{\hfil\thepage\hfil} % Номер стр.
+\renewcommand{\@oddhead }{} % Нет верх. колонтитула
+\renewcommand{\@evenhead}{} % Нет верх. колонтитула
+\makeatother
+
+\usepackage{fancyvrb}
+
+\usepackage[nounderscore]{syntax} %для поддержки рбнф
+%\setlength{\grammarindent}{12em} %устанавливает нужный отступ перед ::=
+\setlength{\grammarparsep}{6pt plus 1pt minus 1pt}  %сокращает расстояние между правилами
+
+
+\usepackage[pdftex]{graphicx}  % поддержка картинок для пдф
+\graphicspath{ {./pictures/} }
+\usepackage{rotating}
+\usepackage{graphicx}
+%\DeclareGraphicsExtensions{.jpg,.png}
+
+\renewcommand{\labelenumi}{\theenumi.} %меняет вид нумерованного списка
+
+\usepackage{perpage} %нумерация сносок 
+\MakePerPage{footnote}
+
+\usepackage[all]{xy} %поддержка графов
+
+\usepackage{listings} %листинги
+\renewcommand{\lstlistingname}{Листинг}
+\lstset{
+  basicstyle=\small,
+  breaklines=true
+  }
+
+\usepackage{url}
+
+
+\usepackage{tikz} %для рисования графиков
+\usepackage{pgfplots}
+
+\usepackage{rotating}
+
+\usepackage{ccaption}%изменяет подпись к рисунку
+\makeatletter 
+\renewcommand{\fnum@figure}[1]{Рисунок~\thefigure~---~\sffamily}
+\makeatother
+
+
+
+
+
+\begin{document}
+\pgfplotsset{compat=1.8}
+
+\thispagestyle{empty}
+\newpage
+{
+\centering
+
+
+\textbf{
+МОСКОВСКИЙ ГОСУДАРСТВЕННЫЙ ТЕХНИЧЕСКИЙ УНИВЕРСИТЕТ ИМЕНИ Н. Э. БАУМАНА \\
+Факультет информатики и систем управления \\
+Кафедра теоретической информатики и компьютерных технологий}
+\bigskip
+\bigskip
+\bigskip
+\bigskip
+\bigskip
+\bigskip
+\bigskip
+
+\vfill
+
+Курсовой проект \\
+по курсу <<Конструирование компиляторов>>
+
+\bigskip
+
+{\large <<Препроцессор синаксического сахара для языка Scheme>>}
+\bigskip
+
+\vfill
+
+
+
+\hfill\parbox{4cm} {
+Выполнил:\\
+студент ИУ9-101 \hfill \\
+Выборнов А. И.\hfill \medskip\\
+Руководитель:\\
+Дубанов А. В.\hfill
+}
+
+
+\vspace{\fill}
+
+Москва \number\year
+\clearpage
+}
+
+
+\tableofcontents
+
+\clearpage
+
+\section*{Введение}
+\addcontentsline{toc}{section}{Введение}
+
+\section{Обзор литературы}
+
+    \subsection{Linking Tweets to News: A Framework to Enrich Short Text Data in Social Media}
+    \subsection{Bridging Vocabularies to Link Tweets and News}
+    \subsection{TwitterStand: News in Tweets}
+    \subsection{Gibberish, Assistant, or Master? Using Tweets Linking to News for Extractive Single-Document Summarization}
+    \subsection{Detecting Event-Related Links and Sentiments from Social Media Texts}
+
+\section{Полезные ссылки}
+
+    \begin{itemize}
+        \item Твиттер NYT: https://twitter.com/nytimes (20млн подписчиков, 200тыс твитов)
+        \item Диплом на тему <<Определение тематической направленности текстового содержимого микроблогов>>: http://seminar.at.ispras.ru/wp-content/uploads/2012/07/Gomzin-thesis1.pdf
+        \item Диплом на тему <<Разработка сервиса извлечения мнений>>: http://miem.hse.ru/data/2013/06/03/1285534094/\%D0\%94\%D0\%B8\%D0\%BF\%D0\%BB\%D0\%BE\%D0\%BC\_\%D0\%9B\%D0\%B5\%D0\%B2\%D1\%87\%D0\%B8\%D0\%BA\_.pdf
+            есть инфа по работе с твиттером
+
+        \item Крайне отстойная статья на тему: http://cyberleninka.ru/article/n/issledovanie-otklika-polzovateley-twitter-na-novosti-iz-smi
+
+    \end{itemize}
+
+
+\clearpage
+
+\begin{thebibliography}{0}
+\addcontentsline{toc}{section}{Список литературы}
+    \bibitem{racket} Matthew Flatt, Robert Bruce Findler. The Racket Guide. Racket Documentation: URL: http://docs.racket-lang.org/guide/index.html.
+    \bibitem{r5rs} R. Kelsey, W. Clinger, J. Rees. Revised$^5$ Report on the Algorithmic Language Scheme. Higher-Order and Symbolic Computation, Vol. 11, No. 1, August, 1998
+    \bibitem{haskell} Simon Marlow. Haskell 2010 Language Report, 2010.
+    \bibitem{antlr} Terence Parr. The Definitive ANTLR 4 Reference. 2013.
+    \bibitem{dragon} Ахо, Альфред В., Лам, Моника С., Сети, Рави, Ульман, Джеффри Д. Компиляторы: принципы, технологии и инструментарий, 2-е изд.: Пер. с англ.~--~М.: ООО <<И.Д.Вильямс>>, 2008~--~1184 с.
+    \bibitem{mcconnell} Макконнелл С., Совершенный код. Мастер-класс: Пер. с англ.~---~ М.: Издательство <<Русская редакция>>, 2014~---~896 стр.        
+\end{thebibliography}
+
+\end{document}
+
