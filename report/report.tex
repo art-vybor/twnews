@@ -172,6 +172,41 @@
     \end{itemize}
 \clearpage
 
+\section{Формирование датасетов}
+    Для формирования датасетов нужно сделать:
+    \begin{enumerate}
+        \item Выбрать источники данных.
+        \item Выбрать формат хранения.
+        \item Выбрать БД, для записи результата.
+        \item Написать отказоустойчивый консьюмер.
+        \item В течение длительного времени собрать данные.
+    \end{enumerate}
+
+    Предлагаю выбор формата хранения и БД отложить до тех пор, пока не будут получены все необходимые данные. А пока коллекционировать все возможные данные в текстовых файлах.
+
+    В качестве источников данных 
+
+    \subsection{Примерно что делал}
+        Лог работы в raw формате :) будет много копипасты с используемых мануалов
+ \begin{enumerate}
+    \item Step 1: Getting Twitter API keys
+
+        In order to access Twitter Streaming API, we need to get 4 pieces of information from Twitter: API key, API secret, Access token and Access token secret. Follow the steps below to get all 4 elements:
+
+        Create a twitter account if you do not already have one.
+        Go to https://apps.twitter.com/ and log in with your twitter credentials.
+        Click "Create New App"
+        Fill out the form, agree to the terms, and click "Create your Twitter application"
+        In the next page, click on "API keys" tab, and copy your "API key" and "API secret".
+        Scroll down and click "Create my access token", and copy your "Access token" and "Access token secret".
+    \item 
+    \end{enumerate}
+
+\section{Используемое ПО}
+    \subsection{tweepy}
+        https://github.com/tweepy/tweepy
+
+
 \begin{thebibliography}{0}
 \addcontentsline{toc}{section}{Список литературы}
     \bibitem{linking_base} W. Guo, H. Li, H. Ji, and M. T. Diab. Linking tweets to news: A framework to enrich short text data in social media. - ACL, pages 239–249, 2013.
