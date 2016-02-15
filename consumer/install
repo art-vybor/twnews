@@ -1,3 +1,10 @@
 sudo pip install requests==2.5.3
 sudo pip install tweepy
 gpg --decrypt secrets.py.gpg 1> secrets.py
+
+# yandex disk storage
+
+sudo apt-get install davfs2
+sudo mkdir /mnt/yandex.disk
+sudo mount -t davfs https://webdav.yandex.ru /mnt/yandex.disk/
+sudo mkdir -p /mnt/yandex.disk/logs/twitter
