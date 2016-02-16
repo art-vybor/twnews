@@ -16,11 +16,11 @@ logging.basicConfig(filename=defaults.log_file, level=logging.INFO)
 
 
 def log_string(message):
-    return '{DATE}: {MESSAGE}'.format(DATE=datetime.now(), MESSAGE=message)
+    return '{DATE}: {MESSAGE}'.format(DATE=datetime.utcnow(), MESSAGE=message)
 
 
 def timestamp_ms():
-    return int(time.time()*1000)
+    return int((datetime.utcnow() - datetime(1970, 1, 1)).total_seconds()*1000)
 
 
 class StdOutListener(StreamListener):
