@@ -3,126 +3,16 @@
     \righthyphenmin=2 %минимально переносится 2 символа %%%
     \sloppy
 
-\renewcommand{\baselinestretch}{1.5}
-
-% Рукопись оформлена в соответствии с правилами оформления 
-% электронной версии авторского оригинала, 
-% принятыми в Издательстве МГТУ им. Н.Э. Баумана.
-
-\usepackage{geometry} % А4, примерно 28-31 строк(а) на странице 
-    \geometry{paper=a4paper}
-    \geometry{includehead=false} % Нет верх. колонтитула
-    \geometry{includefoot=true}  % Есть номер страницы
-    \geometry{bindingoffset=0mm} % Переплет    : 0  мм
-    \geometry{top=20mm}          % Поле верхнее: 20 мм
-    \geometry{bottom=25mm}       % Поле нижнее : 25 мм 
-    \geometry{left=25mm}         % Поле левое  : 25 мм
-    \geometry{right=25mm}        % Поле правое : 25 мм
-    \geometry{headsep=10mm}  % От края до верх. колонтитула: 10 мм
-    \geometry{footskip=20mm} % От края до нижн. колонтитула: 20 мм 
-
-\usepackage{cmap}
-\usepackage[T2A]{fontenc} 
-\usepackage[utf8x]{inputenc}
-\usepackage[english,russian]{babel}
-\usepackage{misccorr}
-
-\usepackage{amsmath}
-\usepackage{amsfonts}
-\usepackage{amssymb}
-
-%\usepackage{cm-super} %человеческий рендер русских шрифтов
-
-\setlength{\parindent}{1.25cm}  % Абзацный отступ: 1,25 см
-\usepackage{indentfirst}        % 1-й абзац имеет отступ
-
-\usepackage{setspace}   
-
-\onehalfspacing % Полуторный интервал между строками
-
-\makeatletter
-\renewcommand{\@oddfoot }{\hfil\thepage\hfil} % Номер стр.
-\renewcommand{\@evenfoot}{\hfil\thepage\hfil} % Номер стр.
-\renewcommand{\@oddhead }{} % Нет верх. колонтитула
-\renewcommand{\@evenhead}{} % Нет верх. колонтитула
-\makeatother
-
-\usepackage{fancyvrb}
-
-\usepackage[nounderscore]{syntax} %для поддержки рбнф
-%\setlength{\grammarindent}{12em} %устанавливает нужный отступ перед ::=
-\setlength{\grammarparsep}{6pt plus 1pt minus 1pt}  %сокращает расстояние между правилами
-
-
-\usepackage[pdftex]{graphicx}  % поддержка картинок для пдф
-\graphicspath{ {./pictures/} }
-\usepackage{rotating}
-\usepackage{graphicx}
-%\DeclareGraphicsExtensions{.jpg,.png}
-
-\renewcommand{\labelenumi}{\theenumi.} %меняет вид нумерованного списка
-
-\usepackage{perpage} %нумерация сносок 
-\MakePerPage{footnote}
-
-\usepackage[all]{xy} %поддержка графов
-
-\usepackage{listings} %листинги
-\renewcommand{\lstlistingname}{Листинг}
-\lstset{
-  basicstyle=\small,
-  breaklines=true
-  }
-
-\usepackage{url}
-
-
-\usepackage{tikz} %для рисования графиков
-\usepackage{pgfplots}
-
-\usepackage{rotating}
-
-\usepackage{ccaption}%изменяет подпись к рисунку
-\makeatletter 
-\renewcommand{\fnum@figure}[1]{Рисунок~\thefigure~---~\sffamily}
-\makeatother
-
-
-
-
+\usepackage{style}
 
 \begin{document}
-\input{title}
+\input{tex/title}
 
 \tableofcontents
 
 \clearpage
 
-\section*{Введение}
-\addcontentsline{toc}{section}{Введение}
-    В современном мире всё больший вес приобретают социальные медиа (преимущественно социальные сети). Их главное отличие от традиционных медиа (газеты, тв) заключается в том, что контент порождается тысячами и миллионами людей. Социальные медиа не заменяют традиционные новостные источники, а дополняют их. Они могут служить полезным социальным датчиком того, насколько популярна история (тема) и как долго. Часто обсуждения в социальных медиа основаны на событиях из новостей и, наоборот, социальные медиа влияют на новостные события.
-
-    Одной из самых популярных социальных сетей является Twitter - социальная сеть для публичного обмена сообщениями. Главной особенностью Twitter является малый размер сообщений (140 символов), называемых твитами. Часто твиты являют собой описание, происходящего прямо сейчас события, отклик на него.
-
-    ...
-
-    Выявление связи между сообщениями твиттера (твитов) и новостями позволит как расширить информативность твитов, так и обогатить новости.
-
-    ...
-
-    Преимущества расширения новости с помощью твитов: определение отношения аудитории к новости, дополнительные признаки для тематической классификации новостей, дополнительная информация для аннотирования новостей.
-
-    Современные методы обработки естественного языка хорошо работают, используя большой массив текста в качестве входных данных, однако, они становятся неэффективными, когда применяются на коротких текстах, таких как твиты. Существенным преимуществом расширения твита с помощью новости является появляющаяся возможность использования большого количества методов обработки естественного языка (Natural Language Processing).
-
-    ...
-
-
-    Данная работа ставит целью исследование и разработку методов автоматического установления связей между сообщениями твиттера и новостными статьями.
-
-    {\color{red} Не существует стандартных решений. и есть считанное количество статей. На основе этих статей будет сделана попытка построить pipeline для получения подобной взаимосвязи.}
-
-    \clearpage
-
+\input{tex/introduction}
 
 \section{Обзор литературы}
     В рамках предварительного исследования были разобраны несколько статей \cite{linking_base} \cite{linking_news_media} \cite{bridging}. Ниже приводится краткое изложение основных идей, описанных в выбранных статьях.    
