@@ -1,9 +1,10 @@
-sudo pip install requests==2.5.3
-sudo pip install tweepy
-gpg --decrypt secrets.py.gpg 1> secrets.py
+# deps
 
-# yandex disk storage
+* sudo apt-get install python-feedparser
+* sudo pip install requests==2.5.3
+* sudo pip install tweepy
 
+#yadisk
 sudo apt-get install davfs2
 sudo mkdir /mnt/yandex.disk
 sudo mount -t davfs https://webdav.yandex.ru /mnt/yandex.disk/
