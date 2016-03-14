@@ -1,5 +1,6 @@
 import shelve
 import feedparser
+import logging
 from twnews_consumer import defaults
 from twnews_consumer.logs import log_string
 

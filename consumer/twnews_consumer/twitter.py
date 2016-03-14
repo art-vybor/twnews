@@ -33,14 +33,19 @@ class StdOutListener(StreamListener):
     def parse_tweet(self, tweet):
         parsed_tweet = json.loads(tweet)
 
-        if 'delete' not in parsed_tweet:            
-            lang = parsed_tweet['lang']
-            
+        if 'delete' not in parsed_tweet:        
+            lang = parsed_tweet['lang']        
             if lang in ['ru']:
-                text = parsed_tweet['text'].encode('utf8').encode('string-escape')
-                time_ms = float(parsed_tweet['timestamp_ms'])/1000
+                retweet = False
+                text = parsed_tweet['text']
+                if 'retweeted_status' in parsed_tweet: #tweet retweeted
+                    text = parsed_tweet['retweeted_status']['text']
+                    retweet = True
+                text = text.encode('utf8').encode('string-escape')
+                created_at = parsed_tweet['created_at']
+                #time_ms = float(parsed_tweet['timestamp_ms'])/1000
 
-                return '%s %s\n' % (time_ms, text)
+                return '%s\t%s\t%s\n' % (retweet, created_at, text)
 
 def consume_tweets():
     while True:
