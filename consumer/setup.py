@@ -7,5 +7,5 @@ setup(name='twnews_consumer',
             'twnews_consumer = twnews_consumer.main:main',
         ]
       },
-      #install_requires=['antlr4-python2-runtime'],
+      install_requires=['feedparser'],
       zip_safe=False)
