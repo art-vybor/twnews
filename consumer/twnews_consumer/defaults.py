@@ -11,4 +11,4 @@ RSS_FEEDS = {
 }
 RSS_DB_PATH = '/mnt/yandex.disk/logs/rss'
 
-TWEETS_DATA_PATH = '/mnt/yandex.disk/logs/tweets'#'/mnt/yandex.disk/logs/twitter'
+TWEETS_DATA_PATH = '/home/avybornov/logs/raw_tweets'#'/mnt/yandex.disk/logs/tweets'#'/mnt/yandex.disk/logs/twitter'

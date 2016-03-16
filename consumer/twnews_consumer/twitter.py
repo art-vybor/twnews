@@ -45,7 +45,7 @@ class StdOutListener(StreamListener):
                 created_at = parsed_tweet['created_at']
                 #time_ms = float(parsed_tweet['timestamp_ms'])/1000
 
-                return '%s\t%s\t%s\n' % (retweet, created_at, text)
+                return tweet#'%s\t%s\t%s\n' % (retweet, created_at, text)
 
 def consume_tweets():
     while True:
