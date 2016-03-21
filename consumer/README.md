@@ -8,4 +8,6 @@
 sudo apt-get install davfs2
 sudo mkdir /mnt/yandex.disk
 sudo mount -t davfs https://webdav.yandex.ru /mnt/yandex.disk/
+#yjotnakizyryapeb
 sudo mkdir -p /mnt/yandex.disk/logs/twitter
+

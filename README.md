@@ -20,3 +20,4 @@ LSA: https://ru.wikipedia.org/wiki/%D0%9B%D0%B0%D1%82%D0%B5%D0%BD%D1%82%D0%BD%D0
 * прикрутить word2vec
 * Немного на покопать: Note that there are some false positive named entities detected such as apple. We plan to address removing noisy named entities and hashtags in future work
 * mine hashtags (в статье есть ссылка на соответствующую работу)
+
