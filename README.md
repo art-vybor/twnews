@@ -21,3 +21,9 @@ LSA: https://ru.wikipedia.org/wiki/%D0%9B%D0%B0%D1%82%D0%B5%D0%BD%D1%82%D0%BD%D0
 * Немного на покопать: Note that there are some false positive named entities detected such as apple. We plan to address removing noisy named entities and hashtags in future work
 * mine hashtags (в статье есть ссылка на соответствующую работу)
 
+
+Изменения для консьюмера:
+собирать resolve_url который отдаёт twitter
+собирать больше новостных источников
+собирать английские твиты
+собирать английские новости
