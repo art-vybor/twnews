@@ -91,3 +91,9 @@ class NewsStorage():
 
     def get(self, url):
         return self.news_dict[url]
+
+    def get_texts(self):
+        texts = []
+        for url, news in self.news_dict.iteritems():
+            texts.append(news.summary if news.summary else news.title)
+        return texts

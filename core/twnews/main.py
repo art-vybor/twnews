@@ -1,6 +1,5 @@
-import sys
 import argparse
-from subprocess import call
+from twnews.dataset.storage import NewsStorage
 from twnews.dataset.dataset import Dataset
 
 def parse_args():
@@ -26,23 +25,26 @@ def main():
     args = parse_args()
     
     if args.run_pipe:
-        dataset = Dataset(fraction=1, use_dataset_if_exist=True)
-
-        count_true = 0
-        count_false = 0
-        for tweet in dataset.dataset:
-            
-            news = []
-            for url in tweet.urls:
-                if dataset.news_storage.exists(url):
-                    news.append(dataset.news_storage.get(url))
-            #print tweet
-            #print news
-            if news[0].title in tweet.text:
-                count_true += 1
-            else:
-                count_false += 1
-        print count_true, count_false
-        #    print '--------'
+        news_storage = NewsStorage()
+        news_texts = news_storage.get_texts()
+        print news_texts[:10]
+        # dataset = Dataset(fraction=1, use_dataset_if_exist=True)
+        #
+        # count_true = 0
+        # count_false = 0
+        # for tweet in dataset.dataset:
+        #
+        #     news = []
+        #     for url in tweet.urls:
+        #         if dataset.news_storage.exists(url):
+        #             news.append(dataset.news_storage.get(url))
+        #     #print tweet
+        #     #print news
+        #     if news[0].title in tweet.text:
+        #         count_true += 1
+        #     else:
+        #         count_false += 1
+        # print count_true, count_false
+        # #    print '--------'
 
 
