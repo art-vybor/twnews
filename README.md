@@ -28,3 +28,8 @@ LSA: https://ru.wikipedia.org/wiki/%D0%9B%D0%B0%D1%82%D0%B5%D0%BD%D1%82%D0%BD%D0
 собирать английские твиты
 собирать английские новости
 собирать хештеги
+
+
+https://xyclade.github.io/MachineLearning/
+
+#https://pythonprogramming.net/stop-words-nltk-tutorial/?completed=/tokenizing-words-sentences-nltk-tutorial/   
