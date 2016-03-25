@@ -17,4 +17,4 @@ install-package: install-dir clean
 
 clean:
 	@find . -name \*.pyc -delete
-	@rm -rf build dist twnews_consumer.egg-info
+	@rm -rf build dist twnews.egg-info
