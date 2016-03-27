@@ -7,5 +7,5 @@ setup(name='twnews',
             'twnews = twnews.main:main',
         ]
       },
-      #install_requires=['feedparser'],
+      install_requires=['pymorphy2'],
       zip_safe=False)
