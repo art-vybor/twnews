@@ -8,9 +8,9 @@ from twnews_consumer.twitter_fetcher.fetcher import TwitterFetcher
 
 reload(logging)
 logging.basicConfig(
-    #filename=defaults.LOG_FILE,
+    filename=defaults.LOG_FILE,
     level=defaults.LOG_LEVEL,
-    stream=sys.stdout,
+    #stream=sys.stdout,
     format='%(asctime)s: %(message)s',
     datefmt="%Y-%m-%d %H:%M:%S")
 
