@@ -1,38 +1,69 @@
 import logging
 import json
 from tweepy.streaming import StreamListener
+from twnews_consumer import defaults
 
 
-def parse_tweet(tweet):
-    parsed_tweet = json.loads(tweet)
+def parse_tweet(tweet_text):
+    tweet = json.loads(tweet_text)
+    if 'delete' not in tweet:
+        # info about base_tweet
+        created_at = tweet['created_at']
+        tweet_id = tweet['id']
+        retweeted = 'retweeted_status' in tweet
 
-    if 'delete' not in parsed_tweet:
-        lang = parsed_tweet['lang']
-        if lang in ['ru']:
-            retweet = False
-            text = parsed_tweet['text']
-            if 'retweeted_status' in parsed_tweet: #tweet retweeted
-                text = parsed_tweet['retweeted_status']['text']
-                retweet = True
-            text = text.encode('utf8').encode('string-escape')
-            created_at = parsed_tweet['created_at']
-            #time_ms = float(parsed_tweet['timestamp_ms'])/1000
+        # go deeper :-)
+        while 'retweeted_status' in tweet:
+            tweet = tweet['retweeted_status']
 
-            return '%s\t%s\t%s\n' % (retweet, created_at, text)
+        # info about dest tweet
+        lang = tweet['lang']
+        entities = tweet['entities']
+        text = tweet['text']
+
+        if lang in defaults.TWEETS_LANGUAGES:
+            # extract links and media links
+            media_links = {}
+            if 'media' in entities:
+                for media in entities['media']:
+                    media_links[media['url']] = media['expanded_url']
+            links = {}
+            if 'urls' in entities:
+                for url in entities['urls']:
+                    links[url['url']] = url['expanded_url']
+
+            # extract hastags
+            hashtags = {}
+            if 'hashtags' in tweet['entities']:
+                for hashtag in tweet['entities']['hashtags']:
+                    hashtags[hashtag['text']] = hashtag['indices']
+
+            # remove url of all links from the text
+            #print 'media: %s, links: %s' % (media_links.keys(),links.keys())
+            for url in media_links.keys() + links.keys():
+                text = text.replace(url, '')
+
+            return {
+                'id': tweet_id,
+                'retweeted': retweeted,
+                'created_at': created_at,
+                'lang': lang,
+                'text': text,
+                'links': links,
+                'media_links': media_links,
+                'hashtags': hashtags
+            }
 
 
 class TweepyStreamListener(StreamListener):
-    def __init__(self, shelve_db):
+    def __init__(self, result_queue):
         super(StreamListener, self).__init__()
-        self.shelve_db = shelve_db
+        self.result_queue = result_queue
 
     def on_data(self, data):
-        with open('/tmp/test.tweets', 'a') as f:
-            f.write(data)
-        #print data
-        # parsed_tweet = parse_tweet(data)
-        # if parsed_tweet:
-        #     self.data_file.write(parsed_tweet)
+        tweet = parse_tweet(data)
+        if tweet:
+            self.result_queue.put(tweet)
         return True
 
     def on_error(self, status):

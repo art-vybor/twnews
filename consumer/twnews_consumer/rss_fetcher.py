@@ -5,9 +5,9 @@ from twnews_consumer import defaults
 
 
 class RssFetcher:
-    """Read rss feed and put it to dest database"""
+    """Read rss feed and put it to shelve database"""
 
-    def __init__(self, rss_feeds=defaults.RSS_FEEDS, db_path=defaults.RSS_DB_PATH ):
+    def __init__(self, rss_feeds=defaults.RSS_FEEDS, db_path=defaults.RSS_DB_PATH):
         self.rss_feeds = rss_feeds
         self.db = shelve.open(db_path)
 
@@ -22,8 +22,11 @@ class RssFetcher:
         feed = feedparser.parse(rss_data['rss_url'])
 
         for entry in feed.entries:
+            summary = entry.summary_detail['value']
+            if not summary:
+                summary = entry.summary
             entry_data = {
-                'summary': entry.summary_detail['value'],
+                'summary': summary,
                 'link': entry.link,
                 'title': entry.title,
                 'time': entry.published,
@@ -38,4 +41,11 @@ class RssFetcher:
     def fetch(self):
         logging.info('RSS> Start consume rss feeds')
         while True:
-            self.parse_all_feeds()
+            try:
+                self.parse_all_feeds()
+            except KeyboardInterrupt:
+                logging.info('TWITTER> Ctrl-C catched, finalizing')
+                return
+            except Exception as e:
+                logging.error('TWITTER> {ERROR}'.format(ERROR=str(e)))
+

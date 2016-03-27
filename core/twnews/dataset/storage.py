@@ -33,7 +33,6 @@ class Tweet():
         return 'TWEET: %s' % str(self)
 
 
-
 class TweetsStorage():
     def __init__(self, tweets_path=defaults.TWEETS_PATH, resolve_url_map_path=defaults.RESOLVE_URL_MAP_PATH, fraction=None):
         self.url_resolver = UrlResolver(resolve_url_map_path)

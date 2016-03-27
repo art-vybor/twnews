@@ -1,6 +1,7 @@
 import argparse
 import logging
 import sys
+
 from twnews_consumer import defaults
 from twnews_consumer.rss_fetcher import RssFetcher
 from twnews_consumer.twitter_fetcher.fetcher import TwitterFetcher
