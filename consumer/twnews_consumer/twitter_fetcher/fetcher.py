@@ -27,9 +27,9 @@ class TwitterFetcher:
                 self.shelve_db[str(tweet['id'])] = tweet
                 self.shelve_db.sync()
 
-                if self.async_queue.qsize() > 1000:
+                if self.async_queue.qsize() > 10000:
                     logging.WARNING('TWITTER> result queue looks like too big ({NUM_OF_ELEMENTS} elements)'.
-                                    format(NUM_OF_ELEMENTS=self.async_queue.qsize()))
+                                    format(NUM_OF_ELEMENTS=self.async_queue.qsize))
 
     def fetch(self):
         writer_thread = threading.Thread(target=self.db_writer)

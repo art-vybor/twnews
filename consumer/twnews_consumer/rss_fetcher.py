@@ -44,8 +44,8 @@ class RssFetcher:
             try:
                 self.parse_all_feeds()
             except KeyboardInterrupt:
-                logging.info('TWITTER> Ctrl-C catched, finalizing')
+                logging.info('RSS> Ctrl-C catched, finalizing')
                 return
             except Exception as e:
-                logging.error('TWITTER> {ERROR}'.format(ERROR=str(e)))
+                logging.error('RSS> {ERROR}'.format(ERROR=str(e)))
 
