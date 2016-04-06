@@ -1,6 +1,8 @@
 import argparse
 from twnews.dataset.storage import NewsStorage
 from twnews.dataset.dataset import Dataset
+from twnews.wtmf.wtmf import WTMF
+
 
 def parse_args():
     parser = argparse.ArgumentParser(description='twnews command line interface.')
@@ -25,10 +27,14 @@ def main():
     args = parse_args()
     
     if args.run_pipe:
+
         news_storage = NewsStorage()
         news_texts = news_storage.get_texts()
-        print news_texts[:10]
-        # dataset = Dataset(fraction=1, use_dataset_if_exist=True)
+
+        model = WTMF(news_texts)
+        model.build(try_to_load=True)
+        #print news_texts[:10]
+        ##dataset = Dataset(fraction=1, use_dataset_if_exist=True)
         #
         # count_true = 0
         # count_false = 0

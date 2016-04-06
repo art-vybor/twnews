@@ -47,7 +47,7 @@ def iteration(P,Q,W,l=20):
     #X = sparse.csr_matrix(X)
     print 'start build P'
 
-    for i in range():
+    for i in range(1000):
         lW_i=W[i]
         W_i = sparse.spdiags(lW_i, [0], len(lW_i), len(lW_i))
 

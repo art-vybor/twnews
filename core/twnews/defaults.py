@@ -13,3 +13,6 @@ RESOLVE_URL_MAP_PATH= os.path.join(TWNEWS_DATA_PATH, 'resolve_url_map.shelve')
 DATASET_PATH = os.path.join(TWNEWS_DATA_PATH, 'dataset')
 
 DATASET_FRACTION = 1.0
+
+
+TMP_FILE_DIRECTORY = '/tmp'

@@ -79,7 +79,9 @@ def iteration(P,Q,W,lI):
 l=20
 lI = np.identity(dim)*l
 
-P,Q = iteration(P,Q,W,lI)
+for i in range(5):
+    print '%d/%d' % (i, 5)
+    P,Q = iteration(P,Q,W,lI)
 
 
 with open('data/model/P', 'wb') as f:

@@ -26,7 +26,7 @@ from twnews.timeit import timeit
 @timeit
 def build_weight_matrix(matrix):
     '''Slow and ugly realization TODO: rewrite'''
-    F = X.copy().todense().tolist()    
+    F = X.copy().todense().tolist()
     W = []
     rows = len(F)
     columns = len(F[0])

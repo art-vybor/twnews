@@ -6,7 +6,7 @@ LOG_FILE = '/var/log/twnews-consumer.log'
 LOG_LEVEL = logging.INFO
 
 
-TWNEWS_DATA_PATH = '/mnt/yandex.disk/twnews_data'
+TWNEWS_DATA_PATH = '/home/avybornov/tmp_twnews_data'
 TWNEWS_LOGS_PATH = os.path.join(TWNEWS_DATA_PATH, 'logs')
 
 
