@@ -58,6 +58,10 @@ class TweetsStorage():
 
     def length(self):
         return len(self.tweets_list)
+    #
+    # def get_texts(self):
+    #     for tweet in self.tweets_list:
+    #         return self.text
 
 
 class News():

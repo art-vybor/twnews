@@ -27,14 +27,16 @@ def main():
     args = parse_args()
     
     if args.run_pipe:
+        dataset = Dataset(fraction=1, use_dataset_if_exist=True)
+        news_texts = dataset.news_storage.get_texts()
+        tweets_texts = [tweet.text for tweet in dataset.dataset]
+        print len(dataset.dataset)
+        news_model = WTMF(news_texts, prefix='news')
+        news_model.build(try_to_load=True)
 
-        news_storage = NewsStorage()
-        news_texts = news_storage.get_texts()
+        tweets_model = WTMF(tweets_texts, prefix='tweets')
+        tweets_model.build(try_to_load=True)
 
-        model = WTMF(news_texts)
-        model.build(try_to_load=True)
-        #print news_texts[:10]
-        ##dataset = Dataset(fraction=1, use_dataset_if_exist=True)
         #
         # count_true = 0
         # count_false = 0

@@ -16,6 +16,7 @@ class Dataset(object):
                        use_dataset_if_exist=False):
         self.dataset_path = dataset_path
         self.news_path = news_path
+        self.dataset = []
         if use_dataset_if_exist and os.path.isfile(self.dataset_path):
             self.load()
         else:
@@ -23,8 +24,8 @@ class Dataset(object):
             self.tweets_storage = TweetsStorage(tweets_path, resolve_url_map_path, fraction)
             self.build()
 
+
     def build(self):
-        self.dataset = []
         logging.info(log_string('Start building dataset from {NUM_TWEETS} tweets and {NUM_NEWS} news'.format(
             NUM_TWEETS=self.tweets_storage.length(),
             NUM_NEWS=self.news_storage.length(),
@@ -32,7 +33,7 @@ class Dataset(object):
 
         for tweet in self.tweets_storage.tweets_list:
             for url in tweet.urls:
-                if self.news_storage.exist(url):
+                if self.news_storage.exists(url):
                     self.dataset.append(tweet)
         logging.info(log_string('Dataset builded and consist {NUM_TWEETS} tweets'.format(NUM_TWEETS=len(self.dataset))))
 

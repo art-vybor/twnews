@@ -25,12 +25,15 @@ def build_tf_idf_matrix(texts):
 
 
 class WTMF:
-    def __init__(self, texts):
+    def __init__(self, texts, prefix=''):
         self.texts = texts
         self.wm = 1e-2
         self.dim = 10
-        self.iterations_num = 2
+        self.iterations_num = 1
         self.lmbd = 20
+        self.P = None
+        self.Q = None
+        self.prefix = prefix
 
     def init_model(self, words_num, texts_num):
         P = np.random.rand(self.dim, words_num)
@@ -40,30 +43,32 @@ class WTMF:
         return P, Q
 
     def build(self, try_to_load=False):
-        lemmatized_texts = memo_process(lambda: lemmatize_texts(self.texts), 'texts', try_to_load=try_to_load)
-        corpus, X = memo_process(lambda: build_tf_idf_matrix(lemmatized_texts), 'tf_idf_corpus', try_to_load=try_to_load)
-        W = memo_process(lambda: self.build_weight_matrix(X), 'weights', try_to_load=try_to_load)
+        prefix = self.prefix
+        lemmatized_texts = memo_process(lambda: lemmatize_texts(self.texts), 'texts', try_to_load=try_to_load, prefix=prefix)
+        corpus, X = memo_process(lambda: build_tf_idf_matrix(lemmatized_texts), 'tf_idf_corpus', try_to_load=try_to_load, prefix=prefix)
+        W = memo_process(lambda: self.build_weight_matrix(X), 'weights', try_to_load=try_to_load, prefix=prefix)
 
         texts_num = len(lemmatized_texts)
         words_num = len(corpus)
 
+        self.P, self.Q = memo_process(lambda: self.build_PQ(X, W, words_num, texts_num), 'PQ', try_to_load=try_to_load, prefix=prefix)
+        print 'finished'
+
+    def build_PQ(self, X, W, words_num, texts_num):
         P, Q = self.init_model(words_num, texts_num)
 
         X = np.array(X.todense())
         lI = np.identity(self.dim) * self.lmbd
 
         for i in range(self.iterations_num):
-            print '%d/%d iteration' % (i+1, self.iterations_num)
+            print '%d/%d iteration' % (i + 1, self.iterations_num)
             P, Q = self.iteration(P, Q, W, X, lI)
 
-        dump(Q, 'Q')
-        dump(P, 'P')
-        self.P, self.Q = P, Q
-        print 'finished'
+        return P, Q
 
     def load(self):
-        self.P = load('P')
-        self.Q = load('Q')
+        self.P = load('P', prefix=self.prefix)
+        self.Q = load('Q', prefix=self.prefix)
 
     @timeit
     def iteration(self, P, Q, W, X, lI):
