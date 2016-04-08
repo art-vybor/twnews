@@ -64,22 +64,22 @@ class TweetsStorage():
     #         return self.text
 
 
-class News():
+class News:
     def __init__(self, news_dict):
         self.source = news_dict['source']
         self.time = news_dict['time']
         self.link = news_dict['link']
         self.summary = news_dict['summary']
-        self.title = news_dict['title'].encode('utf-8')
+        self.title = news_dict['title']#.encode('utf-8')
 
     def __str__(self):
-        return self.title
+        return self.title.encode('utf-8')
 
     def __repr__(self):
         return 'NEWS: %s' % str(self)
 
 
-class NewsStorage():
+class NewsStorage:
     def __init__(self, news_path=defaults.NEWS_PATH):
         logging.info(log_string('Start of loading news from {PATH}'.format(PATH=news_path)))
         news_shelve = shelve.open(news_path)
@@ -98,5 +98,12 @@ class NewsStorage():
     def get_texts(self):
         texts = []
         for url, news in self.news_dict.iteritems():
-            texts.append(news.summary if news.summary else news.title)
+            texts.append(news.summary+' '+news.title if news.summary else news.title)
+
         return texts
+
+    def get_news(self):
+        news_list = []
+        for url, news in self.news_dict.iteritems():
+            news_list.append(news)
+        return news_list

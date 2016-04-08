@@ -2,7 +2,7 @@ import argparse
 from twnews.dataset.storage import NewsStorage
 from twnews.dataset.dataset import Dataset
 from twnews.wtmf.wtmf import WTMF
-
+from twnews.wtmf.eval import evaluation
 
 def parse_args():
     parser = argparse.ArgumentParser(description='twnews command line interface.')
@@ -29,30 +29,23 @@ def main():
     if args.run_pipe:
         dataset = Dataset(fraction=1, use_dataset_if_exist=True)
         news_texts = dataset.news_storage.get_texts()
-        tweets_texts = [tweet.text for tweet in dataset.dataset]
-        print len(dataset.dataset)
-        news_model = WTMF(news_texts, prefix='news')
-        news_model.build(try_to_load=True)
+        news = dataset.news_storage.get_news()
+        tweets = dataset.dataset
+        tweets_texts = [tweet.text for tweet in tweets]
 
-        tweets_model = WTMF(tweets_texts, prefix='tweets')
-        tweets_model.build(try_to_load=True)
+        for iteration in [1,2,3,4,5,6,7,8,9,10]:
+            for dim in [10,20,30,40,50,60,70,80,90,100]:
+                model = WTMF(news_texts+tweets_texts)
+                model.iterations_num=iteration
+                model.dim=dim
+                model.build(try_to_load=False)
+                #print model
+                atop, ratop = evaluation(model.Q, tweets, news, k=10)
 
-        #
-        # count_true = 0
-        # count_false = 0
-        # for tweet in dataset.dataset:
-        #
-        #     news = []
-        #     for url in tweet.urls:
-        #         if dataset.news_storage.exists(url):
-        #             news.append(dataset.news_storage.get(url))
-        #     #print tweet
-        #     #print news
-        #     if news[0].title in tweet.text:
-        #         count_true += 1
-        #     else:
-        #         count_false += 1
-        # print count_true, count_false
-        # #    print '--------'
+                with open('benchmark', 'w+') as f:
+                    f.write(str(model) + '\n')
+                    f.write('\tatop: %s\n' % atop)
+                    f.write('\tratop: %s\n' % ratop)
+
 
 

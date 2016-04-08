@@ -29,11 +29,20 @@ class WTMF:
         self.texts = texts
         self.wm = 1e-2
         self.dim = 10
-        self.iterations_num = 1
+        self.iterations_num = 3
         self.lmbd = 20
         self.P = None
         self.Q = None
         self.prefix = prefix
+
+    def __str__(self):
+        return 'model(wm={wm}, dim={dim}, iter={iter}, lambda={lmbd}, texts={len_texts})'.format(
+            wm=self.wm,
+            dim=self.dim,
+            iter=self.iterations_num,
+            lmbd=self.lmbd,
+            len_texts=len(self.texts),
+        )
 
     def init_model(self, words_num, texts_num):
         P = np.random.rand(self.dim, words_num)
