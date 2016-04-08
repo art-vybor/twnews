@@ -31,7 +31,7 @@ class WTMF:
         self.texts = texts
         self.wm = 1e-2
         self.dim = 10
-        self.iterations_num = 7
+        self.iterations_num = 1
         self.lmbd = 20
         self.P = None
         self.Q = None

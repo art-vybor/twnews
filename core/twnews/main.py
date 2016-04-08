@@ -37,7 +37,7 @@ def main():
         model.init_model(try_to_load=True)
 
         #for iteration in [1,2,3,4,5,6,7,8,9,10]:
-        for dim in [50,60,70,80,90,100]:
+        for dim in [10]:
             #model.iterations_num=iteration
             model.dim=dim
             model.build(try_to_load=False)
