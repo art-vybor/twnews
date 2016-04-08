@@ -1,0 +1,142 @@
+\section{Руководство пользователя}
+    Проект состоит из двух пакетов, каждый из которых устанавливается и используется в отдельности.
+    \begin{itemize}
+        \item twnews\_consumer~---~консьюмер, который позволяет выкачивать твиты с твиттера и новости с rss каналов.
+        \item twnews~---~пакет, позволяющий по твитам и новостям, произвести все необходимые преобразования данных и на основе полученных признаков произвести обучение и оценку модели.
+    \end{itemize}
+
+    Оба пакета ориентированы на работу в операционных системах из семейства linux. Для начала работы необходимо иметь установленный менеджер пакетов для языка Python~---~pip, а также установить setuptools:
+    \begin{lstlisting}
+    $ pip install setuptools
+    \end{lstlisting}
+    Также необходимо выкачать git-репозиторий: https://github.com/art-vybor/twnews.git.
+    Если установлен пакет git, то это можно сделать следующим образом:
+    \begin{lstlisting}
+    $ git clone https://github.com/art-vybor/twnews.git
+    \end{lstlisting}
+
+    Для корректной работы пакетов, все указываемые в конфигурации директории должны быть заранее созданы.
+
+    \subsection{Пакет twnews\_consumer}
+        Пакет twnews\_consumer располагается в папке \lstinline{consumer} в корне репозитория.
+        Он позволяет выкачивать и сохранять в формате, удобном для дальнейшей работы пакета twnews, твиты и новости.
+
+        Конфигурирование пакета производится в файле \lstinline{twnews_consumer/defaults.py}.
+        Описание задаваемых параметров находится в таблице~\ref{tabular:consumer_config}.
+
+        \begin{table}[h!]
+            \small
+            \caption{Описание конфигурации пакета twnews\_consumer \bigskip}
+            \centering
+
+            \begin{sideways}
+            \label{tabular:consumer_config}
+            \begin{tabular}{|c|c|c|}
+                \hline
+                \bf{Имя параметра} & \bf{Пример значения} & \bf{Описание} \\ \hline
+                LOG\_FILE & '/var/log/twnews\_consumer.log' & Путь до файла с логом \\ \hline
+                LOG\_LEVEL & logging.INFO & Уровень подробности лога \\ \hline
+                TWNEWS\_DATA\_PATH & '/home/avybornov/twnews\_data/' & \specialcell{Путь до директории, \\ в которую будут сохранены данные} \\ \hline
+                RSS\_FEEDS & \specialcell{\{'ria': \\ \{'rss\_url': 'http://ria.ru/export/rss2/index.xml'\},\\ 'lifenews': \\ \{'rss\_url': 'http://lifenews.ru/xml/feed.xml'\}\}} & \specialcell{Новостные источники, \\ которые требуется выкачать}\\ \hline
+                TWEETS\_LANGUAGES & ['ru'] & \specialcell{Список языков, \\ твиты с использованием которых \\ выкачиваются из твиттера} \\ \hline
+            \end{tabular}
+        \end{sideways}
+        \end{table}
+
+        Результатом работы пакета является множество новостей и твитов, выкаченных за время работы программы. Для новостей сохраняются заголовок, краткое описание, ссылка на новость, время публикации и имя ресурса, на котором новость была опубликована. Для твитов сохраняются текст, время публикации и информация о том, является ли он ретвитом~(ретвит~---~твит, представляющий собой, ссылку на ранее созданный твит).
+
+        \subsubsection{Установка}
+            Для установки, необходимо зайти в папку \lstinline{consumer}, находящуюся в корне репозитория и выполнить команду:
+
+            \begin{lstlisting}
+    $ make install
+            \end{lstlisting}
+
+            Во время установки, нужно будет ввести пароль, для распаковки секретного ключа, который необходим для работы с API твиттера.
+
+        \subsubsection{Использование}
+            Для того, чтобы начать выкачивать новости, необходимо запустить команду:
+            \begin{lstlisting}
+    $ twnews_consumer download --news
+            \end{lstlisting}
+            Для того, чтобы начать выкачивать сообщения твиттера, необходимо запустить команду:
+            \begin{lstlisting}
+    $ twnews_consumer download --tweets
+            \end{lstlisting}
+
+            Узнать информацию о работе программы можно из файла лога. Пример:
+            \begin{lstlisting}
+    $ tail -f  /var/log/twnews_consumer.log
+    2016-04-05 11:37:14: RSS> Start consume rss feeds
+    2016-04-05 11:37:17: TWITTER> Starting write to /mnt/yandex.disk/twnews_data/logs/tweets.shelve
+    2016-04-05 11:37:17: TWITTER> Starting to consume twitter
+    2016-04-05 12:33:32: TWITTER> ('Connection broken: IncompleteRead(0 bytes read, 512 more expected)', IncompleteRead(0 bytes read, 512 more expected))
+            \end{lstlisting}
+
+    \subsection{Пакет twnews}
+        Пакет twnews располагается в папке \lstinline{core} в корне репозитория.
+        Он позволяет обрабатывать данные полученные с помощью консьюмера с целью построения и оценки качества модели WTMF.
+
+        Конфигурирование пакета производится в файле \lstinline{twnews/defaults.py}.
+        Описание задаваемых параметров находится в таблице~\ref{tabular:core_config}.
+
+        \begin{table}[h!]
+            \small
+            \caption{Описание конфигурации пакета twnews\bigskip}
+            \centering
+
+            \begin{sideways}
+            \label{tabular:core_config}
+            \begin{tabular}{|c|c|c|}
+                \hline
+                \bf{Имя параметра} & \bf{Пример значения} & \bf{Описание} \\ \hline
+                LOG\_FILE & '/var/log/twnews.log' & Путь до файла с логом \\ \hline
+                LOG\_LEVEL & logging.INFO & Уровень подробности лога \\ \hline
+                TWNEWS\_DATA\_PATH & '/home/avybornov/twnews\_data/' & \specialcell{Путь до рабочей директории в которой \\ лежат выкаченные с помощью консьюмера данные} \\ \hline
+                DATASET\_FRACTION & 1.0 & \specialcell{Часть датасета, которая  \\ будет использована для обучения модели } \\ \hline
+                TMP\_FILE\_DIRECTORY & '/tmp/twnews/' & \specialcell{Путь до директории в которую \\ будут сохранены временные данные} \\ \hline
+            \end{tabular}
+        \end{sideways}
+        \end{table}
+
+        Результатом работы пакета является построенная модель WTMF, для которой измерено её качество. Перед построением модели, необходимо выполнить команду, которая разрешает ссылки~(может занять длительное время).
+
+        \subsubsection{Установка}
+            Для установки, необходимо зайти в папку \lstinline{core}, находящуюся в корне репозитория и выполнить команду:
+
+            \begin{lstlisting}
+    $ make install
+            \end{lstlisting}
+
+            Для повышения производительности рекомендуется вручную собрать пакет numpy с использованием математической библиотеки OpenBLAS~\cite{blas_installation}.
+
+        \subsubsection{Использование}
+            Для того, чтобы разрешить ссылки, необходимо запустить команду:
+            \begin{lstlisting}
+    $ twnews_consumer --resolve
+            \end{lstlisting}
+
+            Для того, чтобы посмотреть статистику по упомянутым в коллекции твитов ссылкам нужно выполнить команду:
+            \begin{lstlisting}
+    $ twnews_consumer download --analyse_urls
+            \end{lstlisting}
+
+            Для построения модели небходимо запустить команду:
+            \begin{lstlisting}
+    $ twnews_consumer download --run_pipe
+            \end{lstlisting}
+
+            Узнать информацию о работе программы можно из файла лога. Пример:
+            \begin{lstlisting}
+    $ tail -f /var/log/twnews.log
+    INFO:root:2016-04-08 10:20:08.256411: News successfully loaded
+    INFO:root:2016-04-08 10:20:23.006948: Function iteration started with time measure
+    INFO:root:2016-04-08 10:33:32.930520: Function iteration finished in 13m9.9234058857s
+    INFO:root:2016-04-08 10:33:32.940666: Function find_topk_sim_news_to_tweets started with time measure
+    INFO:root:2016-04-08 10:34:42.360326: Function find_topk_sim_news_to_tweets finished in 1m9.41950583458s
+    INFO:root:2016-04-08 10:34:42.587674: Function iteration started with time measure
+    INFO:root:2016-04-08 10:48:04.453983: Function iteration finished in 13m21.8661620617s
+    INFO:root:2016-04-08 10:48:04.466846: Function find_topk_sim_news_to_tweets started with time measure
+    INFO:root:2016-04-08 10:49:18.958096: Function find_topk_sim_news_to_tweets finished in 1m14.4910538197s
+    INFO:root:2016-04-08 10:49:19.171160: Function iteration started with time measure
+            \end{lstlisting}

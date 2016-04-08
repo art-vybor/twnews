@@ -1,0 +1,88 @@
+model(wm=0.01, dim=10, iter=10, lambda=20, texts=8175)
+	iterations: 1
+	atop: 0.270485792851
+	ratop: 0.00100824931256
+model(wm=0.01, dim=10, iter=10, lambda=20, texts=8175)
+	iterations: 2
+	atop: 0.371952337305
+	ratop: 0.00183318056829
+model(wm=0.01, dim=10, iter=10, lambda=20, texts=8175)
+	iterations: 3
+	atop: 0.377085242896
+	ratop: 0.00229147571036
+model(wm=0.01, dim=10, iter=10, lambda=20, texts=8175)
+	iterations: 4
+	atop: 0.346746104491
+	ratop: 0.000916590284143
+model(wm=0.01, dim=10, iter=10, lambda=20, texts=8175)
+	iterations: 5
+	atop: 0.316590284143
+	ratop: 0.0
+model(wm=0.01, dim=10, iter=10, lambda=20, texts=8175)
+	iterations: 6
+	atop: 0.285976168653
+	ratop: 0.000183318056829
+model(wm=0.01, dim=10, iter=10, lambda=20, texts=8175)
+	iterations: 7
+	atop: 0.255087076077
+	ratop: 0.0
+model(wm=0.01, dim=20, iter=7, lambda=20, texts=8175)
+	iterations: 1
+	atop: 0.449220898258
+	ratop: 0.0
+model(wm=0.01, dim=20, iter=7, lambda=20, texts=8175)
+	iterations: 2
+	atop: 0.586159486709
+	ratop: 0.00183318056829
+model(wm=0.01, dim=20, iter=7, lambda=20, texts=8175)
+	iterations: 3
+	atop: 0.560403299725
+	ratop: 0.0
+model(wm=0.01, dim=20, iter=7, lambda=20, texts=8175)
+	iterations: 4
+	atop: 0.449770852429
+	ratop: 0.000824931255729
+model(wm=0.01, dim=20, iter=7, lambda=20, texts=8175)
+	iterations: 5
+	atop: 0.37222731439
+	ratop: 0.0006416131989
+model(wm=0.01, dim=20, iter=7, lambda=20, texts=8175)
+	iterations: 6
+	atop: 0.318606782768
+	ratop: 0.00100824931256
+model(wm=0.01, dim=20, iter=7, lambda=20, texts=8175)
+	iterations: 7
+	atop: 0.275068744271
+	ratop: 0.000274977085243
+model(wm=0.01, dim=30, iter=7, lambda=20, texts=8175)
+	iterations: 1
+	atop: 0.567736021998
+	ratop: 0.0
+model(wm=0.01, dim=30, iter=7, lambda=20, texts=8175)
+	iterations: 2
+	atop: 0.693950504125
+	ratop: 0.00201649862511
+model(wm=0.01, dim=30, iter=7, lambda=20, texts=8175)
+	iterations: 3
+	atop: 0.587992667278
+	ratop: 0.000549954170486
+model(wm=0.01, dim=30, iter=7, lambda=20, texts=8175)
+	iterations: 4
+	atop: 0.517048579285
+	ratop: 0.0
+model(wm=0.01, dim=30, iter=7, lambda=20, texts=8175)
+	iterations: 5
+	atop: 0.391200733272
+	ratop: 0.00201649862511
+model(wm=0.01, dim=30, iter=7, lambda=20, texts=8175)
+	iterations: 6
+	atop: 0.336755270394
+	ratop: 0.00109990834097
+model(wm=0.01, dim=50, iter=7, lambda=20, texts=8175)
+	iterations: 1
+	atop: 0.653620531622
+	ratop: 0.000458295142071
+model(wm=0.01, dim=50, iter=7, lambda=20, texts=8175)
+	iterations: 2
+	atop: 0.75142071494
+	ratop: 0.000183318056829

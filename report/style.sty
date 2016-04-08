@@ -83,3 +83,7 @@
 \makeatletter 
 \renewcommand{\fnum@figure}[1]{Рисунок~\thefigure~---~\sffamily}
 \makeatother
+
+% перенос ячеек в таблице
+\newcommand{\specialcell}[2][c]{%
+   \begin{tabular}[#1]{@{}c@{}}#2\end{tabular}}

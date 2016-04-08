@@ -25,11 +25,11 @@ def parse_args():
     group.add_argument('--news', action='store_true', help='start downloading news')
     group.add_argument('--tweets', action='store_true', help='start downloading tweets')
 
-    read_parser = subparsers.add_parser('read', help='read news or tweets data')
-    group = read_parser.add_mutually_exclusive_group(required=True)
-    group.add_argument('--news', action='store_true', help='read news data')
-    group.add_argument('--tweets', action='store_true', help='read tweets data')
-    
+    # read_parser = subparsers.add_parser('read', help='read news or tweets data')
+    # group = read_parser.add_mutually_exclusive_group(required=True)
+    # group.add_argument('--news', action='store_true', help='read news data')
+    # group.add_argument('--tweets', action='store_true', help='read tweets data')
+    #
 
     # parser.add_argument('-i', metavar='filename', dest='input_file', required=True, help='input file')
     # parser.add_argument('-o', metavar='filename', dest='output_file', required=False,

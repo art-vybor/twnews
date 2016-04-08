@@ -78,7 +78,7 @@ if __name__ == '__main__':
     end = time()
 
     total = end - start
-    rps = total_urls/total
+    rps = total_urls/total+1e-10
     print '-------------\n total: time: %.2fs; rps: %.2f; errors: %.2f%%' % (total, rps, len(urls)*1.0/(total_urls+1e-8))
     # print 'starting analyze errors'
     # errors = 0

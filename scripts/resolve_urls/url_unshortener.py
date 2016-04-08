@@ -35,6 +35,7 @@ def site_open_unshorter(url):
         return None
 
 def header_unshoter(url):
+    print url
     def good_location(location):
         return location and urlparse(location).netloc and location != url
 
@@ -90,9 +91,10 @@ if __name__ == '__main__':
     for url in urls[:]:
         #print url, web_unshoter(url)
         #print 'stable %s -> %s' % (url,unshorten_url(url))
-        print 'head   %s -> %s' % (url,header_unshoter(url))
-        print 'site   %s -> %s' % (url,site_open_unshorter(url))
-        # print '--------------------------'
+        #print 'head   %s -> %s' % (url,header_unshoter(url))
+        header_unshoter(url)
+        #print 'site   %s -> %s' % (url,site_open_unshorter(url))
+        print '--------------------------'
 
 
     

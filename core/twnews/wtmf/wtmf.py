@@ -5,7 +5,7 @@ from twnews.timeit import timeit
 from twnews.wtmf.support_functions import memo_process, dump, load
 from scipy import sparse
 
-
+from twnews.wtmf.eval import evaluation
 @timeit
 def lemmatize_texts(texts):
     lemmatizer = Lemmatizer()
@@ -25,15 +25,18 @@ def build_tf_idf_matrix(texts):
 
 
 class WTMF:
-    def __init__(self, texts, prefix=''):
+    def __init__(self, tweets, news, texts, prefix='', log_quality=True):
+        self.tweets = tweets
+        self.news = news
         self.texts = texts
         self.wm = 1e-2
         self.dim = 10
-        self.iterations_num = 3
+        self.iterations_num = 7
         self.lmbd = 20
         self.P = None
         self.Q = None
         self.prefix = prefix
+        self.log_quality=log_quality
 
     def __str__(self):
         return 'model(wm={wm}, dim={dim}, iter={iter}, lambda={lmbd}, texts={len_texts})'.format(
@@ -44,27 +47,30 @@ class WTMF:
             len_texts=len(self.texts),
         )
 
-    def init_model(self, words_num, texts_num):
+    def init_PQ(self, words_num, texts_num):
         P = np.random.rand(self.dim, words_num)
         Q = np.random.rand(self.dim, texts_num)
         P = P * 0.2 - 0.1
         Q = Q * 0.2 - 0.1
         return P, Q
 
-    def build(self, try_to_load=False):
+    def init_model(self, try_to_load=False):
         prefix = self.prefix
-        lemmatized_texts = memo_process(lambda: lemmatize_texts(self.texts), 'texts', try_to_load=try_to_load, prefix=prefix)
-        corpus, X = memo_process(lambda: build_tf_idf_matrix(lemmatized_texts), 'tf_idf_corpus', try_to_load=try_to_load, prefix=prefix)
-        W = memo_process(lambda: self.build_weight_matrix(X), 'weights', try_to_load=try_to_load, prefix=prefix)
+        self.lemmatized_texts = memo_process(lambda: lemmatize_texts(self.texts), 'texts', try_to_load=try_to_load, prefix=prefix)
+        self.corpus, self.X = memo_process(lambda: build_tf_idf_matrix(self.lemmatized_texts), 'tf_idf_corpus', try_to_load=try_to_load, prefix=prefix)
+        self.W = memo_process(lambda: self.build_weight_matrix(self.X), 'weights', try_to_load=try_to_load, prefix=prefix)
 
-        texts_num = len(lemmatized_texts)
-        words_num = len(corpus)
+        self.texts_num = len(self.lemmatized_texts)
+        self.words_num = len(self.corpus)
 
-        self.P, self.Q = memo_process(lambda: self.build_PQ(X, W, words_num, texts_num), 'PQ', try_to_load=try_to_load, prefix=prefix)
+    def build(self, try_to_load=False):
+        name = 'PQ_%s_%s' % (self.iterations_num, self.dim)
+        self.P, self.Q = memo_process(lambda: self.build_PQ(), name, try_to_load=try_to_load, prefix=self.prefix)
         print 'finished'
 
-    def build_PQ(self, X, W, words_num, texts_num):
-        P, Q = self.init_model(words_num, texts_num)
+    def build_PQ(self):
+        X, W, words_num, texts_num = self.X, self.W, self.words_num, self.texts_num
+        P, Q = self.init_PQ(words_num, texts_num)
 
         X = np.array(X.todense())
         lI = np.identity(self.dim) * self.lmbd
@@ -72,7 +78,18 @@ class WTMF:
         for i in range(self.iterations_num):
             print '%d/%d iteration' % (i + 1, self.iterations_num)
             P, Q = self.iteration(P, Q, W, X, lI)
+            if self.log_quality:
+                import os
+                from twnews import defaults
+                atop, ratop = evaluation(Q, self.tweets, self.news, k=10)
+                benchmark_path=os.path.join(defaults.TMP_FILE_DIRECTORY, 'benchmark')
 
+                with open(benchmark_path, 'a') as f:
+                    print str(self) + ' finished'
+                    f.write(str(self) + '\n')
+                    f.write('\titerations: %s\n' % (i+1))
+                    f.write('\tatop: %s\n' % atop)
+                    f.write('\tratop: %s\n' % ratop)
         return P, Q
 
     def load(self):
