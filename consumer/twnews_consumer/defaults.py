@@ -16,13 +16,14 @@ TWEETS_DB_PATH = os.path.join(TWNEWS_LOGS_PATH, 'tweets.shelve')
 
 RSS_FEEDS = {
     'ria': {'rss_url': 'http://ria.ru/export/rss2/index.xml'},
-    'lifenews': {'rss_url': 'http://lifenews.ru/xml/feed.xml'},
+    'lifenews': {'rss_url': 'http://lifenews.ru/xml/feed.xml1'},
     'lenta': {'rss_url': 'http://lenta.ru/rss'},
     'rt': {'rss_url': 'https://russian.rt.com/rss'},
     'gazeta': {'rss_url': 'http://www.gazeta.ru/export/rss/index.xml'},
 }
 
+SOCKET_DEFAULT_TIMEOUT = 10
 
-TWEETS_LANGUAGES = ['en', 'ru']
+TWEETS_LANGUAGES = ['ru']
 
 

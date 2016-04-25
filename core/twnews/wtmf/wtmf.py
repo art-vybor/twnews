@@ -6,6 +6,7 @@ from twnews.wtmf.support_functions import memo_process, dump, load
 from scipy import sparse
 
 from twnews.wtmf.eval import evaluation
+from multiprocessing import Pool
 @timeit
 def lemmatize_texts(texts):
     lemmatizer = Lemmatizer()
@@ -30,7 +31,7 @@ class WTMF:
         self.news = news
         self.texts = texts
         self.wm = 1e-2
-        self.dim = 10
+        self.dim = 3
         self.iterations_num = 1
         self.lmbd = 20
         self.P = None
@@ -131,6 +132,41 @@ class WTMF:
 
         return new_P, new_Q
 
+    @timeit
+    def parallel_iteration(self, P, Q, W, X, lI):
+        def build_row(A, w_row, x_row):
+            """calc (A w_row A^T + lI)^-1 * A * w_row * x_row """
+            W_i = sparse.spdiags(w_row, [0], len(w_row), len(w_row))
+
+            AW = A.dot(W_i)
+            AWA = AW.dot(A.T)
+            AWAl = AWA + lI
+            AWAl_inv = np.linalg.inv(AWAl)
+            AWX = AW.dot(x_row.T)
+
+            return AWAl_inv.dot(AWX)
+
+        new_P = P.copy()
+        new_Q = Q.copy()
+        P = sparse.csr_matrix(P)
+        Q = sparse.csr_matrix(Q)
+
+        print 'start build P'
+
+        for i in range(P.shape[1]):
+            new_P[:, i] = build_row(Q, W[i, :], X[i, :])
+
+            if i % 1000 == 0:
+                print '%dth iteration of %d' % (i, P.shape[1])
+
+        print 'start build Q'
+        for j in range(Q.shape[1]):
+            new_Q[:, j] = build_row(P, W[:, j], X[:, j])
+
+            if j % 1000 == 0:
+                print '%dth iteration of %d' % (j, Q.shape[1])
+
+        return new_P, new_Q
 
     @timeit
     def build_weight_matrix(self, tf_idf_matrix):

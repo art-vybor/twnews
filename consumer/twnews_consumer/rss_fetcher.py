@@ -3,6 +3,9 @@ import feedparser
 import logging
 from twnews_consumer import defaults
 
+import socket
+socket.setdefaulttimeout(defaults.SOCKET_DEFAULT_TIMEOUT)
+
 
 class RssFetcher:
     """Read rss feed and put it to shelve database"""
