@@ -43,7 +43,7 @@ def main():
             model.build(try_to_load=False)
 
     elif args.resolve:
-        resolve()
+        resolve(sample_size=None)
     elif args.analyze_urls:
         url_analyse()
 

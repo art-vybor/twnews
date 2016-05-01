@@ -6,10 +6,10 @@ LOG_FILE = '/var/log/twnews.log'
 LOG_LEVEL = logging.INFO
 
 
-TWNEWS_DATA_PATH = '/home/avybornov/twnews_data/'
+TWNEWS_DATA_PATH = '/home/avybornov/twnews_data_april/'
 #TWNEWS_DATA_PATH = '/home/avybornov/git/twnews/data_sample'
-NEWS_PATH = os.path.join(TWNEWS_DATA_PATH, 'rss')
-TWEETS_PATH = os.path.join(TWNEWS_DATA_PATH, 'tweets')
+NEWS_PATH = os.path.join(TWNEWS_DATA_PATH, 'rss.shelve')
+TWEETS_PATH = os.path.join(TWNEWS_DATA_PATH, 'tweets_filtered.shelve')
 RESOLVE_URL_MAP_PATH= os.path.join(TWNEWS_DATA_PATH, 'resolve_url_map.shelve')
 DATASET_PATH = os.path.join(TWNEWS_DATA_PATH, 'dataset')
 
