@@ -62,7 +62,9 @@ def filter_urls(data, urls):
 
 def resolve(resolve_path=defaults.RESOLVE_URL_MAP_PATH, tweets_path=defaults.TWEETS_PATH, sample_size=None):
     resolve_map = shelve.open(resolve_path)
-    links, media_links = get_urls(tweets_path, sample_size)
+    #links, media_links = get_urls(tweets_path, sample_size)
+    links = shelve.open('/home/avybornov/twnews_data_april/rss.shelve').keys()
+    links = dict(zip(links, links))
 
     q = Queue.Queue()
 
@@ -164,3 +166,8 @@ def url_analyse(resolve_path=defaults.RESOLVE_URL_MAP_PATH):
 
 
 #url_analyse()
+
+
+def clean_url(url):
+    o = urlparse(url)
+    return o.scheme + "://" + o.netloc + o.path

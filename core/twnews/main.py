@@ -1,7 +1,21 @@
 import argparse
-from twnews.resolver import resolve, url_analyse
+import logging
+import sys
+
+from twnews import defaults
 from twnews.dataset.dataset import Dataset
+from twnews.resolver import resolve, url_analyse
+from twnews.memoize import memo_process
 from twnews.wtmf.wtmf import WTMF
+
+
+#reload(logging)
+logging.basicConfig(
+    filename=defaults.LOG_FILE,
+    level=defaults.LOG_LEVEL,
+    stream=sys.stdout,
+    format='%(asctime)s: %(message)s',
+    datefmt="%Y-%m-%d %H:%M:%S")
 
 
 def parse_args():
@@ -9,6 +23,7 @@ def parse_args():
     
     parser.add_argument('--run_pipe', dest='run_pipe', action='store_true', help='start total pipeline of model build and eval')
     parser.add_argument('--resolve', dest='resolve', action='store_true', help='resolve urls from tweets')
+    parser.add_argument('--build_dataset', dest='dataset', action='store_true', help='build dataset')
     parser.add_argument('--analyse_urls', dest='analyze_urls', action='store_true', help='analyze resolved urls')
 
     args = parser.parse_args()
@@ -39,13 +54,15 @@ def main():
         #for iteration in [1,2,3,4,5,6,7,8,9,10]:
         for dim in [10]:
             #model.iterations_num=iteration
-            model.dim=dim
+            model.dim = dim
             model.build(try_to_load=False)
 
     elif args.resolve:
         resolve(sample_size=None)
     elif args.analyze_urls:
         url_analyse()
+    elif args.dataset:
+        dataset = memo_process(lambda: Dataset(fraction=1), 'dataset', try_to_load=False)
 
 
 

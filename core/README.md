@@ -26,3 +26,24 @@ http://bikulov.org/blog/2015/11/07/install-jupyter-notebook-and-scientific-envir
 sudo python -m nltk.downloader -d /usr/local/share/nltk_data stopwords
 sudo python -m nltk.downloader -d /usr/local/share/nltk_data punkt
 sudo python -m nltk.downloader -d /usr/local/share/nltk_data wordnet
+
+
+# APPLY
+На вход:
+    модель и набор текстов.
+        модель задаётся: P, wm, dim, lambda, корпус слов.
+        набор текстов представляем в виде tfidf матрицы X, где столбцы - тексты, строки - слова из корпуса.
+На выход:
+    матрица Q
+    
+Псевдокод:
+    PPTE <- P P^T wm
+    init Q
+    for each column in X:
+        i <- индекс колонки
+        if в столбце все нули:
+            Q[:i] <- [0..0]
+        else:
+            строим Q[:i] как в случае с трейном модели.
+            
+           

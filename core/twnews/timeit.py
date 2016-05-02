@@ -5,7 +5,8 @@ from twnews.logs import log_string
 
 def timeit(method):
     def timed(*args, **kw):
-        logging.info(log_string('Function {FUNC} started with time measure'.format(FUNC=method.__name__)))
+        logging.info('{FUNC} started with time measure'.format(
+            FUNC=method.__name__))
 
         start = time()
         result = method(*args, **kw)
@@ -15,9 +16,9 @@ def timeit(method):
         minutes = int(total_seconds / 60)
         seconds = total_seconds - minutes * 60
 
-        logging.info(log_string('Function {FUNC} finished in {MINUTES}m{SECONDS}s'.format(
+        logging.info('Function {FUNC} finished in {MINUTES}m{SECONDS}s'.format(
             FUNC=method.__name__,
             MINUTES=minutes,
-            SECONDS=seconds)))
+            SECONDS=seconds))
         return result
     return timed
