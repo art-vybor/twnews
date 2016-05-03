@@ -3,6 +3,7 @@ import unicodedata
 from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
 from nltk.stem import WordNetLemmatizer
+from sklearn.feature_extraction.text import TfidfVectorizer
 
 from twnews.timeit import timeit
 
@@ -46,3 +47,21 @@ class Lemmatizer():
     def split_texts_to_lemmas(self, texts):
         lemmas_list = map(self.split_text_to_lemmas, texts)
         return lemmas_list
+
+
+@timeit
+def lemmatize_texts(texts):
+    lemmatizer = Lemmatizer()
+    lemmas_list = lemmatizer.split_texts_to_lemmas(texts)
+    return [' '.join(lemma) for lemma in lemmas_list]
+
+
+@timeit
+def build_tf_idf_matrix(texts):
+    tvf = TfidfVectorizer()
+    tfidf_matrix = tvf.fit_transform(texts)
+
+    tfidf = tfidf_matrix.transpose()
+    corpus = tvf.get_feature_names()
+
+    return corpus, tfidf

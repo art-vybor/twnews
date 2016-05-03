@@ -5,8 +5,11 @@
       <w>feedparser</w>
       <w>hashtag</w>
       <w>hashtags</w>
+      <w>lemmatize</w>
+      <w>lemmatizer</w>
       <w>pymorphy</w>
       <w>retweeted</w>
+      <w>tfidf</w>
       <w>tweepy</w>
       <w>twnews</w>
       <w>wtmf</w>

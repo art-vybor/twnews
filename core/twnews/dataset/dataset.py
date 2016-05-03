@@ -22,3 +22,5 @@ class Dataset(object):
             NUM_TWEETS=self.tweets.length(),
             NUM_NEWS=self.news.length()))
 
+    def get_texts(self):
+        return self.news.get_texts() + self.tweets.get_texts()

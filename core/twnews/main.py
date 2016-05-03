@@ -5,9 +5,9 @@ import sys
 from twnews import defaults
 from twnews.dataset.dataset import Dataset
 from twnews.resolver import resolve, url_analyse
-from twnews.memoize import memo_process
+from twnews.utils.memoize import memo_process
+from twnews.utils.text_processors import lemmatize_texts, build_tf_idf_matrix
 from twnews.wtmf.wtmf import WTMF
-
 
 #reload(logging)
 logging.basicConfig(
@@ -20,42 +20,33 @@ logging.basicConfig(
 
 def parse_args():
     parser = argparse.ArgumentParser(description='twnews command line interface.')
-    
-    parser.add_argument('--run_pipe', dest='run_pipe', action='store_true', help='start total pipeline of model build and eval')
-    parser.add_argument('--resolve', dest='resolve', action='store_true', help='resolve urls from tweets')
-    parser.add_argument('--build_dataset', dest='dataset', action='store_true', help='build dataset')
-    parser.add_argument('--analyse_urls', dest='analyze_urls', action='store_true', help='analyze resolved urls')
+
+    pipe_group = parser.add_mutually_exclusive_group(required=True)
+
+    pipe_group.add_argument('--run_pipe', dest='run_pipe', action='store_true', help='start total pipeline of model build and eval')
+    pipe_group.add_argument('--resolve', dest='resolve', action='store_true', help='resolve urls from tweets')
+    pipe_group.add_argument('--build_dataset', dest='dataset', action='store_true', help='build dataset')
+    pipe_group.add_argument('--train_wtmf', dest='train_wtmf', action='store_true', help='train wtmf')
+    pipe_group.add_argument('--analyse_urls', dest='analyze_urls', action='store_true', help='analyze resolved urls')
+
+    parser.add_argument('--try_to_load', dest='try_to_load', action='store_true', help='try_to_load flag')
 
     args = parser.parse_args()
-
-    args_value = [args.run_pipe, args.resolve, args.analyze_urls]
-    if sum(map(int, args_value)) > 1:
-        print 'There are too many input arguments'
-        import sys
-        sys.exit(0)
 
     return args
 
 
 def main():
     args = parse_args()
-    
-    if args.run_pipe:
-        dataset = Dataset(fraction=1, use_dataset_if_exist=True)
-        news_texts = dataset.news_storage.get_texts()
-        news = dataset.news_storage.get_news()
-        tweets = dataset.dataset
-        tweets_texts = [tweet.text for tweet in tweets]
 
+    if args.train_wtmf:
+        dataset = memo_process(lambda: Dataset(fraction=1), 'dataset', try_to_load=args.try_to_load)
+        lemmatized_texts = memo_process(lambda: lemmatize_texts(dataset.get_texts()), 'texts', try_to_load=args.try_to_load)
+        corpus, tf_idf_matrix = memo_process(lambda: build_tf_idf_matrix(lemmatized_texts), 'tf_idf_corpus', try_to_load=args.try_to_load)
+        print len(lemmatized_texts), len(corpus)
 
-        model = WTMF(tweets, news, news_texts+tweets_texts)
-        model.init_model(try_to_load=True)
-
-        #for iteration in [1,2,3,4,5,6,7,8,9,10]:
-        for dim in [10]:
-            #model.iterations_num=iteration
-            model.dim = dim
-            model.build(try_to_load=False)
+        model = WTMF(lemmatized_texts, corpus, tf_idf_matrix, try_to_load=args.try_to_load)
+        model.build()
 
     elif args.resolve:
         resolve(sample_size=None)

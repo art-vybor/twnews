@@ -1,6 +1,7 @@
 from sklearn.feature_extraction.text import TfidfVectorizer
-from twnews.wtmf.text_processors import Lemmatizer
-from twnews.dataset.storage import TweetsStorage, NewsStorage
+
+from twnews.dataset.storage import NewsStorage
+from twnews.utils.text_processors import Lemmatizer
 
 news_storage = news_storage = NewsStorage()
 texts = news_storage.get_texts()
