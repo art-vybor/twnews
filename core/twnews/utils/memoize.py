@@ -1,4 +1,5 @@
-import pickle
+import cPickle
+import logging
 import os
 from twnews import defaults
 
@@ -7,7 +8,9 @@ def dump(object, filename, dirname=defaults.TMP_FILE_DIRECTORY, prefix=''):
     filepath = os.path.join(dirname, prefix+filename)
 
     with open(filepath, 'wb') as file:
-        pickle.dump(object, file)
+        cPickle.dump(object, file, protocol=2)
+    logging.info('{NAME} successfully dumped'.format(NAME=filename))
+
 
 
 def load(filename, dirname=defaults.TMP_FILE_DIRECTORY, prefix=''):
@@ -15,7 +18,9 @@ def load(filename, dirname=defaults.TMP_FILE_DIRECTORY, prefix=''):
 
     if exists(filepath):
         with open(filepath, 'rb') as file:
-            return pickle.load(file)
+            result = cPickle.load(file)
+            logging.info('{NAME} successfully loaded'.format(NAME=filename))
+            return result
     return None
 
 

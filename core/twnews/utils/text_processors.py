@@ -57,8 +57,8 @@ def lemmatize_texts(texts):
 
 
 @timeit
-def build_tf_idf_matrix(texts):
-    tvf = TfidfVectorizer()
+def build_tf_idf_matrix(texts, vocabulary=None):
+    tvf = TfidfVectorizer(vocabulary=vocabulary)
     tfidf_matrix = tvf.fit_transform(texts)
 
     tfidf = tfidf_matrix.transpose()

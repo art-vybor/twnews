@@ -1,7 +1,7 @@
 import shelve
 import logging
 from urlparse import urlparse
-
+from collections import OrderedDict
 from twnews import defaults
 from twnews.dataset.texts import Tweet, News, DatasetText
 
@@ -13,10 +13,14 @@ class DatasetTextsStorage:
         logging.info('Start of loading storage of {TYPE} from {PATH}'.format(TYPE=self.TextClass.__name__, PATH=data_path))
         data_shelve = shelve.open(data_path)
 
-        keys = data_shelve.keys()
+        keys = sorted(data_shelve.keys())
         if fraction:
             keys = keys[:int(len(keys)*fraction)]
-        self.dataset_texts_dict = {key: self.TextClass(data_shelve[key]) for key in keys}
+
+        self.dataset_texts_dict = OrderedDict()
+        for key in keys:
+            self.dataset_texts_dict[key] = self.TextClass(data_shelve[key])
+
         data_shelve.close()
 
         logging.info('Loading finished')
@@ -25,7 +29,7 @@ class DatasetTextsStorage:
         return len(self.dataset_texts_dict)
 
     def get_texts(self):
-        return [dataset_text.get_text() for _, dataset_text in self.dataset_texts_dict.iteritems()]
+        return [dataset_text.get_text() for dataset_text in self.get_dataset_texts()]
 
     def get_dataset_texts(self):
         return self.dataset_texts_dict.values()
@@ -40,7 +44,7 @@ class DatasetTextsStorage:
 class TweetsStorage(DatasetTextsStorage):
     TextClass = Tweet
 
-    def __init__(self, tweets_path=defaults.TWEETS_PATH, resolve_url_map_path=defaults.RESOLVE_URL_MAP_PATH, fraction=None):
+    def __init__(self, tweets_path=defaults.TWEETS_PATH, fraction=None):
         DatasetTextsStorage.__init__(self, tweets_path, fraction)
 
     def resolve_urls(self, url_resolver):

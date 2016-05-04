@@ -13,7 +13,7 @@ class Dataset(object):
                        fraction=defaults.DATASET_FRACTION):
 
         self.news = NewsStorage(news_path)
-        self.tweets = TweetsStorage(tweets_path, resolve_url_map_path, fraction)
+        self.tweets = TweetsStorage(tweets_path, fraction)
         url_resolver = UrlResolver(resolve_url_map_path)
         self.tweets.resolve_urls(url_resolver)
         self.tweets.filter(self.news)
@@ -24,3 +24,8 @@ class Dataset(object):
 
     def get_texts(self):
         return self.news.get_texts() + self.tweets.get_texts()
+
+    def get_dataset_texts(self):
+        return self.news.get_dataset_texts() + self.tweets.get_dataset_texts()
+
+

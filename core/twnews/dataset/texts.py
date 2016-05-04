@@ -1,11 +1,44 @@
 from dateutil import parser as date_parser
 from twnews.resolver import clean_url
+import math
+from scipy import sparse
+import numpy as np
+
+# def cosine_similarity(v1,v2):
+#     "compute cosine similarity of v1 to v2: (v1 dot v2)/{||v1||*||v2||)"
+#     sumxx, sumxy, sumyy = 0, 0, 0
+#     for i in range(len(v1)):
+#         x = v1[i]; y = v2[i]
+#         sumxx += x*x
+#         sumyy += y*y
+#         sumxy += x*y
+#     return sumxy/math.sqrt(sumxx*sumyy)
+
+def cosine_similarity(v1,v2):
+    "compute cosine similarity of v1 to v2: (v1 dot v2)/{||v1||*||v2||)"
+    v1_idxs, _, value = sparse.find(v1)
+    v2_idxs, _, value = sparse.find(v2)
+
+    sumxx, sumxy, sumyy = 0, 0, 0
+    for i in set(np.append(v1_idxs, v2_idxs)):
+        x = v1[(i,0)]; y = v2[(i,0)]
+        sumxx += x*x
+        sumyy += y*y
+        sumxy += x*y
+    return sumxy/math.sqrt(sumxx*sumyy)
 
 class DatasetText:
     text = None
+    compare_vector = None
 
     def get_text(self):
         return self.text
+
+    def set_compare_vector(self, vector):
+        self.compare_vector = vector
+
+    def compare(self, obj):
+        return cosine_similarity(self.compare_vector, obj.compare_vector)
 
 
 class Tweet(DatasetText):
@@ -25,7 +58,7 @@ class Tweet(DatasetText):
         self.urls = map(clean_url, self.urls)
 
     def __str__(self):
-        return self.text
+        return self.text.encode('utf-8')
 
     def __repr__(self):
         return 'TWEET: %s' % str(self)
