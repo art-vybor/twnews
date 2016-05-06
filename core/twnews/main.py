@@ -65,6 +65,10 @@ def main():
         dataset = load('dataset')
         documents = dataset.tweets.get_dataset_texts()#[:100]
 
+        from twnews.dataset.storage import TweetsStorage
+        tweets = TweetsStorage(defaults.TWEETS_PATH, 0.01)
+        documents = tweets.get_dataset_texts()[:1000]
+
         apply_wtmf(documents, corpus)
 
         dump(documents, 'documents_applied')
@@ -97,6 +101,11 @@ def main():
         dump(tweets, 'tweets_applied')
 
         documents = dataset.tweets.get_dataset_texts()#[:100]
+
+        from twnews.dataset.storage import TweetsStorage
+        tweets = TweetsStorage(defaults.TWEETS_PATH, 0.01)
+        documents = tweets.get_dataset_texts()[:1000]
+        
         apply_tfidf(documents, corpus)
         dump(documents, 'documents_applied')
     elif args.eval:
@@ -179,6 +188,7 @@ def recommend(news, tweets, top_size=10):
     print 'tweets converted'
     news_matrix = convert_to_compare_matrix(news)
     print 'news converted'
+
 
     mat = cosine_similarity(tweets_matrix.T, news_matrix.T)
     print 'matrix builded'
