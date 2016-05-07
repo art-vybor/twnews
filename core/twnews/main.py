@@ -35,6 +35,8 @@ def parse_args():
     pipe_group.add_argument('--analyse_urls', dest='analyze_urls', action='store_true', help='analyze resolved urls')
     pipe_group.add_argument('--apply_tfidf', dest='apply_tfidf', action='store_true', help='apply tfidf')
 
+    pipe_group.add_argument('--dump_to_csv', dest='dump_to_csv', action='store_true', help='dump_to_csv')
+
     parser.add_argument('--try_to_load', dest='try_to_load', action='store_true', help='try_to_load flag')
 
     args = parser.parse_args()
@@ -90,27 +92,33 @@ def main():
 
         dump(recommendation, 'recommendation')
     elif args.apply_tfidf:
+        #print 1
         corpus, tf_idf_matrix = load('tf_idf_corpus')
         dataset = load('dataset')
         news_num = dataset.news.length()
 
-        documents = dataset.get_dataset_texts()
-        set_wtmf_compare_vector(documents, tf_idf_matrix)
-        news, tweets = documents[:news_num], documents[news_num:]
-        dump(news, 'news_applied')
-        dump(tweets, 'tweets_applied')
+        # documents = dataset.get_dataset_texts()
+        # set_wtmf_compare_vector(documents, tf_idf_matrix)
+        # news, tweets = documents[:news_num], documents[news_num:]
+        # dump(news, 'news_applied')
+        # dump(tweets, 'tweets_applied')
 
-        documents = dataset.tweets.get_dataset_texts()#[:100]
+        #documents = dataset.tweets.get_dataset_texts()#[:100]
 
         from twnews.dataset.storage import TweetsStorage
-        tweets = TweetsStorage(defaults.TWEETS_PATH, 0.01)
-        documents = tweets.get_dataset_texts()[:1000]
+        #tweets = TweetsStorage(defaults.TWEETS_PATH, 0.01)
+        #documents = tweets.get_dataset_texts()[:1000]
+        documents = load('good_tweets')
+        documents = documents[:50000]
         
         apply_tfidf(documents, corpus)
         dump(documents, 'documents_applied')
     elif args.eval:
         recommendation = load('recommendation')
         print 'RR =',RR(recommendation)
+    elif args.dump_to_csv:
+        recommendation = load('recommendation')
+
 
 
 
