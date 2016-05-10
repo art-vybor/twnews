@@ -108,8 +108,8 @@ def main():
         from twnews.dataset.storage import TweetsStorage
         #tweets = TweetsStorage(defaults.TWEETS_PATH, 0.01)
         #documents = tweets.get_dataset_texts()[:1000]
-        documents = load('good_tweets')
-        documents = documents[:50000]
+        documents = load('tweet_filtered_versus_3')
+        #documents = documents[:50000]
         
         apply_tfidf(documents, corpus)
         dump(documents, 'documents_applied')
