@@ -27,6 +27,7 @@ def cosine_similarity(v1,v2):
         sumxy += x*y
     return sumxy/math.sqrt(sumxx*sumyy)
 
+
 class DatasetText:
     text = None
     compare_vector = None
