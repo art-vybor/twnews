@@ -44,8 +44,14 @@ class DatasetTextsStorage:
 class TweetsStorage(DatasetTextsStorage):
     TextClass = Tweet
 
-    def __init__(self, tweets_path=defaults.TWEETS_PATH, fraction=None):
-        DatasetTextsStorage.__init__(self, tweets_path, fraction)
+    def __init__(self, tweets_path=defaults.TWEETS_PATH, fraction=None, init_by_prepared_tweets=None):
+        if init_by_prepared_tweets:
+            self.dataset_texts_dict = {}
+            for tweet in init_by_prepared_tweets:
+                self.dataset_texts_dict[tweet.tweet_id] = tweet
+
+        else:
+            DatasetTextsStorage.__init__(self, tweets_path, fraction)
 
     def resolve_urls(self, url_resolver):
         for tweet in self.dataset_texts_dict.itervalues():

@@ -46,4 +46,5 @@ sudo python -m nltk.downloader -d /usr/local/share/nltk_data wordnet
         else:
             строим Q[:i] как в случае с трейном модели.
             
+            
            

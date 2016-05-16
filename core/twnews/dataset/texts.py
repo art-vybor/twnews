@@ -15,7 +15,8 @@ import numpy as np
 #     return sumxy/math.sqrt(sumxx*sumyy)
 
 def cosine_similarity(v1,v2):
-    "compute cosine similarity of v1 to v2: (v1 dot v2)/{||v1||*||v2||)"
+    """fast cosine similarity for sparse vectors"""
+
     v1_idxs, _, value = sparse.find(v1)
     v2_idxs, _, value = sparse.find(v2)
 
@@ -30,7 +31,10 @@ def cosine_similarity(v1,v2):
 
 class DatasetText:
     text = None
-    compare_vector = None
+    date = None
+    compare_vector = None  # np vector which represent a text
+    # lemmatized_words = None  # lemmatize and filtered words of text
+    # text_to_text_link = None  # link
 
     def get_text(self):
         return self.text

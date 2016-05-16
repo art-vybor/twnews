@@ -4,6 +4,7 @@ from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
 from nltk.stem import WordNetLemmatizer
 from sklearn.feature_extraction.text import TfidfVectorizer
+from polyglot.text import Text
 
 from twnews.timeit import timeit
 
@@ -65,3 +66,13 @@ def build_tf_idf_matrix(texts, vocabulary=None):
     corpus = tvf.get_feature_names()
 
     return corpus, tfidf
+
+
+def extract_entities(lemmatizer, text):
+    t = Text(to_unicode(text))
+    t.language = 'ru'
+
+    result = set()
+    for entity in t.entities:
+        result.update([lemmatizer.lemmatize(x) for x in entity])
+    return result

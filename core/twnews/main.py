@@ -21,20 +21,25 @@ logging.basicConfig(
 
 
 def parse_args():
-    parser = argparse.ArgumentParser(description='twnews command line interface.')
+    parser = argparse.ArgumentParser(description='twnews command line interface.', formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+    subparsers = parser.add_subparsers(dest='subparser_name', help='sub-commands')
 
-    pipe_group = parser.add_mutually_exclusive_group(required=True)
+    dataset_parser = subparsers.add_parser('dataset', help='construct dataset')
+    dataset_group = dataset_parser.add_mutually_exclusive_group(required=True)
+    dataset_group.add_argument('--build_automatic', dest='automatic', action='store_true', help='build automatic dataset')
+    dataset_group.add_argument('--build_manual', dest='manual', action='store_true', help='build manual dataset')
+    dataset_group.add_argument('--add_relations', dest='relation', action='store_true', help='add text to text relation information for builded dataset')
 
+    pipe_parser = subparsers.add_parser('pipe', help='run pipe commands')
+    pipe_group = pipe_parser.add_mutually_exclusive_group(required=True)
     pipe_group.add_argument('--run_pipe', dest='run_pipe', action='store_true', help='start total pipeline of model build and eval')
     pipe_group.add_argument('--resolve', dest='resolve', action='store_true', help='resolve urls from tweets')
-    pipe_group.add_argument('--build_dataset', dest='dataset', action='store_true', help='build dataset')
     pipe_group.add_argument('--train_wtmf', dest='train_wtmf', action='store_true', help='train wtmf')
     pipe_group.add_argument('--eval', dest='eval', action='store_true', help='eval')
     pipe_group.add_argument('--apply_wtmf', dest='apply_wtmf', action='store_true', help='apply wtmf')
     pipe_group.add_argument('--recommend', dest='recommend', action='store_true', help='recommend')
     pipe_group.add_argument('--analyse_urls', dest='analyze_urls', action='store_true', help='analyze resolved urls')
     pipe_group.add_argument('--apply_tfidf', dest='apply_tfidf', action='store_true', help='apply tfidf')
-
     pipe_group.add_argument('--dump_to_csv', dest='dump_to_csv', action='store_true', help='dump_to_csv')
 
     parser.add_argument('--try_to_load', dest='try_to_load', action='store_true', help='try_to_load flag')
@@ -48,76 +53,85 @@ def main():
     logging.info('--------------- Twnews started ------------------')
     args = parse_args()
 
-    if args.train_wtmf:
-        dataset = load('dataset')
-        corpus, tf_idf_matrix = load('tf_idf_corpus')
-        lemmatized_texts = load('lemmatized_texts')
-        news_num = dataset.news.length()
-        documents = dataset.get_dataset_texts()
+    if args.subparser_name == 'dataset':
+        if args.automatic:
+            dataset = memo_process(lambda: Dataset(fraction=1), 'dataset', try_to_load=args.try_to_load)
+            lemmatized_texts = memo_process(lambda: lemmatize_texts(dataset.get_texts()), 'lemmatized_texts',try_to_load=args.try_to_load)
+            corpus, tf_idf_matrix = memo_process(lambda: build_tf_idf_matrix(lemmatized_texts), 'tf_idf_corpus', try_to_load=args.try_to_load)
+        elif args.manual:
+            pass
+        elif args.relation:
+            dataset = load('dataset')
+            dataset.init_text_to_text_links()
+            dump(dataset, 'dataset')
 
-        print len(lemmatized_texts), len(corpus)
-        train_wtmf(documents, corpus, tf_idf_matrix, lemmatized_texts, args)
+    elif args.subparser_name == 'pipe':
+        if args.train_wtmf:
+            dataset = load('dataset')
+            corpus, tf_idf_matrix = load('tf_idf_corpus')
+            lemmatized_texts = load('lemmatized_texts')
+            news_num = dataset.news.length()
+            documents = dataset.get_dataset_texts()
 
-        news, tweets = documents[:news_num], documents[news_num:]
-        dump(news, 'news_applied')
-        dump(tweets, 'tweets_applied')
+            print len(lemmatized_texts), len(corpus)
+            train_wtmf(documents, corpus, tf_idf_matrix, lemmatized_texts, args)
 
-    elif args.apply_wtmf:
-        corpus, _ = load('tf_idf_corpus')
-        dataset = load('dataset')
-        documents = dataset.tweets.get_dataset_texts()#[:100]
+            news, tweets = documents[:news_num], documents[news_num:]
+            dump(news, 'news_applied')
+            dump(tweets, 'tweets_applied')
 
-        from twnews.dataset.storage import TweetsStorage
-        tweets = TweetsStorage(defaults.TWEETS_PATH, 0.01)
-        documents = tweets.get_dataset_texts()[:1000]
+        elif args.apply_wtmf:
+            corpus, _ = load('tf_idf_corpus')
+            dataset = load('dataset')
+            documents = dataset.tweets.get_dataset_texts()#[:100]
 
-        apply_wtmf(documents, corpus)
+            from twnews.dataset.storage import TweetsStorage
+            tweets = TweetsStorage(defaults.TWEETS_PATH, 0.01)
+            documents = tweets.get_dataset_texts()[:1000]
 
-        dump(documents, 'documents_applied')
+            apply_wtmf(documents, corpus)
 
-    elif args.resolve:
-        resolve(sample_size=None)
-    elif args.analyze_urls:
-        url_analyse()
-    elif args.dataset:
-        dataset = memo_process(lambda: Dataset(fraction=1), 'dataset', try_to_load=args.try_to_load)
-        lemmatized_texts = memo_process(lambda: lemmatize_texts(dataset.get_texts()), 'lemmatized_texts',try_to_load=args.try_to_load)
-        corpus, tf_idf_matrix = memo_process(lambda: build_tf_idf_matrix(lemmatized_texts), 'tf_idf_corpus', try_to_load=args.try_to_load)
+            dump(documents, 'documents_applied')
 
-    elif args.recommend:
-        news = load('news_applied')
-        tweets = load('documents_applied')
+        elif args.resolve:
+            resolve(sample_size=None)
+        elif args.analyze_urls:
+            url_analyse()
 
-        recommendation = recommend(news, tweets, top_size=10)
+        elif args.recommend:
+            news = load('news_applied')
+            tweets = load('documents_applied')
 
-        dump(recommendation, 'recommendation')
-    elif args.apply_tfidf:
-        #print 1
-        corpus, tf_idf_matrix = load('tf_idf_corpus')
-        dataset = load('dataset')
-        news_num = dataset.news.length()
+            recommendation = recommend(news, tweets, top_size=10)
 
-        # documents = dataset.get_dataset_texts()
-        # set_wtmf_compare_vector(documents, tf_idf_matrix)
-        # news, tweets = documents[:news_num], documents[news_num:]
-        # dump(news, 'news_applied')
-        # dump(tweets, 'tweets_applied')
+            dump(recommendation, 'recommendation')
+        elif args.apply_tfidf:
+            #print 1
+            corpus, tf_idf_matrix = load('tf_idf_corpus')
+            dataset = load('dataset')
+            news_num = dataset.news.length()
 
-        #documents = dataset.tweets.get_dataset_texts()#[:100]
+            # documents = dataset.get_dataset_texts()
+            # set_wtmf_compare_vector(documents, tf_idf_matrix)
+            # news, tweets = documents[:news_num], documents[news_num:]
+            # dump(news, 'news_applied')
+            # dump(tweets, 'tweets_applied')
 
-        from twnews.dataset.storage import TweetsStorage
-        #tweets = TweetsStorage(defaults.TWEETS_PATH, 0.01)
-        #documents = tweets.get_dataset_texts()[:1000]
-        documents = load('tweet_filtered_versus_3')
-        #documents = documents[:50000]
-        
-        apply_tfidf(documents, corpus)
-        dump(documents, 'documents_applied')
-    elif args.eval:
-        recommendation = load('recommendation')
-        print 'RR =',RR(recommendation)
-    elif args.dump_to_csv:
-        recommendation = load('recommendation')
+            #documents = dataset.tweets.get_dataset_texts()#[:100]
+
+            from twnews.dataset.storage import TweetsStorage
+            #tweets = TweetsStorage(defaults.TWEETS_PATH, 0.01)
+            #documents = tweets.get_dataset_texts()[:1000]
+            documents = load('tweet_filtered_versus_3')
+            #documents = documents[:50000]
+
+            apply_tfidf(documents, corpus)
+            dump(documents, 'documents_applied')
+        elif args.eval:
+            recommendation = load('recommendation')
+            print 'RR =',RR(recommendation)
+        elif args.dump_to_csv:
+            recommendation = load('recommendation')
 
 
 

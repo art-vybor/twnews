@@ -1,0 +1,3 @@
+twnews --try_to_load  dataset --build_automatic
+twnews dataset --add_relations
+
