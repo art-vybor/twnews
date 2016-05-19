@@ -1,3 +1,7 @@
-twnews --try_to_load  dataset --build_automatic
-twnews dataset --add_relations
+twnews dataset --build_automatic --try_to_load
+# twnews dataset --add_relations
+twnews train --wtmf --try_to_load
+twnews apply --wtmf
+twnews pipe --recommend
+twnews pipe --eval
 

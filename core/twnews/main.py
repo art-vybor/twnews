@@ -7,9 +7,11 @@ import heapq
 from twnews import defaults
 from twnews.dataset.dataset import Dataset
 from twnews.resolver import resolve, url_analyse
+from twnews.dataset.storage import TweetsStorage
 from twnews.utils.memoize import memo_process, load, dump
 from twnews.utils.text_processors import lemmatize_texts, build_tf_idf_matrix
 from twnews.wtmf.wtmf import WTMF
+from twnews.wtmf.wtmf_g import WTMF_G
 
 #reload(logging)
 logging.basicConfig(
@@ -29,20 +31,31 @@ def parse_args():
     dataset_group.add_argument('--build_automatic', dest='automatic', action='store_true', help='build automatic dataset')
     dataset_group.add_argument('--build_manual', dest='manual', action='store_true', help='build manual dataset')
     dataset_group.add_argument('--add_relations', dest='relation', action='store_true', help='add text to text relation information for builded dataset')
+    dataset_parser.add_argument('--try_to_load', dest='try_to_load', action='store_true', help='try_to_load flag')
+
+    train_parser = subparsers.add_parser('train', help='train model')
+    train_group = train_parser.add_mutually_exclusive_group(required=True)
+    train_group.add_argument('--wtmf', dest='wtmf', action='store_true', help='train wtmf model')
+    train_group.add_argument('--wtmf_g', dest='wtmf_g', action='store_true', help='train wtmf-g model')
+    train_parser.add_argument('--try_to_load', dest='try_to_load', action='store_true', help='try_to_load flag')
+
+    apply_parser = subparsers.add_parser('apply', help='apply model')
+    apply_group = apply_parser.add_mutually_exclusive_group(required=True)
+    apply_group.add_argument('--wtmf', dest='wtmf', action='store_true', help='apply wtmf model')
+    apply_group.add_argument('--wtmf_g', dest='wtmf_g', action='store_true', help='apply wtmf-g model')
+    apply_group.add_argument('--tfidf', dest='tfidf', action='store_true', help='apply tfidf model')
 
     pipe_parser = subparsers.add_parser('pipe', help='run pipe commands')
     pipe_group = pipe_parser.add_mutually_exclusive_group(required=True)
     pipe_group.add_argument('--run_pipe', dest='run_pipe', action='store_true', help='start total pipeline of model build and eval')
     pipe_group.add_argument('--resolve', dest='resolve', action='store_true', help='resolve urls from tweets')
-    pipe_group.add_argument('--train_wtmf', dest='train_wtmf', action='store_true', help='train wtmf')
     pipe_group.add_argument('--eval', dest='eval', action='store_true', help='eval')
-    pipe_group.add_argument('--apply_wtmf', dest='apply_wtmf', action='store_true', help='apply wtmf')
     pipe_group.add_argument('--recommend', dest='recommend', action='store_true', help='recommend')
     pipe_group.add_argument('--analyse_urls', dest='analyze_urls', action='store_true', help='analyze resolved urls')
-    pipe_group.add_argument('--apply_tfidf', dest='apply_tfidf', action='store_true', help='apply tfidf')
     pipe_group.add_argument('--dump_to_csv', dest='dump_to_csv', action='store_true', help='dump_to_csv')
+    pipe_parser.add_argument('--try_to_load', dest='try_to_load', action='store_true', help='try_to_load flag')
 
-    parser.add_argument('--try_to_load', dest='try_to_load', action='store_true', help='try_to_load flag')
+
 
     args = parser.parse_args()
 
@@ -59,42 +72,66 @@ def main():
             lemmatized_texts = memo_process(lambda: lemmatize_texts(dataset.get_texts()), 'lemmatized_texts',try_to_load=args.try_to_load)
             corpus, tf_idf_matrix = memo_process(lambda: build_tf_idf_matrix(lemmatized_texts), 'tf_idf_corpus', try_to_load=args.try_to_load)
         elif args.manual:
-            pass
+            raise Exception('not realized yet')
         elif args.relation:
             dataset = load('dataset')
             dataset.init_text_to_text_links()
             dump(dataset, 'dataset')
 
+    elif args.subparser_name == 'train':
+        dataset = load('dataset')
+        corpus, tf_idf_matrix = load('tf_idf_corpus')
+        lemmatized_texts = load('lemmatized_texts')
+
+        news_num = dataset.news.length()
+        documents = dataset.get_dataset_texts()
+        print len(lemmatized_texts), len(corpus)
+
+        if args.wtmf:
+            model = WTMF(lemmatized_texts, corpus, tf_idf_matrix, try_to_load=args.try_to_load)
+
+        elif args.wtmf_g:
+            links = dataset.text_to_text_links
+            model = WTMF_G(lemmatized_texts, corpus, tf_idf_matrix, links, try_to_load=args.try_to_load)
+
+        model.build()
+        set_wtmf_compare_vector(documents, model.Q)
+        news, tweets = documents[:news_num], documents[news_num:]
+        dump(news, 'news_applied')
+        dump(tweets, 'tweets_applied')
+
+    elif args.subparser_name == 'apply':
+        corpus, _ = load('tf_idf_corpus')
+
+        tweets = TweetsStorage(defaults.TWEETS_PATH, 0.01)
+        documents = tweets.get_dataset_texts()[:1000]
+
+        texts = map(lambda x: x.get_text(), documents)
+        texts = lemmatize_texts(texts)
+        _, tf_idf_matrix = build_tf_idf_matrix(texts, vocabulary=corpus)
+
+        result_matrix = None
+
+        if args.wtmf:
+            model = WTMF(texts, corpus, tf_idf_matrix, try_to_load=True)
+            result_matrix = model.apply()
+        elif args.wtmf_g:
+            raise Exception('not realized yet')
+            #links = dataset.text_to_text_links
+            #model = WTMF_G(texts, corpus, tf_idf_matrix, links, try_to_load=True)
+            #result_matrix = model.apply()
+        elif args.tfidf:
+            texts = map(lambda x: x.get_text(), documents)
+            texts = lemmatize_texts(texts)
+            _, result_matrix = build_tf_idf_matrix(texts, vocabulary=corpus)
+
+        set_wtmf_compare_vector(documents, result_matrix)
+
+        dump(documents, 'documents_applied')
     elif args.subparser_name == 'pipe':
-        if args.train_wtmf:
-            dataset = load('dataset')
-            corpus, tf_idf_matrix = load('tf_idf_corpus')
-            lemmatized_texts = load('lemmatized_texts')
-            news_num = dataset.news.length()
-            documents = dataset.get_dataset_texts()
-
-            print len(lemmatized_texts), len(corpus)
-            train_wtmf(documents, corpus, tf_idf_matrix, lemmatized_texts, args)
-
-            news, tweets = documents[:news_num], documents[news_num:]
-            dump(news, 'news_applied')
-            dump(tweets, 'tweets_applied')
-
-        elif args.apply_wtmf:
-            corpus, _ = load('tf_idf_corpus')
-            dataset = load('dataset')
-            documents = dataset.tweets.get_dataset_texts()#[:100]
-
-            from twnews.dataset.storage import TweetsStorage
-            tweets = TweetsStorage(defaults.TWEETS_PATH, 0.01)
-            documents = tweets.get_dataset_texts()[:1000]
-
-            apply_wtmf(documents, corpus)
-
-            dump(documents, 'documents_applied')
-
-        elif args.resolve:
+        if args.resolve:
             resolve(sample_size=None)
+
         elif args.analyze_urls:
             url_analyse()
 
@@ -103,33 +140,12 @@ def main():
             tweets = load('documents_applied')
 
             recommendation = recommend(news, tweets, top_size=10)
-
             dump(recommendation, 'recommendation')
-        elif args.apply_tfidf:
-            #print 1
-            corpus, tf_idf_matrix = load('tf_idf_corpus')
-            dataset = load('dataset')
-            news_num = dataset.news.length()
 
-            # documents = dataset.get_dataset_texts()
-            # set_wtmf_compare_vector(documents, tf_idf_matrix)
-            # news, tweets = documents[:news_num], documents[news_num:]
-            # dump(news, 'news_applied')
-            # dump(tweets, 'tweets_applied')
-
-            #documents = dataset.tweets.get_dataset_texts()#[:100]
-
-            from twnews.dataset.storage import TweetsStorage
-            #tweets = TweetsStorage(defaults.TWEETS_PATH, 0.01)
-            #documents = tweets.get_dataset_texts()[:1000]
-            documents = load('tweet_filtered_versus_3')
-            #documents = documents[:50000]
-
-            apply_tfidf(documents, corpus)
-            dump(documents, 'documents_applied')
         elif args.eval:
             recommendation = load('recommendation')
             print 'RR =',RR(recommendation)
+
         elif args.dump_to_csv:
             recommendation = load('recommendation')
 
@@ -145,29 +161,6 @@ def RR(recoms):
                 RR += 1.0 / (i + 1)
                 break
     return RR / len(recoms)
-
-
-def train_wtmf(documents, corpus, tf_idf_matrix, lemmatized_texts, args):
-    model = WTMF(lemmatized_texts, corpus, tf_idf_matrix, try_to_load=args.try_to_load)
-    model.build()
-    set_wtmf_compare_vector(documents, model.Q)
-
-
-def apply_wtmf(documents, corpus):
-    texts = map(lambda x: x.get_text(), documents)
-    texts = lemmatize_texts(texts)
-    _, tf_idf_matrix = build_tf_idf_matrix(texts, vocabulary=corpus)
-
-    model = WTMF(texts, corpus, tf_idf_matrix, try_to_load=True)
-    Q = model.apply()
-    set_wtmf_compare_vector(documents, Q)
-
-
-def apply_tfidf(documents, corpus):
-    texts = map(lambda x: x.get_text(), documents)
-    texts = lemmatize_texts(texts)
-    _, tf_idf_matrix = build_tf_idf_matrix(texts, vocabulary=corpus)
-    set_wtmf_compare_vector(documents, tf_idf_matrix)
 
 
 def set_wtmf_compare_vector(documents, Q):

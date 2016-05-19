@@ -5,7 +5,7 @@ from twnews import defaults
 
 
 def dump(object, filename, dirname=defaults.TMP_FILE_DIRECTORY, prefix=''):
-    filepath = os.path.join(dirname, '%s_%s' % (prefix, filename))
+    filepath = os.path.join(dirname, prefix+filename)
 
     with open(filepath, 'wb') as file:
         cPickle.dump(object, file, protocol=2)

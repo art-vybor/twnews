@@ -21,7 +21,9 @@ def get_text_to_text_relation(news, tweets, k=3):
     tweet_to_tweet_time = get_document_to_documet_time_relation(tweets, k)
     news_to_news_time = get_document_to_documet_time_relation(news, k)
 
-    return tweet_to_tweet_hashtags | tweet_to_tweet_NER | tweet_to_tweet_time | news_to_news_time
+    total_relations = tweet_to_tweet_hashtags | tweet_to_tweet_NER | tweet_to_tweet_time | news_to_news_time
+
+    return filter(lambda x: x[0] != x[1], total_relations)
 
 
 @timeit

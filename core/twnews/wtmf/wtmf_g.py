@@ -1,20 +1,57 @@
+import math
 import logging
 import numpy as np
 from scipy import sparse
 
+from collections import defaultdict
 from twnews.timeit import timeit
 from twnews.utils.memoize import memo_process, load, dump
 
 
-class WTMF:
+def get_matrix_slice_by_column(M, indexes):
+    length, width = M.shape
+
+    #dim = len(corpus)
+
+    data, row_idxs, column_idxs = [], [], []
+    for column_idx, idx in enumerate(indexes):
+        rows, _, values = sparse.find(M[:,idx])
+        for i, value in enumerate(values):
+            data.append(values[i])
+            row_idxs.append(rows[i])
+            column_idxs.append(column_idx)
+
+    compare_matrix = sparse.csr_matrix((data, (row_idxs, column_idxs)), shape=(length, len(indexes)))
+    return compare_matrix
+
+
+def get_vector_length(v):
+    idxs, _, value = sparse.find(v)
+    sumxx = 0
+    for i in idxs:
+        x = v[(i,i)]
+        sumxx += x*x
+    return math.sqrt(sumxx*1.0)
+
+
+def get_vectors_length_array(M):
+    res = []
+    for i in range(M.shape[1]):
+        res.append(get_vector_length(M[:,i]))
+    return res
+
+
+class WTMF_G:
     def __init__(self,
                  texts,
                  corpus,
                  tf_idf_matrix,
+                 links,
                  wm=1e-2,
-                 dim=50,
+                 dim=3,
                  iterations_num=1,
                  lmbd=20,
+                 delta = 0.1,
                  try_to_load=False,
                  ):
         self.texts = texts
@@ -24,10 +61,16 @@ class WTMF:
         self.dim = dim
         self.iterations_num = iterations_num
         self.lmbd = lmbd
+        self.delta = delta
         self.try_to_load=try_to_load
         self.P = None
         self.Q = None
-        self.model_filename = 'WTMF_%s_%s' % (self.iterations_num, self.dim)
+        self.text_to_text = defaultdict(set)
+        for i, j in links:
+            self.text_to_text[i].add(j)
+            self.text_to_text[j].add(i)
+
+        self.model_filename = 'WTMFG_%s_%s' % (self.iterations_num, self.dim)
         if self.try_to_load:
             PQ_loaded = load(self.model_filename)
             if PQ_loaded:
@@ -71,7 +114,7 @@ class WTMF:
 
     @timeit
     def iteration(self, P, Q, W, X, lI):
-        P = self.new_P(P, Q, W, X, lI)
+        #P = self.new_P(P, Q, W, X, lI)
         Q = self.new_Q(P, Q, W, X, lI)
 
         return P, Q
@@ -79,9 +122,24 @@ class WTMF:
     def new_Q(self, P, old_Q, W, X, lI):
         print 'start build Q'
         Q = sparse.csc_matrix(old_Q.shape)
+        Q_length = get_vectors_length_array(Q)
 
         for i in range(Q.shape[1]):
-            Q[:, i] = self.build_row(P, W[:, i].T, X[:, i].T, lI)
+        #for i in range(100):
+            Qi = Q[:,i]
+            #print Qi.shape
+            LQi = Q_length[i]
+            #print LQi
+
+            n_i = self.text_to_text[i]
+            n_i.add(1)
+            #print len(n_i)
+            LQn_i = [Q_length[j] for j in n_i]
+            #print len(LQn_i)
+
+            Qn_i = get_matrix_slice_by_column(Q, n_i)
+            #print Qn_i.shape
+            Q[:, i] = self.build_relation_row(P, W[:, i].T, X[:, i].T, lI, Qi, LQi, Qn_i, LQn_i)
 
             if i % 1000 == 0:
                 print '%dth iteration of %d' % (i, Q.shape[1])
@@ -91,7 +149,8 @@ class WTMF:
         print 'start build P'
         P = sparse.csr_matrix(old_P.shape)
 
-        for i in range(P.shape[1]):
+        #for i in range(P.shape[1]):
+        for i in range(100):
             P[:, i] = self.build_row(Q, W[i, :], X[i, :], lI)
 
             if i % 1000 == 0:
@@ -110,6 +169,25 @@ class WTMF:
         AWX = AW.dot(x_row.T)
 
         return AWAl_inv.dot(AWX)
+
+    def build_relation_row(self, A, w_row, x_row, lI, Qi, LQi, Qn_i, LQn_i):
+        """calc (A w_row A^T + lI)^-1 * A * w_row * x_row """
+        w_row_len = max(w_row.shape)
+        W_i = sparse.spdiags(w_row.A, 0, w_row_len, w_row_len)
+
+        AW = A.dot(W_i)
+        AWA = AW.dot(A.T)
+        AWAl = AWA + lI
+        LQn_i_diag = sparse.spdiags(LQn_i, 0, len(LQn_i), len(LQn_i))
+        coef_Q_diag_Q = self.delta * LQi ** 2 * Qn_i * LQn_i_diag * Qn_i.T
+        AWAl_relation = AWAl + coef_Q_diag_Q.todense()
+        AWAl_relation_inv = sparse.csr_matrix(np.linalg.inv(AWAl_relation))
+
+        AWX = AW.dot(x_row.T)
+        coef_Q_L = Qn_i * sparse.lil_matrix(LQn_i).T * self.delta * LQi
+        AWX_relation = AWX + coef_Q_L
+
+        return AWAl_relation_inv.dot(AWX_relation)
 
     def apply(self):
         P = self.P

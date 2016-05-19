@@ -9,8 +9,6 @@ from twnews.utils.text_processors import Lemmatizer
 
 
 class Dataset(object):
-    text_to_text_links = None
-
     def __init__(self, news_path=defaults.NEWS_PATH,
                        tweets_path=defaults.TWEETS_PATH,
                        resolve_url_map_path=defaults.RESOLVE_URL_MAP_PATH,
@@ -19,6 +17,7 @@ class Dataset(object):
 
         self.news = NewsStorage(news_path)
         self.tweets = TweetsStorage(tweets_path, fraction, init_by_prepared_tweets)
+        self.text_to_text_links = None
         if not init_by_prepared_tweets:
             url_resolver = UrlResolver(resolve_url_map_path)
             self.tweets.resolve_urls(url_resolver)
@@ -47,7 +46,7 @@ class Dataset(object):
             index += 1
 
         #print len(tweets), len(news)
-        self.text_to_text_links = get_text_to_text_relation(self.news.get_dataset_texts(), self.tweets.get_dataset_texts())
+        self.text_to_text_links = get_text_to_text_relation(self.news.get_dataset_texts()[:100], self.tweets.get_dataset_texts()[:100])
 
 
 
