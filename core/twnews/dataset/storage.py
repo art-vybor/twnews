@@ -4,7 +4,7 @@ from urlparse import urlparse
 from collections import OrderedDict
 from twnews import defaults
 from twnews.dataset.texts import Tweet, News, DatasetText
-
+from twnews.utils.text_processors import Lemmatizer
 
 class DatasetTextsStorage:
     TextClass = DatasetText
@@ -46,10 +46,9 @@ class TweetsStorage(DatasetTextsStorage):
 
     def __init__(self, tweets_path=defaults.TWEETS_PATH, fraction=None, init_by_prepared_tweets=None):
         if init_by_prepared_tweets:
-            self.dataset_texts_dict = {}
+            self.dataset_texts_dict = OrderedDict()
             for tweet in init_by_prepared_tweets:
                 self.dataset_texts_dict[tweet.tweet_id] = tweet
-
         else:
             DatasetTextsStorage.__init__(self, tweets_path, fraction)
 
@@ -60,6 +59,26 @@ class TweetsStorage(DatasetTextsStorage):
     def filter(self, news_storage):
         for tweet_id, tweet in self.dataset_texts_dict.items():
             if not any(map(news_storage.exists, tweet.urls)):
+                del self.dataset_texts_dict[tweet_id]
+
+    def tweets_unique(self, lemmatizer, tweet, news_storage, percent_of_unique_words):
+        tweet_words = lemmatizer.split_text_to_lemmas_without_lemmatize(tweet.text)
+
+        for url in tweet.urls:
+            if news_storage.exists(url):
+                single_news = news_storage.get(url)
+                single_news_words = lemmatizer.split_text_to_lemmas_without_lemmatize(single_news.title)
+
+                unique_words = len([word for word in tweet_words if word not in single_news_words])
+                unique_words_normalized = unique_words*1.0/len(tweet_words)
+                if unique_words_normalized >= percent_of_unique_words:
+                    return True
+        return False
+
+    def filter_not_unique_tweets(self, news_storage, percent_of_unique_words):
+        lemmatizer = Lemmatizer()
+        for tweet_id, tweet in self.dataset_texts_dict.items():
+            if not self.tweets_unique(lemmatizer, tweet, news_storage, percent_of_unique_words):
                 del self.dataset_texts_dict[tweet_id]
 
 

@@ -1,0 +1,11 @@
+#!/bin/bash
+set -e
+
+#twnews dataset --build_automatic --unique_words_in_tweet 0.1
+twnews dataset --build_manual --unique_words_in_tweet 0.9
+twnews train --tfidf
+# twnews dataset --add_relations
+# twnews apply --tfidf
+twnews pipe --recommend
+twnews pipe --eval
+twnews pipe --dump_to_csv

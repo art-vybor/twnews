@@ -86,3 +86,18 @@ def ATOP(tweets, N):
     for k in range(1,N+1):
         s += TOPK(tweets, k)
     return s*1.0/N
+
+
+# def ATOP(recoms):
+#
+
+
+def RR(recoms):
+    RR = 0.0
+    for tweet, news in recoms:
+        for i, single_news_tuple in enumerate(news):
+            single_news, score = single_news_tuple
+            if single_news.link in tweet.urls:
+                RR += 1.0 / (i + 1)
+                break
+    return RR / len(recoms)

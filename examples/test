@@ -4,4 +4,4 @@ twnews train --wtmf --try_to_load
 twnews apply --wtmf
 twnews pipe --recommend
 twnews pipe --eval
-
+twnews pipe --dump_to_csv

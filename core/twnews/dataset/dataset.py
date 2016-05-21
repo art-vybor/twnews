@@ -13,7 +13,8 @@ class Dataset(object):
                        tweets_path=defaults.TWEETS_PATH,
                        resolve_url_map_path=defaults.RESOLVE_URL_MAP_PATH,
                        fraction=defaults.DATASET_FRACTION,
-                       init_by_prepared_tweets=None):
+                       init_by_prepared_tweets=None,
+                       percent_of_unique_words=1.0):
 
         self.news = NewsStorage(news_path)
         self.tweets = TweetsStorage(tweets_path, fraction, init_by_prepared_tweets)
@@ -23,6 +24,10 @@ class Dataset(object):
             self.tweets.resolve_urls(url_resolver)
             self.tweets.filter(self.news)
 
+        if percent_of_unique_words < 1.0:
+            self.tweets.filter_not_unique_tweets(self.news, percent_of_unique_words)
+
+        #self.tweets.
         logging.info('Dataset builded and consist of {NUM_TWEETS} tweets and {NUM_NEWS} news'.format(
             NUM_TWEETS=self.tweets.length(),
             NUM_NEWS=self.news.length()))

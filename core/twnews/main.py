@@ -1,7 +1,9 @@
+import os
 import argparse
 import logging
 import sys
 from scipy import sparse
+from copy import deepcopy
 import numpy as np
 import heapq
 from twnews import defaults
@@ -10,8 +12,9 @@ from twnews.resolver import resolve, url_analyse
 from twnews.dataset.storage import TweetsStorage
 from twnews.utils.memoize import memo_process, load, dump
 from twnews.utils.text_processors import lemmatize_texts, build_tf_idf_matrix
-from twnews.wtmf.wtmf import WTMF
-from twnews.wtmf.wtmf_g import WTMF_G
+from twnews.eval import RR, ATOP
+from twnews.model.wtmf import WTMF
+from twnews.model.wtmf_g import WTMF_G
 
 #reload(logging)
 logging.basicConfig(
@@ -31,12 +34,14 @@ def parse_args():
     dataset_group.add_argument('--build_automatic', dest='automatic', action='store_true', help='build automatic dataset')
     dataset_group.add_argument('--build_manual', dest='manual', action='store_true', help='build manual dataset')
     dataset_group.add_argument('--add_relations', dest='relation', action='store_true', help='add text to text relation information for builded dataset')
+    dataset_parser.add_argument('--unique_words_in_tweet', dest='percent_of_unique_words', default=1.0, type=float, help='percent of unique words in tweet by corresponding news')
     dataset_parser.add_argument('--try_to_load', dest='try_to_load', action='store_true', help='try_to_load flag')
 
     train_parser = subparsers.add_parser('train', help='train model')
     train_group = train_parser.add_mutually_exclusive_group(required=True)
     train_group.add_argument('--wtmf', dest='wtmf', action='store_true', help='train wtmf model')
     train_group.add_argument('--wtmf_g', dest='wtmf_g', action='store_true', help='train wtmf-g model')
+    train_group.add_argument('--tfidf', dest='tfidf', action='store_true', help='train tfidf model')
     train_parser.add_argument('--try_to_load', dest='try_to_load', action='store_true', help='try_to_load flag')
 
     apply_parser = subparsers.add_parser('apply', help='apply model')
@@ -67,12 +72,16 @@ def main():
     args = parse_args()
 
     if args.subparser_name == 'dataset':
+        #logging.info('--------------- automatic dataset ------------------')
         if args.automatic:
-            dataset = memo_process(lambda: Dataset(fraction=1), 'dataset', try_to_load=args.try_to_load)
+            dataset = memo_process(lambda: Dataset(fraction=1, percent_of_unique_words=args.percent_of_unique_words), 'dataset', try_to_load=args.try_to_load)
             lemmatized_texts = memo_process(lambda: lemmatize_texts(dataset.get_texts()), 'lemmatized_texts',try_to_load=args.try_to_load)
             corpus, tf_idf_matrix = memo_process(lambda: build_tf_idf_matrix(lemmatized_texts), 'tf_idf_corpus', try_to_load=args.try_to_load)
         elif args.manual:
-            raise Exception('not realized yet')
+            manual_tweets = load('manual_tweets')
+            dataset = memo_process(lambda: Dataset(fraction=1, init_by_prepared_tweets=manual_tweets, percent_of_unique_words=args.percent_of_unique_words), 'dataset', try_to_load=args.try_to_load)
+            lemmatized_texts = memo_process(lambda: lemmatize_texts(dataset.get_texts()), 'lemmatized_texts', try_to_load=args.try_to_load)
+            corpus, tf_idf_matrix = memo_process(lambda: build_tf_idf_matrix(lemmatized_texts), 'tf_idf_corpus', try_to_load=args.try_to_load)
         elif args.relation:
             dataset = load('dataset')
             dataset.init_text_to_text_links()
@@ -87,31 +96,37 @@ def main():
         documents = dataset.get_dataset_texts()
         print len(lemmatized_texts), len(corpus)
 
+        compare_vector_matrix = None
         if args.wtmf:
             model = WTMF(lemmatized_texts, corpus, tf_idf_matrix, try_to_load=args.try_to_load)
-
+            model.build()
+            compare_vector_matrix = model.Q
         elif args.wtmf_g:
             links = dataset.text_to_text_links
             model = WTMF_G(lemmatized_texts, corpus, tf_idf_matrix, links, try_to_load=args.try_to_load)
+            model.build()
+            compare_vector_matrix = model.Q
+        elif args.tfidf:
+            compare_vector_matrix = tf_idf_matrix
 
-        model.build()
-        set_wtmf_compare_vector(documents, model.Q)
+
+        set_wtmf_compare_vector(documents, compare_vector_matrix)
         news, tweets = documents[:news_num], documents[news_num:]
         dump(news, 'news_applied')
         dump(tweets, 'tweets_applied')
 
     elif args.subparser_name == 'apply':
-        corpus, _ = load('tf_idf_corpus')
+        corpus, tf_idf_matrix = load('tf_idf_corpus')
+        dataset = load('dataset')
+        tweets = dataset.tweets.get_dataset_texts()[:1000]
+        #tweets = TweetsStorage(defaults.TWEETS_PATH, 0.01)
+        #documents = tweets.get_dataset_texts()[:1000]
 
-        tweets = TweetsStorage(defaults.TWEETS_PATH, 0.01)
-        documents = tweets.get_dataset_texts()[:1000]
-
-        texts = map(lambda x: x.get_text(), documents)
+        texts = map(lambda x: x.get_text(), tweets)
         texts = lemmatize_texts(texts)
         _, tf_idf_matrix = build_tf_idf_matrix(texts, vocabulary=corpus)
 
         result_matrix = None
-
         if args.wtmf:
             model = WTMF(texts, corpus, tf_idf_matrix, try_to_load=True)
             result_matrix = model.apply()
@@ -121,13 +136,11 @@ def main():
             #model = WTMF_G(texts, corpus, tf_idf_matrix, links, try_to_load=True)
             #result_matrix = model.apply()
         elif args.tfidf:
-            texts = map(lambda x: x.get_text(), documents)
-            texts = lemmatize_texts(texts)
             _, result_matrix = build_tf_idf_matrix(texts, vocabulary=corpus)
 
-        set_wtmf_compare_vector(documents, result_matrix)
+        set_wtmf_compare_vector(tweets, result_matrix)
+        dump(tweets, 'tweets_applied')
 
-        dump(documents, 'documents_applied')
     elif args.subparser_name == 'pipe':
         if args.resolve:
             resolve(sample_size=None)
@@ -137,7 +150,7 @@ def main():
 
         elif args.recommend:
             news = load('news_applied')
-            tweets = load('documents_applied')
+            tweets = load('tweets_applied')
 
             recommendation = recommend(news, tweets, top_size=10)
             dump(recommendation, 'recommendation')
@@ -148,19 +161,24 @@ def main():
 
         elif args.dump_to_csv:
             recommendation = load('recommendation')
+            filepath = os.path.join(defaults.TMP_FILE_DIRECTORY, 'recommendation.csv')
+            dump_to_csv(recommendation, filepath)
 
+def dump_to_csv(recommendation, filename):
+    batch_size = 1000
 
-
-
-def RR(recoms):
-    RR = 0.0
-    for tweet, news in recoms:
-        for i, single_news_tuple in enumerate(news):
-            single_news, score = single_news_tuple
-            if single_news.link in tweet.urls:
-                RR += 1.0 / (i + 1)
-                break
-    return RR / len(recoms)
+    batchs = [recommendation[i:i + batch_size] for i in xrange(0, len(recommendation), batch_size)]
+    for batch_idx, recoms_batch in enumerate(batchs):
+        with open(filename, 'w') as f:
+            for i, (tweet, news_list) in enumerate(recoms_batch):
+                f.write('%d) %s\n' % (i, tweet.text.replace('\n', ' ').encode('utf-8')))
+                f.write('%s\n' % tweet.tweet_id)
+                if tweet.urls:
+                    f.write('%s\n' % ' '.join(tweet.urls))
+                for news, score in news_list:
+                    f.write('\t%s\n' % news)
+                    f.write('\t%s\n' % news.link)
+                    f.write('\t---------------------\n')
 
 
 def set_wtmf_compare_vector(documents, Q):
