@@ -22,7 +22,7 @@ X = tfidf_matrix.transpose()
 corpus = tvf.get_feature_names()
 
 import numpy as np
-from twnews.timeit import timeit
+from twnews.utils.timeit import timeit
 
 @timeit
 def build_weight_matrix(matrix):

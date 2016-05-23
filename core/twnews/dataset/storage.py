@@ -1,12 +1,13 @@
 import shelve
 import logging
-from urlparse import urlparse
+
 from collections import OrderedDict
 from twnews import defaults
 from twnews.dataset.texts import Tweet, News, DatasetText
 from twnews.utils.text_processors import Lemmatizer
 
-class DatasetTextsStorage:
+
+class DocumentsStorage:
     TextClass = DatasetText
 
     def __init__(self, data_path, fraction=None):
@@ -17,49 +18,49 @@ class DatasetTextsStorage:
         if fraction:
             keys = keys[:int(len(keys)*fraction)]
 
-        self.dataset_texts_dict = OrderedDict()
+        self.documents = OrderedDict()
         for key in keys:
-            self.dataset_texts_dict[key] = self.TextClass(data_shelve[key])
+            self.documents[key] = self.TextClass(data_shelve[key])
 
         data_shelve.close()
 
         logging.info('Loading finished')
 
     def length(self):
-        return len(self.dataset_texts_dict)
+        return len(self.documents)
 
     def get_texts(self):
-        return [dataset_text.get_text() for dataset_text in self.get_dataset_texts()]
+        return [dataset_text.get_text() for dataset_text in self.get_documents()]
 
-    def get_dataset_texts(self):
-        return self.dataset_texts_dict.values()
+    def get_documents(self):
+        return self.documents.values()
 
     def exists(self, key):
-        return key in self.dataset_texts_dict
+        return key in self.documents
 
     def get(self, key):
-        return self.dataset_texts_dict[key]
+        return self.documents[key]
 
 
-class TweetsStorage(DatasetTextsStorage):
+class TweetsStorage(DocumentsStorage):
     TextClass = Tweet
 
     def __init__(self, tweets_path=defaults.TWEETS_PATH, fraction=None, init_by_prepared_tweets=None):
         if init_by_prepared_tweets:
-            self.dataset_texts_dict = OrderedDict()
+            self.documents = OrderedDict()
             for tweet in init_by_prepared_tweets:
-                self.dataset_texts_dict[tweet.tweet_id] = tweet
+                self.documents[tweet.tweet_id] = tweet
         else:
-            DatasetTextsStorage.__init__(self, tweets_path, fraction)
+            DocumentsStorage.__init__(self, tweets_path, fraction)
 
     def resolve_urls(self, url_resolver):
-        for tweet in self.dataset_texts_dict.itervalues():
+        for tweet in self.documents.itervalues():
             tweet.resolve_urls(url_resolver)
 
     def filter(self, news_storage):
-        for tweet_id, tweet in self.dataset_texts_dict.items():
+        for tweet_id, tweet in self.documents.items():
             if not any(map(news_storage.exists, tweet.urls)):
-                del self.dataset_texts_dict[tweet_id]
+                del self.documents[tweet_id]
 
     def tweets_unique(self, lemmatizer, tweet, news_storage, percent_of_unique_words):
         tweet_words = lemmatizer.split_text_to_lemmas_without_lemmatize(tweet.text)
@@ -77,20 +78,20 @@ class TweetsStorage(DatasetTextsStorage):
 
     def filter_not_unique_tweets(self, news_storage, percent_of_unique_words):
         lemmatizer = Lemmatizer()
-        for tweet_id, tweet in self.dataset_texts_dict.items():
+        for tweet_id, tweet in self.documents.items():
             if not self.tweets_unique(lemmatizer, tweet, news_storage, percent_of_unique_words):
-                del self.dataset_texts_dict[tweet_id]
+                del self.documents[tweet_id]
 
 
-class NewsStorage(DatasetTextsStorage):
+class NewsStorage(DocumentsStorage):
     TextClass = News
 
     def __init__(self, news_path=defaults.NEWS_PATH, fraction=None):
-        DatasetTextsStorage.__init__(self, news_path, fraction)
+        DocumentsStorage.__init__(self, news_path, fraction)
 
     # def cast_url_to_news_format(self, url):
     #     o = urlparse(url)
     #     return 'http://' + o.netloc + o.path
 
     def exists(self, key):
-        return key in self.dataset_texts_dict
+        return key in self.documents

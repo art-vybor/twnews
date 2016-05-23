@@ -1,15 +1,14 @@
 import itertools
-from itertools import izip
-import pymorphy2
 import unicodedata
 from nltk.corpus import stopwords
-from nltk.tokenize import word_tokenize
 from nltk.stem import WordNetLemmatizer
+from nltk.tokenize import word_tokenize
 from sklearn.feature_extraction.text import TfidfVectorizer
-from polyglot.text import Text
-from multiprocessing import Pool, Pipe, Process
 
-from twnews.timeit import timeit
+import pymorphy2
+from polyglot.text import Text
+
+from twnews.utils.extra import progressbar_iterate, timeit, multiprocess_map
 
 
 def detect_language(word):
@@ -54,58 +53,26 @@ class Lemmatizer:
         filtered_lemma_tokens = filter(lambda word: word not in self.stop_words, word_tokens)
         return filtered_lemma_tokens
 
-    #@timeit
     def split_texts_to_lemmas(self, texts):
-        #map(self.split_text_to_lemmas, texts)
-        lemmas_list = []
-        for i,text in enumerate(texts):
-            lemmas_list.append(self.split_text_to_lemmas(text))
-            # if i % 100 == 0:
-            #     print '%.2f%%' % (i*100.0/len(texts))
+        #lemmas_list = map(self.split_text_to_lemmas, progressbar_iterate(texts))
+        lemmas_list = map(self.split_text_to_lemmas, texts)
+        # lemmas_list = []
+        # for i, text in progressbar_iterate(enumerate(texts)):
+        #     lemmas_list.append(self.split_text_to_lemmas(text))
         return lemmas_list
 
 
-@timeit
+#@timeit
 def lemmatize_texts(texts):
     lemmatizer = Lemmatizer()
     lemmas_list = lemmatizer.split_texts_to_lemmas(texts)
-    return [' '.join(lemma) for lemma in lemmas_list]
-
-
-def split_to_chunks(l, n):
-    size = len(l)/n+1
-    """Yield successive n-sized chunks from l."""
-    for i in range(0, len(l), size):
-        yield l[i:i+size]
-
-
-def spawn(f):
-    def fun(pipe,x):
-        print '123'
-        pipe.send(f(x))
-        print '123.1'
-        pipe.close()
-        print '123.2'
-    return fun
-
-def parmap(f,X):
-    pipe=[Pipe() for x in X]
-    proc=[Process(target=spawn(f),args=(c,x)) for x,(p,c) in izip(X,pipe)]
-    [p.start() for p in proc]
-    print 1
-    [p.join() for p in proc]
-    print 2
-    res = [p.recv() for (p,c) in pipe]
-    print 3
-    return res
+    texts_list = [' '.join(lemmas) for lemmas in lemmas_list]
+    return texts_list
 
 
 @timeit
-def lemmatize_texts_parallel(texts, processes=2):
-    #pool = Pool(16)
-    chunks = list(split_to_chunks(texts[:2000], processes))
-    result = parmap(lemmatize_texts, chunks)
-    return list(itertools.chain(*result))
+def lemmatize_texts_parallel(texts):
+    return multiprocess_map(lemmatize_texts, texts)
 
 
 @timeit

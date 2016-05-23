@@ -1,0 +1,15 @@
+set -e
+
+#twnews recommend --recommend_by_model "WTMF_(dataset_manual_0.0)_10_1_20_0.01"
+#twnews recommend --eval
+#echo ------------------------------------
+
+
+for iter in {1..5}; do
+    echo $iter
+    MODEL_NAME=WTMF_\(dataset_manual_0\.0\)_50\_$iter\_20_0\.01
+    echo $MODEL_NAME
+    twnews recommend --recommend_by_model $MODEL_NAME
+    twnews recommend --eval
+    echo ------------------------------------
+done

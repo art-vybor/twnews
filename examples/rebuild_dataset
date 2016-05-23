@@ -1,0 +1,11 @@
+WD=/home/avybornov/tmp
+
+#twnews dataset --build_automatic --unique_words_in_tweet 0.5
+#twnews dataset --build_automatic
+#twnews dataset --build_manual --unique_words_in_tweet 0.5
+#twnews dataset --build_manual
+
+twnews dataset --build_manual --unique_words_in_tweet 0.0
+twnews dataset --build_manual --unique_words_in_tweet 0.5
+
+

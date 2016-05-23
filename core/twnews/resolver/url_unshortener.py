@@ -1,9 +1,9 @@
 import httplib
-from urlparse import urlparse
-import urllib2
 import socket
+import urllib2
+from urlparse import urlparse
 
-from twnews.timeit import timeit
+from twnews.utils.extra import timeit
 
 urls = ['https://t.co/VkVNxPB8IF', 'https://t.co/cAE017IBa1', 'https://t.co/Ke8KMdNuX4', 'https://t.co/oztuA8pfFy',
         'https://t.co/98YuY5aoBu', 'https://t.co/VcJSsbBCUM', 'https://t.co/XmHF5xoGYw', 'https://t.co/EXhvEUqeob']

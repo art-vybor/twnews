@@ -2,10 +2,11 @@
 set -e
 
 #twnews dataset --build_automatic --unique_words_in_tweet 0.1
-twnews dataset --build_manual --unique_words_in_tweet 0.9
-twnews train --tfidf
+twnews dataset --build_manual --unique_words_in_tweet 0.5 --try_to_load
+#twnews train --tfidf
+twnews train --wtmf
 # twnews dataset --add_relations
 # twnews apply --tfidf
-twnews pipe --recommend
-twnews pipe --eval
-twnews pipe --dump_to_csv
+twnews recommend --recommend
+twnews recommend --eval
+twnews recommend --dump_to_csv

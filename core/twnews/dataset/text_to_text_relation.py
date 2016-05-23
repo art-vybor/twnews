@@ -1,13 +1,12 @@
 import heapq
 from collections import defaultdict
-from sklearn.metrics.pairwise import cosine_similarity
-from scipy import sparse
 from datetime import timedelta
-
+from scipy import sparse
+from sklearn.metrics.pairwise import cosine_similarity
 
 from twnews.utils.memoize import load
 from twnews.utils.text_processors import Lemmatizer, extract_entities
-from twnews.timeit import timeit
+from twnews.utils.extra import timeit
 
 
 def get_text_to_text_relation(news, tweets, k=3):
@@ -21,19 +20,31 @@ def get_text_to_text_relation(news, tweets, k=3):
     tweet_to_tweet_time = get_document_to_documet_time_relation(tweets, k)
     news_to_news_time = get_document_to_documet_time_relation(news, k)
 
-    total_relations = tweet_to_tweet_hashtags | tweet_to_tweet_NER | tweet_to_tweet_time | news_to_news_time
+    total_relations = tweet_to_tweet_hashtags #| tweet_to_tweet_NER | tweet_to_tweet_time | news_to_news_time
 
     return filter(lambda x: x[0] != x[1], total_relations)
 
 
 @timeit
 def get_tweet_to_tweet_hashtags_relation(tweets, k):
+    def num_of_common_hashtags(tweet1, tweet2):
+        hashtags1 = set(tweet1.hastags.keys())
+        hashtags2 = set(tweet2.hastags.keys())
+        return len(hashtags1 & hashtags2)
+
     def get_all_hashtags(tweets):
         lemmatizer = Lemmatizer()
-        hashtags = set()
+        hashtags = {}
         for tweet in tweets:
-            hashtags.update(map(lemmatizer.lemmatize, tweet.hastags.keys()))
-        return hashtags
+            tweet_hashtags = map(lemmatizer.lemmatize, tweet.hastags.keys())
+            for hashtag in tweet_hashtags:
+                hashtags[hashtag] = hashtags[hashtag] + 1 if hashtag in hashtags else 1
+
+        for h, v in hashtags.items():#sorted(hashtags.items(), key=lambda x: x[1]):
+            if v > 10:
+                del hashtags[h]
+
+        return set(hashtags.keys())
 
     hashtags = get_all_hashtags(tweets)
     print 'hashtags:', len(hashtags)
@@ -49,6 +60,8 @@ def get_tweet_to_tweet_hashtags_relation(tweets, k):
     for tweet in tweets:
         for hashtag in tweet.hastags.keys():
             linked_tweets = hashtag_to_tweets[hashtag]
+            linked_tweets = filter(lambda x: num_of_common_hashtags(x, tweet) >=2, linked_tweets)
+
             top_k = get_top_k_by_time(tweet, linked_tweets, k)
             if top_k:
                 for elem in top_k:
@@ -146,7 +159,11 @@ def document_date_distanse(d1, d2):
     return max(d1.date, d2.date) - min(d1.date, d2.date)
 
 
+
+from datetime import timedelta
+
 def get_top_k_by_time(base_document, documents, k):
     documents = filter(lambda x: x.index != base_document.index, documents)
+    documents = filter(lambda x: document_date_distanse(x, base_document) < timedelta(hours=12), documents)
     documents = sorted(documents, key=lambda x: document_date_distanse(x, base_document))
     return documents[:k]

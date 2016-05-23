@@ -3,21 +3,25 @@ from scipy import sparse
 from time import time    
 from scipy.sparse.linalg import inv
 import pickle
-
-with open('data/W', 'rb') as f:
-    W = pickle.load(f)
-
-with open('data/X', 'rb') as f:
-    X = pickle.load(f)
-
-with open('data/texts', 'rb') as f:
-    texts = pickle.load(f)
-
-with open('data/words', 'rb') as f:
-    words = pickle.load(f)
+from twnews.utils.memoize import load
 
 
-print 'data loaded'
+def build_weight_matrix(tf_idf_matrix):
+    nnz_i, nnz_j, elems = sparse.find(tf_idf_matrix)
+    value = np.zeros(elems.shape[0])
+    value.fill(1e-2)
+
+    r = sparse.coo_matrix((value, (nnz_i, nnz_j)), shape=tf_idf_matrix.shape)
+    return r.tocsr()
+
+corpus, tfidf = load('tf_idf_corpus')
+lemmatized_texts = load('lemmatized_texts')
+
+X = tfidf
+W = build_weight_matrix(tfidf)
+texts = lemmatized_texts
+words = corpus
+
 
 texts_num = len(texts)
 words_num = len(words)
@@ -26,52 +30,66 @@ print texts_num, words_num
 
 #init_model
 P = np.random.rand(dim, words_num)
-Q = np.random.rand(dim, texts_num)
 P = P*0.2-0.1
+P = P.astype('float')
+P = sparse.csr_matrix(P)
+Q = np.random.rand(dim, texts_num)
 Q = Q*0.2-0.1
+Q = Q.astype('float')
+Q = sparse.csr_matrix(Q)
 
+iteration_num = 100
+from multiprocessing import Pool
 
-X = np.array(X.todense())
-print 'data generated'
-
-
-def iteration(P,Q,W,l=20):
-
-    new_P = P.copy()
-    new_Q = Q.copy()
-    
-    lI = np.identity(dim)*l
-    
-    start = time()
-    Q = sparse.csr_matrix(Q)
-    #X = sparse.csr_matrix(X)
-    print 'start build P'
-
+def get_new_P(old_P, Q, W, X, lI, threads):
+    #print 'start build P'
+    P = sparse.csr_matrix(old_P.shape)
+    # data = [(Q, W[i, :], X[i, :], lI) for i in range(iteration_num)]
+    #
+    # res = Pool(threads).map(build_row1,data)
+    # for i in range(iteration_num):
+    #     P[:, i] = res[i]
     for i in range(1000):
-        lW_i=W[i]
-        W_i = sparse.spdiags(lW_i, [0], len(lW_i), len(lW_i))
+        P[:, i] = build_row(Q, W[i, :], X[i, :], lI)
 
-        QW = Q.dot(W_i)
+        if i % 1000 == 0:
+            print '%dth iteration of %d' % (i, P.shape[1])
 
-        QWQ = QW.dot(Q.T)
+    return P
 
-        QWQl = QWQ + lI
-        
-        QWQl_inv = np.linalg.inv(QWQl) 
 
-        QWX = QW.dot(X[i,:].T)
-        
-        new_P[:,i] = QWQl_inv.dot(QWX)
+def build_row1((A, w_row, x_row, lI)):
+    return build_row(A, w_row, x_row, lI)
 
-    end = time()
-    print 'time: %.2fs' % (end-start)
+import scipy
+def build_row(A, w_row, x_row, lI):
+    """calc (A w_row A^T + lI)^-1 * A * w_row * x_row """
+    w_row_len = max(w_row.shape)
+    W_i = sparse.spdiags(w_row.A, 0, w_row_len, w_row_len)
 
+    AW = A.dot(W_i)
+    AWA = AW.dot(A.T)
+
+    AWAl = AWA + lI
+    AWAl_inv = sparse.csr_matrix(np.linalg.inv(AWAl))
+    AWX = AW.dot(x_row.T)
+
+    return AWAl_inv.dot(AWX)
+
+def iteration(P,Q,W,lI,threads):
+    new_P = get_new_P(P, Q, W, X, lI, threads)
+    new_Q = None
     return new_P,new_Q
 
-start = time()
-P,Q = iteration(P,Q,W)
-end = time()
-#print 'iteration: %.2fs' % (end-start)
+
+for threads_num in [5]:
+    print 'threads', threads_num
+    start = time()
+    lI = np.identity(dim) * 20
+    iteration(P,Q,W, lI,threads=threads_num)
+    end = time()
+    print '\ttotal: %.2fs' % (end-start)
+    print '\t100 iter: %.2fs' % ((end-start)/iteration_num*100)
 
 
 

@@ -1,53 +1,73 @@
 import logging
 import numpy as np
 from scipy import sparse
+from copy import deepcopy
 
-from twnews.timeit import timeit
-from twnews.utils.memoize import memo_process, load, dump
+from twnews.utils.memoize import load, dump
+from twnews.utils.extra import timeit
+from twnews.utils.logger_wrapper import log_and_print
+from twnews.recommend import set_compare_vector
+
+
+DEFAULT_WTMF_OPTIONS = {
+    'DIM': 50,
+    'WM': 1e-2,
+    'ITERATIONS': 5,
+    'LAMBDA': 20
+}
 
 
 class WTMF:
-    def __init__(self,
-                 texts,
-                 corpus,
-                 tf_idf_matrix,
-                 wm=1e-2,
-                 dim=50,
-                 iterations_num=1,
-                 lmbd=20,
-                 try_to_load=False,
-                 ):
-        self.texts = texts
-        self.words = corpus
-        self.X = tf_idf_matrix
-        self.wm = wm
-        self.dim = dim
-        self.iterations_num = iterations_num
-        self.lmbd = lmbd
-        self.try_to_load=try_to_load
-        self.P = None
-        self.Q = None
-        self.model_filename = 'WTMF_%s_%s' % (self.iterations_num, self.dim)
-        if self.try_to_load:
-            PQ_loaded = load(self.model_filename)
-            if PQ_loaded:
-                self.P, self.Q = PQ_loaded
+    def __init__(self, dataset, options=DEFAULT_WTMF_OPTIONS, try_to_load=False):
+        P, Q = None, None
+        dataset_applied = None
 
-    def __str__(self):
-        return 'model(wm={wm}, dim={dim}, iter={iter}, lambda={lmbd}, texts={len_texts})'.format(
-            wm=self.wm,
-            dim=self.dim,
-            iter=self.iterations_num,
-            lmbd=self.lmbd,
-            len_texts=len(self.texts),
+        if try_to_load:
+            log_and_print(logging.WARN, 'model will be loaded, all arguments will be ignored')
+            dataset, options, P, Q, dataset_applied = self.load_model()
+
+        self.dataset = dataset
+        self.texts = dataset.lemmatized_texts
+        self.words = dataset.corpus
+        self.X = dataset.tf_idf_matrix
+        self.P, self.Q = P, Q
+        self.dataset_applied = dataset_applied
+        self.options = options
+
+        log_and_print(logging.INFO, 'model {NAME} of {TEXTS_NUM} texts and {WORDS_NUM} words initialized'.
+                      format(NAME=self.name(), TEXTS_NUM=len(self.texts), WORDS_NUM=len(self.words)))
+
+    def load_model(self):
+        return load(self.name())
+
+    def save_model(self, iterations=None):
+        self.apply_to_dataset()
+
+        if iterations:
+            iterations_backup = self.options['ITERATIONS']
+            self.options['ITERATIONS'] = iterations
+
+        dump((self.dataset, self.options, self.P, self.Q, self.dataset_applied), self.name())
+
+        if iterations:
+            self.options['ITERATIONS'] = iterations_backup
+
+    def name(self):
+        return '{TYPE}_({DATASET})_{DIM}_{ITERATIONS}_{LAMBDA}_{WM}'.format(
+            TYPE=self.__class__.__name__,
+            DATASET=self.dataset.name(),
+            **self.options
         )
 
+    def __str__(self):
+        return self.name()
+
     def init_PQ(self):
-        P = np.random.rand(self.dim, len(self.words))
+        P = np.random.rand(self.options['DIM'], len(self.words))
         P = P * 0.2 - 0.1
         P = sparse.csr_matrix(P)
 
-        Q = np.random.rand(self.dim, len(self.texts))
+        Q = np.random.rand(self.options['DIM'], len(self.texts))
         Q = Q * 0.2 - 0.1
         Q = sparse.csr_matrix(Q)
 
@@ -58,14 +78,14 @@ class WTMF:
             P, Q = self.init_PQ()
             X = self.X
             W = self.build_weight_matrix(X)
-            lI = np.identity(self.dim) * self.lmbd
+            lI = np.identity(self.options['DIM']) * self.options['LAMBDA']
 
-            for i in range(self.iterations_num):
-                print '%d/%d iteration' % (i + 1, self.iterations_num)
+            for i in range(self.options['ITERATIONS']):
+                print '%d/%d iteration' % (i + 1,self.options['ITERATIONS'])
                 P, Q = self.iteration(P, Q, W, X, lI)
 
-            dump((P, Q), self.model_filename)
-            self.P, self.Q = P, Q
+                self.P, self.Q = P, Q
+                self.save_model(iterations=i+1)
         else:
             logging.warn('Try to build already builded model, breaked')
 
@@ -113,11 +133,11 @@ class WTMF:
 
     def apply(self):
         P = self.P
-        Q = sparse.csr_matrix((self.dim, len(self.texts)))
+        Q = sparse.csr_matrix((self.options['DIM'], len(self.texts)))
 
         W = self.build_weight_matrix(self.X)
         X = self.X
-        lI = np.identity(self.dim) * self.lmbd
+        lI = np.identity(self.options['DIM']) * self.options['LAMBDA']
 
         Q = self.new_Q(P, Q, W, X, lI)
         return Q
@@ -125,7 +145,16 @@ class WTMF:
     def build_weight_matrix(self, tf_idf_matrix):
         nnz_i, nnz_j, elems = sparse.find(tf_idf_matrix)
         value = np.zeros(elems.shape[0])
-        value.fill(self.wm)
+        value.fill(self.options['WM'])
 
         r = sparse.coo_matrix((value, (nnz_i, nnz_j)), shape=tf_idf_matrix.shape)
         return r.tocsr()
+
+    def apply_to_dataset(self):
+        log_and_print(logging.INFO, 'apply model to dataset')
+        news_num = self.dataset.news.length()
+        documents = self.dataset.get_documents()
+
+        set_compare_vector(documents, self.Q)
+        news, tweets = documents[:news_num], documents[news_num:]
+        self.dataset_applied = (news, tweets)

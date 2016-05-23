@@ -1,11 +1,11 @@
-import math
 import logging
+import math
 import numpy as np
+from collections import defaultdict
 from scipy import sparse
 
-from collections import defaultdict
-from twnews.timeit import timeit
-from twnews.utils.memoize import memo_process, load, dump
+from twnews.utils.memoize import load, dump
+from twnews.utils.extra import timeit
 
 
 def get_matrix_slice_by_column(M, indexes):
