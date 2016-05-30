@@ -100,8 +100,16 @@ def main():
 
         if args.wtmf:
             log_and_print(logging.INFO, 'train wtmf')
-            model = WTMF(dataset)
-            model.build()
+
+            for dim in [82,84,86,88,92,94,96,98]:
+                options = {
+                    'DIM': dim,
+                    'WM': 0.95,
+                    'ITERATIONS': 1,
+                    'LAMBDA': 1.95
+                }
+                model = WTMF(dataset, options=options)
+                model.build()
 
         elif args.wtmf_g:
             raise Exception('Not realized yet')

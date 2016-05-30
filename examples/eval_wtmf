@@ -5,9 +5,9 @@ set -e
 #echo ------------------------------------
 
 
-for iter in {1..5}; do
-    echo $iter
-    MODEL_NAME=WTMF_\(dataset_manual_0\.0\)_50\_$iter\_20_0\.01
+for file in ~/tmp/WTMF_\(dataset_*\)_*; do
+    #echo $file
+    MODEL_NAME=$(basename $file)
     echo $MODEL_NAME
     twnews recommend --recommend_by_model $MODEL_NAME
     twnews recommend --eval

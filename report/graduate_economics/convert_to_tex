@@ -1,3 +1,0 @@
-mkdir -p tex
-w2l ./economics.odt tex/economics.tex
-python tex_file_to_utf8.py 

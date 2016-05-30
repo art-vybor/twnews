@@ -27,6 +27,7 @@
 \usepackage{amsmath}
 \usepackage{amsfonts}
 \usepackage{amssymb}
+%\usepackage{unicode-math}
 
 %\usepackage{cm-super} %человеческий рендер русских шрифтов
 
@@ -78,6 +79,7 @@
 \usepackage{pgfplots}
 
 \usepackage{rotating}
+\newcommand*\rot{\rotatebox{90}}
 
 \usepackage{ccaption}%изменяет подпись к рисунку
 \makeatletter 
@@ -87,3 +89,5 @@
 % перенос ячеек в таблице
 \newcommand{\specialcell}[2][c]{%
    \begin{tabular}[#1]{@{}c@{}}#2\end{tabular}}
+
+ \usepackage{multirow}
