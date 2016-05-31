@@ -1,0 +1,388 @@
+\subsection{Получение данных}
+
+    \begin{enumerate}
+        \item Выбрать источники данных.
+        \item Выбрать формат хранения.
+        \item Выбрать БД, для записи результата.
+        \item Написать отказоустойчивый консьюмер.
+        \item В течение длительного времени собрать данные.
+    \end{enumerate}
+
+    \subsubsection{Консьюмер твиттера}
+        Лог работы в raw формате :) будет много копипасты с используемых мануалов
+
+        \begin{enumerate}
+            \item Step 1: Getting Twitter API keys
+
+                In order to access Twitter Streaming API, we need to get 4 pieces of information from Twitter: API key, API secret, Access token and Access token secret. Follow the steps below to get all 4 elements:
+
+                Create a twitter account if you do not already have one.
+                Go to https://apps.twitter.com/ and log in with your twitter credentials.
+                Click "Create New App"
+                Fill out the form, agree to the terms, and click "Create your Twitter application"
+                In the next page, click on "API keys" tab, and copy your "API key" and "API secret".
+                Scroll down and click "Create my access token", and copy your "Access token" and "Access token secret".
+            \item
+        \end{enumerate}
+
+    \subsubsection{Разрешение ссылок}
+        описание проблемы, пути решения, benchmark разных подходов
+
+    \subsubsection{Поиск подходящего источника новостей}
+        Пока только письмо, потом оформлю
+
+        Провёл небольшое исследование, получил достаточно странные результаты.
+
+        Суть исследования была в выявлении наиболее популярных новостных источников среди русскоязычных твитов.
+        Был написан код, который умеет находит финальную страничку среди сервисов сокращателей ссылок (в твиттере все ссылки сокращаются).
+        Всего твиттов, в анализируемой выборке: 35704
+        Ссылок в анализируемой выборке: 13670
+        Уникальных ссылок: 12510
+
+        Топ20 результатов по частоте в формате кортежей: домен, количество ссылок ведущих на домен, процент от общего числа ссылок. В скобочках некоторые предположения о том, что конкретная ссылка означает.
+        \begin{verbatim}
+        twitter.com 3521 25.76%%                      (внутренний контент твиттера, в основном картинки)
+        www.facebook.com 1418 10.37%%        (ссылки на facebook, преимущественно не на посты, а на приложения, видно приложения автоматически порождают оповещалки в твиттер)
+        t.co 405 2.96%%                                      (наверняка это погрешности моего метода, ссылки которые мой код не смог автоматически раскрыть, уточню позднее)
+        www.youtube.com 315 2.30%%              (видео контент)
+        news.yandex.ru 239 1.75%%                  (популярный в россии новостной аггрегатор)
+        su.epeak.in 214 1.57%%                         (популярный на украине новостной аггрегатор)
+        www.instagram.com 198 1.45%%           (фото контент)
+        www.periscope.tv 191 1.40%%               (трансляции)
+        l.ask.fm 121 0.89%%                               (сервис анонимных мнений)
+        lifenews.ru 109 0.80%%                          (новостной ресурс)
+        ria.ru 108 0.79%%                                   (новостной ресурс)
+        vk.com 93 0.68%%                                  (преимущественно ссылки на посты в вк)
+        news.7crime.com 82 0.60%%                 (украинские новости)
+        lenta.ru 74 0.54%%                                 (новостной ресурс)
+        russian.rt.com 61 0.45%%                      (новостной ресурс)
+        linkis.com 57 0.42%%                             (сервис сокращающий ссылки, тоже можно отнести к погрешности в технологии)
+        www.gazeta.ru 53 0.39%%                     (новостной ресурс)
+        tass.ru 43 0.31%%                                  (новостной ресурс)
+        www.swarmapp.com 42 0.31%%            (какие-то игрушки на телефон)
+        pi2.17bullets.com 36 0.26%%                 (возможно, погрешность метода)
+
+        Итого в топ20 результатов от общего количества ссылок:
+            Всего ссылок в топ20 : 54%%.
+            Ссылок на новостные ресурсы: 3.3%% (при это самый популярный только 0.8%%)
+            Ссылок на новостные аггрегаторы: 1.75%%
+            Ссылок с ошибками в топ20: 2.5%%
+        \end{verbatim}
+
+
+
+        Вывод:
+        Популярные новостные агенства составляют слишком малую долю в общем количестве ссылок. Даже суммарный объём крайне мал. При этом хотелось бы сосредоточиться на одном-двух источниках информации, но судя по всему не получится.
+
+        Было решено использовать lifenews и ria новости.
+
+        На данных за неделю было полученно:
+        \begin{verbatim}
+        341863 134945 115940
+        TOP20 by 115940 rows
+        -----------------  -----  -----
+        twitter.com        36807  31.75
+        apps.facebook.com   6234   5.38
+        www.youtube.com     3659   3.16
+        m.vk.com            2400   2.07
+        www.periscope.tv    2215   1.91
+        news.yandex.ru      2041   1.76
+        www.instagram.com   1798   1.55
+        su.epeak.in         1624   1.4
+        www.facebook.com    1406   1.21
+        lifenews.ru          888   0.77
+        ria.ru               863   0.74
+        l.ask.fm             803   0.69
+        vk.com               696   0.6
+        lenta.ru             647   0.56
+        pi2.17bullets.com    577   0.5
+        news.7crime.com      567   0.49
+        russian.rt.com       564   0.49
+        www.gazeta.ru        523   0.45
+        linkis.com           485   0.42
+        ask.fm               430   0.37
+        -----------------  -----  -----
+        total_percent in TOP20: 56.26
+        --------------------------------------
+        \end{verbatim}
+
+        Мало
+
+        решение
+        \begin{verbatim}
+        Изменения для консьюмера:
+            собирать resolve_url который отдаёт twitter
+            собирать больше новостных источников
+            собирать английские твиты
+            собирать английские новости
+            собирать хештеги
+            решить проблему с нераспознанным RT
+        \end{verbatim}
+
+    \subsubsection{Консьюмер новостей}
+        lifenews - http://lifenews.ru/xml/feed.xml
+
+        ria - http://ria.ru/export/rss2/index.xml
+
+
+    \subsubsection{Обработка данных}
+        Для твиттера и новостей
+
+        Известные проблемы:
+        * Ретвиты обрезаются.
+
+        Берём поля:
+        * retweet - \lstinline{parsed_tweet['retweeted'] or text.startswith('RT @')}
+        * text.
+        * created\_at - время по гринвичу.
+        * timestamp\_ms - timestamp по местному времени (в нашем случае +0300).
+        * lang.
+
+        Ретвиты скипаем, ввиду описанной выше проблемы. Надо разобраться как брать для ретвита исходный твит.
+
+        Формируем tsv по lang:
+        timestamp\_ms, text
+
+        Пример строения типичного сообщения твиттера, получаемого с помощью Twitter Stream API.
+
+
+
+%\begin{lstlisting}
+%{
+%    "contributors": null,
+%    "coordinates": null,
+%    "created_at": "Wed Mar 09 00:24:55 +0000 2016",
+%    "entities": {
+%        "hashtags": [
+%            {
+%                "indices": [
+%                    61,
+%                    74
+%                ],
+%                "text": "OneDirection"
+%            },
+%            {
+%                "indices": [
+%                    75,
+%                    94
+%                ],
+%                "text": "YouKnowYouLoveThem"
+%            }
+%        ],
+%        "symbols": [],
+%        "urls": [],
+%        "user_mentions": [
+%            {
+%                "id": 4387486337,
+%                "id_str": "4387486337",
+%                "indices": [
+%                    3,
+%                    16
+%                ],
+%                "name": "HELP 1D",
+%                "screen_name": "HELPONEDVOTE"
+%            },
+%            {
+%                "id": 77504008,
+%                "id_str": "77504008",
+%                "indices": [
+%                    95,
+%                    107
+%                ],
+%                "name": "RADIO DISNEY",
+%                "screen_name": "radiodisney"
+%            }
+%        ]
+%    },
+%    "favorite_count": 0,
+%    "favorited": false,
+%    "filter_level": "low",
+%    "geo": null,
+%    "id": 707361488508469248,
+%    "id_str": "707361488508469248",
+%    "in_reply_to_screen_name": null,
+%    "in_reply_to_status_id": null,
+%    "in_reply_to_status_id_str": null,
+%    "in_reply_to_user_id": null,
+%    "in_reply_to_user_id_str": null,
+%    "is_quote_status": false,
+%    "lang": "pt",
+%    "place": null,
+%    "retweet_count": 0,
+%    "retweeted": false,
+%    "retweeted_status": {
+%        "contributors": null,
+%        "coordinates": null,
+%        "created_at": "Tue Mar 08 21:38:42 +0000 2016",
+%        "entities": {
+%            "hashtags": [
+%                {
+%                    "indices": [
+%                        43,
+%                        56
+%                    ],
+%                    "text": "OneDirection"
+%                },
+%                {
+%                    "indices": [
+%                        57,
+%                        76
+%                    ],
+%                    "text": "YouKnowYouLoveThem"
+%                }
+%            ],
+%            "symbols": [],
+%            "urls": [],
+%            "user_mentions": [
+%                {
+%                    "id": 77504008,
+%                    "id_str": "77504008",
+%                    "indices": [
+%                        77,
+%                        89
+%                    ],
+%                    "name": "RADIO DISNEY",
+%                    "screen_name": "radiodisney"
+%                }
+%            ]
+%        },
+%        "favorite_count": 13,
+%        "favorited": false,
+%        "filter_level": "low",
+%        "geo": null,
+%        "id": 707319658517549057,
+%        "id_str": "707319658517549057",
+%        "in_reply_to_screen_name": null,
+%        "in_reply_to_status_id": null,
+%        "in_reply_to_status_id_str": null,
+%        "in_reply_to_user_id": null,
+%        "in_reply_to_user_id_str": null,
+%        "is_quote_status": false,
+%        "lang": "pt",
+%        "place": {
+%            "attributes": {},
+%            "bounding_box": {
+%                "coordinates": [
+%                    [
+%                        [
+%                            -44.062789,
+%                            -20.059816
+%                        ],
+%                        [
+%                            -44.062789,
+%                            -19.777568
+%                        ],
+%                        [
+%                            -43.856856,
+%                            -19.777568
+%                        ],
+%                        [
+%                            -43.856856,
+%                            -20.059816
+%                        ]
+%                    ]
+%                ],
+%                "type": "Polygon"
+%            },
+%            "country": "Brasil",
+%            "country_code": "BR",
+%            "full_name": "Belo Horizonte, Brasil",
+%            "id": "d9d978b087a92583",
+%            "name": "Belo Horizonte",
+%            "place_type": "city",
+%            "url": "https://api.twitter.com/1.1/geo/id/d9d978b087a92583.json"
+%        },
+%        "retweet_count": 82,
+%        "retweeted": false,
+%        "source": "<a href=\"http://twitter.com\" rel=\"nofollow\">Twitter Web Client</a>",
+%        "text": "Eeh a tag n\u00e3o subiu em\nFAMILY ONED\n- Maria\n#OneDirection #YouKnowYouLoveThem @radiodisney",
+%        "truncated": false,
+%        "user": {
+%            "contributors_enabled": false,
+%            "created_at": "Sat Dec 05 22:28:59 +0000 2015",
+%            "default_profile": false,
+%            "default_profile_image": false,
+%            "description": "Projeto feito na inten\u00e7\u00e3o de ajudar os meninos nas vota\u00e7\u00f5es. Ative as notifica\u00e7\u00f5es e participe de mutir\u00f5es. Adms:Anny, Cah, Maria, Mary, Kaah, Biiah, Mari.",
+%            "favourites_count": 4013,
+%            "follow_request_sent": null,
+%            "followers_count": 5901,
+%            "following": null,
+%            "friends_count": 5866,
+%            "geo_enabled": true,
+%            "id": 4387486337,
+%            "id_str": "4387486337",
+%            "is_translator": false,
+%            "lang": "pt",
+%            "listed_count": 3,
+%            "location": "SNAP : PROJETOHELP",
+%            "name": "HELP 1D",
+%            "notifications": null,
+%            "profile_background_color": "000000",
+%            "profile_background_image_url": "http://abs.twimg.com/images/themes/theme1/bg.png",
+%            "profile_background_image_url_https": "https://abs.twimg.com/images/themes/theme1/bg.png",
+%            "profile_background_tile": false,
+%            "profile_banner_url": "https://pbs.twimg.com/profile_banners/4387486337/1457296538",
+%            "profile_image_url": "http://pbs.twimg.com/profile_images/706651250323025923/Csjoq0NA_normal.jpg",
+%            "profile_image_url_https": "https://pbs.twimg.com/profile_images/706651250323025923/Csjoq0NA_normal.jpg",
+%            "profile_link_color": "FF691F",
+%            "profile_sidebar_border_color": "000000",
+%            "profile_sidebar_fill_color": "000000",
+%            "profile_text_color": "000000",
+%            "profile_use_background_image": false,
+%            "protected": false,
+%            "screen_name": "HELPONEDVOTE",
+%            "statuses_count": 8533,
+%            "time_zone": null,
+%            "url": null,
+%            "utc_offset": null,
+%            "verified": false
+%        }
+%    },
+%    "source": "<a href=\"http://twitter.com/download/android\" rel=\"nofollow\">Twitter for Android</a>",
+%    "text": "RT @HELPONEDVOTE: Eeh a tag n\u00e3o subiu em\nFAMILY ONED\n- Maria\n#OneDirection #YouKnowYouLoveThem @radiodisney",
+%    "timestamp_ms": "1457483095658",
+%    "truncated": false,
+%    "user": {
+%        "contributors_enabled": false,
+%        "created_at": "Tue Feb 02 18:00:32 +0000 2016",
+%        "default_profile": true,
+%        "default_profile_image": false,
+%        "description": "ACESSE NOT\u00cdCIA FOTOS E V\u00cdDEOS SEBRE ONE DIRECTION NO BRASIL",
+%        "favourites_count": 117,
+%        "follow_request_sent": null,
+%        "followers_count": 30,
+%        "following": null,
+%        "friends_count": 35,
+%        "geo_enabled": false,
+%        "id": 4872198435,
+%        "id_str": "4872198435",
+%        "is_translator": false,
+%        "lang": "pt",
+%        "listed_count": 0,
+%        "location": "Brasil",
+%        "name": "ACESSO 1D",
+%        "notifications": null,
+%        "profile_background_color": "F5F8FA",
+%        "profile_background_image_url": "",
+%        "profile_background_image_url_https": "",
+%        "profile_background_tile": false,
+%        "profile_banner_url": "https://pbs.twimg.com/profile_banners/4872198435/1454436907",
+%        "profile_image_url": "http://pbs.twimg.com/profile_images/694584374961004545/G-Oh7i6P_normal.jpg",
+%        "profile_image_url_https": "https://pbs.twimg.com/profile_images/694584374961004545/G-Oh7i6P_normal.jpg",
+%        "profile_link_color": "2B7BB9",
+%        "profile_sidebar_border_color": "C0DEED",
+%        "profile_sidebar_fill_color": "DDEEF6",
+%        "profile_text_color": "333333",
+%        "profile_use_background_image": true,
+%        "protected": false,
+%        "screen_name": "acesso1DcomBR",
+%        "statuses_count": 1050,
+%        "time_zone": null,
+%        "url": null,
+%        "utc_offset": null,
+%        "verified": false
+%    }
+%}
+%
+%
+%\end{lstlisting}
