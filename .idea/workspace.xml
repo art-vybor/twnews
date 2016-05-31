@@ -2,8 +2,18 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="ffb373a2-2447-441d-a126-db864d7e684a" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/report/tex/problem.tex" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/report/tex/review/nlp.tex" afterPath="$PROJECT_DIR$/report/tex/implementation/nlp.tex" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/report/report.pdf" afterPath="$PROJECT_DIR$/report/report.pdf" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/report/report.tex" afterPath="$PROJECT_DIR$/report/report.tex" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/report/tex/annotation.tex" afterPath="$PROJECT_DIR$/report/tex/annotation.tex" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/report/tex/bibliography.tex" afterPath="$PROJECT_DIR$/report/tex/bibliography.tex" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/report/tex/economic.tex" afterPath="$PROJECT_DIR$/report/tex/economic.tex" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/report/tex/implementation.tex" afterPath="$PROJECT_DIR$/report/tex/implementation.tex" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/report/tex/review.tex" afterPath="$PROJECT_DIR$/report/tex/review.tex" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/report/tex/review/approach.tex" afterPath="$PROJECT_DIR$/report/tex/review/approach.tex" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/report/tex/review/vocabulary.tex" afterPath="$PROJECT_DIR$/report/tex/review/vocabulary.tex" />
     </list>
     <ignored path="twnews.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -25,94 +35,29 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="logger_wrapper.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/core/twnews/utils/logger_wrapper.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="0">
-              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="math.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/core/twnews/utils/math.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="0">
-              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-              <folding>
-                <element signature="e#0#11#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="text_processors.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/core/twnews/utils/text_processors.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-52">
-              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-              <folding>
-                <element signature="e#0#16#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="wtmf.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/core/twnews/model/wtmf.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-1834">
-              <caret line="11" column="0" selection-start-line="11" selection-start-column="0" selection-end-line="16" selection-end-column="1" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="wtmf_g.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/core/twnews/model/wtmf_g.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="0">
-              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-              <folding>
-                <element signature="e#0#14#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="README.md" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/core/README.md">
-          <provider editor-type-id="MultiMarkdownFxPreviewEditor">
-            <state />
-          </provider>
-          <provider selected="true" editor-type-id="split-provider[text-editor;MultiMarkdownPreviewEditor]">
-            <state split_layout="FIRST">
-              <first_editor relative-caret-position="756">
-                <caret line="47" column="12" selection-start-line="47" selection-start-column="12" selection-end-line="47" selection-end-column="12" />
-                <folding />
-              </first_editor>
-              <second_editor />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="testing.tex" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/report/tex/testing.tex">
+      <file leaf-file-name="review.tex" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/report/tex/review.tex">
           <provider selected="true" editor-type-id="LaTeXFileEditor">
             <state />
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="economic.tex" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/report/tex/economic.tex">
-          <provider selected="true" editor-type-id="LaTeXFileEditor">
-            <state />
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="report.tex" pinned="false" current-in-tab="false">
+      <file leaf-file-name="report.tex" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/report/report.tex">
+          <provider selected="true" editor-type-id="LaTeXFileEditor">
+            <state />
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="implementation.tex" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/report/tex/implementation.tex">
+          <provider selected="true" editor-type-id="LaTeXFileEditor">
+            <state />
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="annotation.tex" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/report/tex/annotation.tex">
           <provider selected="true" editor-type-id="LaTeXFileEditor">
             <state />
           </provider>
@@ -120,6 +65,41 @@
       </file>
       <file leaf-file-name="bibliography.tex" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/report/tex/bibliography.tex">
+          <provider selected="true" editor-type-id="LaTeXFileEditor">
+            <state />
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="approach.tex" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/report/tex/review/approach.tex">
+          <provider selected="true" editor-type-id="LaTeXFileEditor">
+            <state />
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="evaluation.tex" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/report/tex/review/evaluation.tex">
+          <provider selected="true" editor-type-id="LaTeXFileEditor">
+            <state />
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="vocabulary.tex" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/report/tex/review/vocabulary.tex">
+          <provider selected="true" editor-type-id="LaTeXFileEditor">
+            <state />
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="problem.tex" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/report/tex/problem.tex">
+          <provider selected="true" editor-type-id="LaTeXFileEditor">
+            <state />
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="introduction.tex" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/report/tex/introduction.tex">
           <provider selected="true" editor-type-id="LaTeXFileEditor">
             <state />
           </provider>
@@ -140,7 +120,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/core/twnews/utils/memoize.py" />
         <option value="$PROJECT_DIR$/core/twnews/wtmf/wtmf-g" />
         <option value="$PROJECT_DIR$/core/twnews/wtmf/wtmf-g.py" />
         <option value="$PROJECT_DIR$/core/twnews/wtmf/wtmf.py" />
@@ -172,7 +151,6 @@
         <option value="$PROJECT_DIR$/core/twnews/main.py" />
         <option value="$PROJECT_DIR$/report/tex/dataset.tex" />
         <option value="$PROJECT_DIR$/report/tex/random.tex" />
-        <option value="$PROJECT_DIR$/report/tex/annotation.tex" />
         <option value="$PROJECT_DIR$/report/tex/conclusion.tex" />
         <option value="$PROJECT_DIR$/report/tex/introduction.tex" />
         <option value="$PROJECT_DIR$/report/tex/implementation/fetching.tex" />
@@ -180,17 +158,19 @@
         <option value="$PROJECT_DIR$/report/tex/implementation/wtmf.tex" />
         <option value="$PROJECT_DIR$/report/tex/implementation/wtmfg.tex" />
         <option value="$PROJECT_DIR$/report/tex/implementation/architecture.tex" />
-        <option value="$PROJECT_DIR$/report/tex/implementation.tex" />
-        <option value="$PROJECT_DIR$/report/tex/review/approach.tex" />
-        <option value="$PROJECT_DIR$/report/tex/review/vocabulary.tex" />
-        <option value="$PROJECT_DIR$/report/tex/review/wtmfg.tex" />
         <option value="$PROJECT_DIR$/report/tex/review/evaluation.tex" />
-        <option value="$PROJECT_DIR$/report/tex/review.tex" />
         <option value="$PROJECT_DIR$/report/tex/review/nlp.tex" />
         <option value="$PROJECT_DIR$/report/tex/testing.tex" />
-        <option value="$PROJECT_DIR$/report/report.tex" />
-        <option value="$PROJECT_DIR$/report/tex/bibliography.tex" />
         <option value="$PROJECT_DIR$/report/tex/economic.tex" />
+        <option value="$PROJECT_DIR$/report/tex/review/wtmfg.tex" />
+        <option value="$PROJECT_DIR$/report/tex/implementation.tex" />
+        <option value="$PROJECT_DIR$/report/tex/problem.tex" />
+        <option value="$PROJECT_DIR$/report/tex/review.tex" />
+        <option value="$PROJECT_DIR$/report/tex/annotation.tex" />
+        <option value="$PROJECT_DIR$/report/tex/review/vocabulary.tex" />
+        <option value="$PROJECT_DIR$/report/tex/bibliography.tex" />
+        <option value="$PROJECT_DIR$/report/tex/review/approach.tex" />
+        <option value="$PROJECT_DIR$/report/report.tex" />
       </list>
     </option>
   </component>
@@ -313,6 +293,28 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="review" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="twnews" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="twnews" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="report" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="tex" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="implementation" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -668,13 +670,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/core/twnews/recommend.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="270">
-          <caret line="15" column="4" selection-start-line="15" selection-start-column="4" selection-end-line="15" selection-end-column="4" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/core/twnews/utils/memoize.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="216">
@@ -802,22 +797,7 @@
         <state />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/report/tex/annotation.tex">
-      <provider selected="true" editor-type-id="LaTeXFileEditor">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/report/tex/conclusion.tex">
-      <provider selected="true" editor-type-id="LaTeXFileEditor">
-        <state />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/report/tex/documentation.tex">
-      <provider selected="true" editor-type-id="LaTeXFileEditor">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/report/tex/introduction.tex">
       <provider selected="true" editor-type-id="LaTeXFileEditor">
         <state />
       </provider>
@@ -855,42 +835,7 @@
         <state />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/report/tex/implementation/architecture.tex">
-      <provider selected="true" editor-type-id="LaTeXFileEditor">
-        <state />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/report/tex/implementation/wtmfg.tex">
-      <provider selected="true" editor-type-id="LaTeXFileEditor">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/report/tex/review/vocabulary.tex">
-      <provider selected="true" editor-type-id="LaTeXFileEditor">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/report/tex/review/wtmfg.tex">
-      <provider selected="true" editor-type-id="LaTeXFileEditor">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/report/tex/review/approach.tex">
-      <provider selected="true" editor-type-id="LaTeXFileEditor">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/report/tex/implementation.tex">
-      <provider selected="true" editor-type-id="LaTeXFileEditor">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/report/tex/review.tex">
-      <provider selected="true" editor-type-id="LaTeXFileEditor">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/report/tex/review/evaluation.tex">
       <provider selected="true" editor-type-id="LaTeXFileEditor">
         <state />
       </provider>
@@ -900,7 +845,7 @@
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#0#42#0" expanded="true" />
+            <element signature="e#0#42#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -924,7 +869,7 @@
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#0#9#0" expanded="true" />
+            <element signature="e#0#9#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -942,7 +887,7 @@
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#0#14#0" expanded="true" />
+            <element signature="e#0#14#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -955,11 +900,6 @@
             <element signature="e#0#15#0" expanded="true" />
           </folding>
         </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/report/tex/review/nlp.tex">
-      <provider selected="true" editor-type-id="LaTeXFileEditor">
-        <state />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/core/twnews/utils/extra.py">
@@ -983,7 +923,7 @@
         <state relative-caret-position="-52">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#0#16#0" expanded="true" />
+            <element signature="e#0#16#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -993,7 +933,7 @@
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#0#11#0" expanded="true" />
+            <element signature="e#0#11#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1011,7 +951,7 @@
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#0#14#0" expanded="true" />
+            <element signature="e#0#14#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1043,7 +983,57 @@
         <state />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/report/report.tex">
+    <entry file="file://$PROJECT_DIR$/report/tex/economic.tex">
+      <provider selected="true" editor-type-id="LaTeXFileEditor">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/report/tex/review/wtmfg.tex">
+      <provider selected="true" editor-type-id="LaTeXFileEditor">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/report/tex/implementation/nlp.tex">
+      <provider selected="true" editor-type-id="LaTeXFileEditor">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/report/tex/implementation/architecture.tex">
+      <provider selected="true" editor-type-id="LaTeXFileEditor">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/report/tex/conclusion.tex">
+      <provider selected="true" editor-type-id="LaTeXFileEditor">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/report/tex/problem.tex">
+      <provider selected="true" editor-type-id="LaTeXFileEditor">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/report/tex/annotation.tex">
+      <provider selected="true" editor-type-id="LaTeXFileEditor">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/report/tex/implementation.tex">
+      <provider selected="true" editor-type-id="LaTeXFileEditor">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/report/tex/introduction.tex">
+      <provider selected="true" editor-type-id="LaTeXFileEditor">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/report/tex/review/evaluation.tex">
+      <provider selected="true" editor-type-id="LaTeXFileEditor">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/report/tex/review/vocabulary.tex">
       <provider selected="true" editor-type-id="LaTeXFileEditor">
         <state />
       </provider>
@@ -1053,7 +1043,17 @@
         <state />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/report/tex/economic.tex">
+    <entry file="file://$PROJECT_DIR$/report/tex/review.tex">
+      <provider selected="true" editor-type-id="LaTeXFileEditor">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/report/tex/review/approach.tex">
+      <provider selected="true" editor-type-id="LaTeXFileEditor">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/report/report.tex">
       <provider selected="true" editor-type-id="LaTeXFileEditor">
         <state />
       </provider>
