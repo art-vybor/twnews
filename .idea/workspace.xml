@@ -2,18 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="ffb373a2-2447-441d-a126-db864d7e684a" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/report/tex/problem.tex" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/report/tex/review/nlp.tex" afterPath="$PROJECT_DIR$/report/tex/implementation/nlp.tex" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/report/report.pdf" afterPath="$PROJECT_DIR$/report/report.pdf" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/report/report.tex" afterPath="$PROJECT_DIR$/report/report.tex" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/report/tex/annotation.tex" afterPath="$PROJECT_DIR$/report/tex/annotation.tex" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/report/tex/bibliography.tex" afterPath="$PROJECT_DIR$/report/tex/bibliography.tex" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/report/tex/economic.tex" afterPath="$PROJECT_DIR$/report/tex/economic.tex" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/report/tex/implementation.tex" afterPath="$PROJECT_DIR$/report/tex/implementation.tex" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/report/tex/review.tex" afterPath="$PROJECT_DIR$/report/tex/review.tex" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/report/tex/review/approach.tex" afterPath="$PROJECT_DIR$/report/tex/review/approach.tex" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/report/tex/review/vocabulary.tex" afterPath="$PROJECT_DIR$/report/tex/review/vocabulary.tex" />
     </list>
     <ignored path="twnews.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -42,7 +32,7 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="report.tex" pinned="false" current-in-tab="true">
+      <file leaf-file-name="report.tex" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/report/report.tex">
           <provider selected="true" editor-type-id="LaTeXFileEditor">
             <state />
@@ -70,7 +60,7 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="approach.tex" pinned="false" current-in-tab="false">
+      <file leaf-file-name="approach.tex" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/report/tex/review/approach.tex">
           <provider selected="true" editor-type-id="LaTeXFileEditor">
             <state />
@@ -169,8 +159,8 @@
         <option value="$PROJECT_DIR$/report/tex/annotation.tex" />
         <option value="$PROJECT_DIR$/report/tex/review/vocabulary.tex" />
         <option value="$PROJECT_DIR$/report/tex/bibliography.tex" />
-        <option value="$PROJECT_DIR$/report/tex/review/approach.tex" />
         <option value="$PROJECT_DIR$/report/report.tex" />
+        <option value="$PROJECT_DIR$/report/tex/review/approach.tex" />
       </list>
     </option>
   </component>
@@ -1048,12 +1038,12 @@
         <state />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/report/tex/review/approach.tex">
+    <entry file="file://$PROJECT_DIR$/report/report.tex">
       <provider selected="true" editor-type-id="LaTeXFileEditor">
         <state />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/report/report.tex">
+    <entry file="file://$PROJECT_DIR$/report/tex/review/approach.tex">
       <provider selected="true" editor-type-id="LaTeXFileEditor">
         <state />
       </provider>
