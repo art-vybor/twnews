@@ -2,29 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="ffb373a2-2447-441d-a126-db864d7e684a" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/report/tex/annotation.tex" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/report/tex/conclusion.tex" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/report/tex/implementation.tex" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/report/tex/implementation/architecture.tex" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/report/tex/implementation/fetching.tex" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/report/tex/implementation/wtmfg.tex" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/report/tex/review/approach.tex" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/report/tex/review/evaluation.tex" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/report/tex/review/nlp.tex" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/report/tex/review/vocabulary.tex" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/report/tex/review/wtmfg.tex" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/report/tex/testing.tex" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/report/tex/dataset.tex" afterPath="$PROJECT_DIR$/report/tex/implementation/dataset.tex" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/report/tex/wtmf_implementation.tex" afterPath="$PROJECT_DIR$/report/tex/implementation/wtmf.tex" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/report/report.pdf" afterPath="$PROJECT_DIR$/report/report.pdf" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/twnews/main.py" afterPath="$PROJECT_DIR$/core/twnews/main.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/report/report.tex" afterPath="$PROJECT_DIR$/report/report.tex" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/report/tex/bibliography.tex" afterPath="$PROJECT_DIR$/report/tex/bibliography.tex" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/report/tex/economic.tex" afterPath="$PROJECT_DIR$/report/tex/economic.tex" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/report/tex/introduction.tex" afterPath="$PROJECT_DIR$/report/tex/introduction.tex" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/report/tex/random.tex" afterPath="$PROJECT_DIR$/report/tex/random.tex" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/report/tex/review.tex" afterPath="$PROJECT_DIR$/report/tex/review.tex" />
     </list>
     <ignored path="twnews.iws" />
     <ignored path=".idea/workspace.xml" />
