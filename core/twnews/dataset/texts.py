@@ -1,7 +1,7 @@
 from dateutil import parser as date_parser
 
 from twnews.resolver.resolver import clean_url
-from twnews.utils.math import cosine_similarity
+from twnews.utils.sparse_math import cosine_similarity
 
 
 class DatasetText:

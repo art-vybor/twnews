@@ -7,18 +7,11 @@ from twnews.utils.memoize import load, dump
 from twnews.utils.extra import timeit
 from twnews.utils.logger_wrapper import log_and_print
 from twnews.recommend import set_compare_vector
+from twnews import defaults
 
 
-DEFAULT_WTMF_OPTIONS = {
-    'DIM': 50,
-    'WM': 1e-2,
-    'ITERATIONS': 5,
-    'LAMBDA': 20
-}
-
-
-class WTMF:
-    def __init__(self, dataset, options=DEFAULT_WTMF_OPTIONS, try_to_load=False):
+class WTMF(object):
+    def __init__(self, dataset, options=defaults.DEFAULT_WTMF_OPTIONS, try_to_load=False):
         P, Q = None, None
         dataset_applied = None
 

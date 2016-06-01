@@ -17,3 +17,19 @@ DATASET_FRACTION = 1.0
 
 
 TMP_FILE_DIRECTORY = '/home/avybornov/tmp'
+
+
+DEFAULT_WTMF_OPTIONS = {
+    'DIM': 90,
+    'WM': 0.95,
+    'ITERATIONS': 1,
+    'LAMBDA': 1.95
+}
+
+DEFAULT_WTMFG_OPTIONS = {
+    'DIM': 90,
+    'WM': 0.95,
+    'ITERATIONS': 1,
+    'LAMBDA': 1.95,
+    'DELTA': 0.1
+}

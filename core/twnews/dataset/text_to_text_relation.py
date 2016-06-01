@@ -101,7 +101,7 @@ def get_document_to_documet_time_relation(documents, k):
     for d1_index, d1 in enumerate(documents):
         related_documents = []
         for d2_index, d2 in enumerate(documents):
-            if document_date_distanse(d1,d2) < timedelta(hours=24):
+            if document_date_distanse(d1,d2) < timedelta(hours=1):
                 related_documents.append((d2, similarity[d1_index][d2_index]))
 
         top_k = heapq.nlargest(k, related_documents, key=lambda x: x[1])

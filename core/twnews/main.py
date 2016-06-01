@@ -97,26 +97,17 @@ def main():
         else:
             dataset = load('dataset')
 
-
         if args.wtmf:
             log_and_print(logging.INFO, 'train wtmf')
 
-            options = {
-                'DIM': 90,
-                'WM': 0.95,
-                'ITERATIONS': 1,
-                'LAMBDA': 1.95
-            }
-            model = WTMF(dataset, options=options)
+            model = WTMF(dataset)
             model.build()
 
         elif args.wtmf_g:
-            raise Exception('Not realized yet')
-            # log_and_print(logging.INFO, 'train wtmf-g')
-            # links = dataset.text_to_text_links
-            # model = WTMF_G(lemmatized_texts, corpus, tf_idf_matrix, links, try_to_load=args.try_to_load)
-            # model.build()
-            # compare_vector_matrix = model.Q
+            log_and_print(logging.INFO, 'train wtmf-g')
+            links = dataset.text_to_text_links
+            model = WTMF_G(dataset)
+            model.build()
 
         elif args.tfidf:
             log_and_print(logging.INFO, 'apply tfidf model to dataset')
