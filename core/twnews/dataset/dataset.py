@@ -8,6 +8,8 @@ from twnews.dataset.text_to_text_relation import get_text_to_text_relation
 from twnews.utils.text_processors import Lemmatizer
 from twnews.utils.text_processors import lemmatize_texts, build_tf_idf_matrix
 from twnews.utils.memoize import load
+from twnews.utils.sparse_math import get_similarity_matrix
+
 
 class Dataset(object):
     def __init__(self, news_path=defaults.NEWS_PATH,
@@ -47,6 +49,7 @@ class Dataset(object):
     def get_documents(self):
         return self.news.get_documents() + self.tweets.get_documents()
 
+
     def init_text_to_text_links(self):
         logging.info('Finding text to text links for {NAME}'.format(NAME=self.name()))
         lemmatizer = Lemmatizer()
@@ -61,7 +64,9 @@ class Dataset(object):
             index += 1
 
         #print len(tweets), len(news)
-        self.text_to_text_links = get_text_to_text_relation(self.news.get_documents()[:100], self.tweets.get_documents()[:100])
+        similarity_matrix = get_similarity_matrix(self.get_documents(), self.get_documents(), self.corpus, self.tf_idf_matrix)
+        print 'preparation finished'
+        self.text_to_text_links = get_text_to_text_relation(self.news.get_documents(), self.tweets.get_documents(), similarity_matrix)
 
     def name(self):
         return 'dataset_{TYPE}_{UNIQUE_PERCENT}'.format(TYPE=self.type, UNIQUE_PERCENT=self.percent_of_unique_words)

@@ -1,6 +1,7 @@
 import math
 import numpy as np
 from scipy import sparse
+from sklearn.metrics.pairwise import cosine_similarity as matrix_cosine_similarity
 
 
 def cosine_similarity(v1,v2):
@@ -47,3 +48,25 @@ def get_vectors_length_array(M):
     for i in range(M.shape[1]):
         res.append(get_vector_length(M[:,i]))
     return res
+
+
+def get_similarity_matrix(documents_1, documents_2, corpus, tf_idf_matrix):
+    def convert_to_compare_matrix(documents):
+        dim = len(corpus)
+
+        data, row_idxs, column_idxs = [], [], []
+        for column_idx, document in enumerate(documents):
+            rows, _, values = sparse.find(tf_idf_matrix[:, document.index])
+            for i, value in enumerate(values):
+                data.append(values[i])
+                row_idxs.append(rows[i])
+                column_idxs.append(column_idx)
+
+        compare_matrix = sparse.csr_matrix((data, (row_idxs, column_idxs)), shape=(dim, len(documents)))
+        return compare_matrix
+
+    matrix_1 = convert_to_compare_matrix(documents_1)
+    matrix_2 = convert_to_compare_matrix(documents_2)
+    mat = matrix_cosine_similarity(matrix_1.T, matrix_2.T)
+
+    return mat

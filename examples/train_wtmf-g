@@ -1,1 +1,8 @@
- twnews train --wtmf_g --dataset_file ~/twnews_data_april/gold_dataset/dataset_cutted_0.0
+twnews train --wtmf_g --dataset_file ~/tmp/test_dataset
+ #~/twnews_data_april/gold_dataset/dataset_cutted_0.0
+
+for file in ~/tmp/datasets/*; do
+    echo $file
+    twnews train --wtmf_g --dataset_file $file
+    echo ------------------------------------
+done

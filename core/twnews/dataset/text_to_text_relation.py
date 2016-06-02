@@ -1,37 +1,40 @@
 import heapq
-from collections import defaultdict
-from datetime import timedelta
-from scipy import sparse
-from sklearn.metrics.pairwise import cosine_similarity
 
-from twnews.utils.memoize import load
-from twnews.utils.text_processors import Lemmatizer, extract_entities
 from twnews.utils.extra import timeit
+from twnews.utils.text_processors import Lemmatizer, extract_entities
 
 
-def get_text_to_text_relation(news, tweets, k=3):
+def get_text_to_text_relation(news, tweets, similarity_matrix, k=10):
     """result is a list of index pairs in array news+tweets"""
     # tweets = tweets[:500]
     # news = news[:500]
 
-    tweet_to_tweet_hashtags = get_tweet_to_tweet_hashtags_relation(tweets, k)
+    tweet_to_tweet_hashtags = get_tweet_to_tweet_hashtags_relation(tweets, k, similarity_matrix)
+    print 'num of tweet to tweet by hashtags relation', len(tweet_to_tweet_hashtags)
+
     NE_set = get_NE_from_news(news)
-    tweet_to_tweet_NER = get_tweet_to_tweet_NER_relation(tweets, NE_set, k)
-    tweet_to_tweet_time = get_document_to_documet_time_relation(tweets, k)
-    news_to_news_time = get_document_to_documet_time_relation(news, k)
+    tweet_to_tweet_NER = get_tweet_to_tweet_NER_relation(tweets, NE_set, k, similarity_matrix)
+    print 'num of tweet to tweet by NER relation', len(tweet_to_tweet_NER)
 
-    total_relations = tweet_to_tweet_hashtags #| tweet_to_tweet_NER | tweet_to_tweet_time | news_to_news_time
+    tweet_to_tweet_time = get_document_to_documet_time_relation(tweets, k, similarity_matrix)
+    print 'num of tweet to tweet by time relation', len(tweet_to_tweet_time)
 
-    return filter(lambda x: x[0] != x[1], total_relations)
+    news_to_news_time = get_document_to_documet_time_relation(news, k, similarity_matrix)
+    print 'num of news to news by time relation', len(news_to_news_time)
 
+    total_relations = filter_links(tweet_to_tweet_hashtags | tweet_to_tweet_NER | tweet_to_tweet_time | news_to_news_time)
+    print 'num of total relations', len(total_relations)
+    return filter_links(total_relations)
+
+
+def filter_links(links):
+    result = set()
+    for i,j in list(links):
+        result.add((min(i,j), max(i,j)))
+    return result
 
 @timeit
-def get_tweet_to_tweet_hashtags_relation(tweets, k):
-    def num_of_common_hashtags(tweet1, tweet2):
-        hashtags1 = set(tweet1.hastags.keys())
-        hashtags2 = set(tweet2.hastags.keys())
-        return len(hashtags1 & hashtags2)
-
+def get_tweet_to_tweet_hashtags_relation(tweets, k, similarity_matrix):
     def get_all_hashtags(tweets):
         lemmatizer = Lemmatizer()
         hashtags = {}
@@ -47,69 +50,77 @@ def get_tweet_to_tweet_hashtags_relation(tweets, k):
         return set(hashtags.keys())
 
     hashtags = get_all_hashtags(tweets)
-    print 'hashtags:', len(hashtags)
+    #print 'hashtags:', len(hashtags)
 
-    hashtag_to_tweets = defaultdict(list)
     for tweet in tweets:
+        tweet.named_entities = set()
         for word in tweet.words:
             if word in hashtags:
                 tweet.hastags[word] = None
-                hashtag_to_tweets[word].append(tweet)
 
     result = set()
-    for tweet in tweets:
-        for hashtag in tweet.hastags.keys():
-            linked_tweets = hashtag_to_tweets[hashtag]
-            linked_tweets = filter(lambda x: num_of_common_hashtags(x, tweet) >=2, linked_tweets)
+    for t1 in tweets:
+        candidates = []
+        for t2 in tweets:
+            if t1.index != t2.index and \
+               similarity_matrix[t1.index][t2.index] < 0.99 and \
+                len(set(t1.hastags.keys()) & set(t2.hastags.keys())) >= 2:
+                    candidates.append(t2)
 
-            top_k = get_top_k_by_time(tweet, linked_tweets, k)
-            if top_k:
-                for elem in top_k:
-                    result.add((tweet.index, elem.index))
-    print 'tweet_to_tweet_hashtags', len(result)
-    return result
+        top_k = get_top_k_by_time(t1, candidates, k)
+        if top_k:
+            for elem in top_k:
+                result.add((t1.index, elem.index))
+
+    #print 'tweet_to_tweet_hashtags', len(result)
+    return filter_links(result)
 
 
 @timeit
-def get_tweet_to_tweet_NER_relation(tweets, NE_set, k):
-    NE_to_tweets = defaultdict(list)
-
+def get_tweet_to_tweet_NER_relation(tweets, NE_set, k, similarity_matrix):
     for tweet in tweets:
-        tweet.named_entities = []
+        tweet.named_entities = set()
         for word in tweet.words:
             if word in NE_set:
-                tweet.named_entities.append(word)
-                NE_to_tweets[word].append(tweet)
+                tweet.named_entities.add(word)
 
     result = set()
-    for tweet in tweets:
-        for entity in tweet.named_entities:
-            linked_tweets = NE_to_tweets[entity]
-            top_k = get_top_k_by_time(tweet, linked_tweets, k)
-            if top_k:
-                for elem in top_k:
-                    result.add((tweet.index, elem.index))
-    print 'tweet_to_tweet_NER', len(result)
-    return result
+    for t1 in tweets:
+        candidates = []
+        for t2 in tweets:
+            if t1.index != t2.index and \
+               similarity_matrix[t1.index][t2.index] < 0.99 and \
+                len(t1.named_entities & t2.named_entities) >= 2:
+                    candidates.append(t2)
+
+        top_k = get_top_k_by_time(t1, candidates, k)
+        if top_k:
+            for elem in top_k:
+                result.add((t1.index, elem.index))
+
+    #print 'tweet_to_tweet_NER', len(result)
+    return filter_links(result)
 
 
 @timeit
-def get_document_to_documet_time_relation(documents, k):
-    similarity = get_similarity_matrix(documents, documents)
+def get_document_to_documet_time_relation(documents, k, similarity_matrix):
 
     result = set()
-    for d1_index, d1 in enumerate(documents):
+    for d1 in documents:
         related_documents = []
-        for d2_index, d2 in enumerate(documents):
-            if document_date_distanse(d1,d2) < timedelta(hours=1):
-                related_documents.append((d2, similarity[d1_index][d2_index]))
+        for d2 in documents:
+            similarity = similarity_matrix[d1.index][d2.index]
+            if (0.3 < similarity and similarity < 0.99) and \
+               d1.index != d2.index and \
+               document_date_distanse(d1, d2) < timedelta(hours=24):
+                related_documents.append((d2, similarity))
 
         top_k = heapq.nlargest(k, related_documents, key=lambda x: x[1])
         if top_k:
             for elem, sim in top_k:
                 result.add((d1.index, elem.index))
-    print 'document_to_documet_time_relation', len(result)
-    return result
+    #print 'document_to_documet_time_relation', len(result)
+    return filter_links(result)
 
 
 def get_NE_from_news(news_documents):
@@ -123,36 +134,8 @@ def get_NE_from_news(news_documents):
             errors += 1
             ents = set()
         result.update(ents)
-    print 'NE:', len(result), 'errors:', errors
+    #print 'NE:', len(result), 'errors:', errors
     return result
-
-
-def get_similarity_matrix(documents_1, documents_2):
-    corpus, tf_idf_matrix = load('tf_idf_corpus')
-
-    def convert_to_compare_matrix(documents):
-        dim = len(corpus)
-
-        data, row_idxs, column_idxs = [], [], []
-        for column_idx, document in enumerate(documents):
-            rows, _, values = sparse.find(tf_idf_matrix[:,document.index])
-            for i, value in enumerate(values):
-                data.append(values[i])
-                row_idxs.append(rows[i])
-                column_idxs.append(column_idx)
-
-        compare_matrix = sparse.csr_matrix((data, (row_idxs, column_idxs)), shape=(dim, len(documents)))
-        return compare_matrix
-
-    matrix_1 = convert_to_compare_matrix(documents_1)
-    print 'matrix 1 builded'
-
-    matrix_2 = convert_to_compare_matrix(documents_2)
-    print 'matrix 2 builded'
-
-    mat = cosine_similarity(matrix_1.T, matrix_2.T)
-    print 'similarity matrix builded'
-    return mat
 
 
 def document_date_distanse(d1, d2):
