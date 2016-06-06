@@ -105,9 +105,18 @@ def main():
 
         elif args.wtmf_g:
             log_and_print(logging.INFO, 'train wtmf-g')
-            links = dataset.text_to_text_links
-            model = WTMF_G(dataset)
-            model.build()
+
+            for delta in [0.05, 0.15, 0.25, 0.30, 0.35]:
+                options = {
+                    'DIM': 90,
+                    'WM': 0.95,
+                    'ITERATIONS': 1,
+                    'LAMBDA': 1.95,
+                    'DELTA': delta
+                }
+
+                model = WTMF_G(dataset, options=options)
+                model.build()
 
         elif args.tfidf:
             log_and_print(logging.INFO, 'apply tfidf model to dataset')

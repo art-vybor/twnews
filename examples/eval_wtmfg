@@ -1,0 +1,12 @@
+set -e
+
+
+
+for file in ~/tmp/WTMF_G_\(dataset_auto_0.5\)_90_1_1.95_0.95_0.*; do
+    #echo $file
+    MODEL_NAME=$(basename $file)
+    echo $MODEL_NAME
+    twnews recommend --recommend_by_model $MODEL_NAME
+    twnews recommend --eval
+    echo ------------------------------------
+done
