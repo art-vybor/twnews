@@ -1,0 +1,59 @@
+\subsection{Сравнительные результаты}
+    Для выявления влияния добавления связей текст-текст на результаты работы метода WMTF-G производится сравнительное тестирование алгоритма WTMF и WTMF-G.
+    Результаты тестирования приведены в таблице~\ref{tabular:wtmf_wmtfg}.
+
+    \begin{table}[h!]
+    %\small
+    \caption{Cравнительное тестирование алгоритмов WTMF и WTMF-G. \bigskip}
+    \centering
+
+    \label{tabular:wtmf_wmtfg}
+        \begin{tabular}{|c|c|c|c|c|c|c|}
+            \hline
+            \bf{\multirow{2}{*}{\specialcell{Набор данных}}} &
+            \multicolumn{2}{|c|}{\bf{Метрика RR}} &
+            \multicolumn{2}{|c|}{\bf{Метрика $TOP_1$}} &
+            \multicolumn{2}{|c|}{\bf{Метрика $TOP_3$}} \\ \cline{2-7}
+            & \bf{WTMF} & \bf{WTMF-G} & \bf{WTMF} & \bf{WTMF-G} & \bf{WTMF} & \bf{WTMF-G} \\ \hline
+            manual & 0.7293 & 0. & 0. & 0. & 0. & 0. \\ \hline
+            auto & 0.8640 & 0. & 0. & 0. & 0. & 0. \\ \hline
+            total & 0.8196 & 0. & 0. & 0. & 0. & 0. \\ \hline
+            cutted & 0.8630 & 0. & 0. & 0. & 0. & 0. \\ \hline
+            manual\_nt & 0.6194 & 0. & 0. & 0. & 0. & 0. \\ \hline
+            auto\_nt & 0.5297 & 0.5695 & 0. & 0. & 0. & 0. \\ \hline
+            total\_nt & 0.5729 & 0. & 0. & 0. & 0. & 0. \\ \hline
+            cutted\_nt & 0.6495 & 0. & 0. & 0. & 0. & 0. \\ \hline
+        \end{tabular}
+    \end{table}
+    Как видно из таблицы~\ref{tabular:wtmf_wmtfg} \textcolor{red}{...}
+
+    \textcolor{red}{Сравним метод основанный на частотности употребления слов и WTMF-G.}
+    Метод основанный на частотности употребления слов обозначим как TF-IDF.
+    Результаты тестирования приведены в таблице~\ref{tabular:tfidf_wmtfg}.
+
+    \begin{table}[ht!]
+    %\small
+    \caption{Cравнительное тестирование алгоритмов TF-IDF и WTMF-G. \bigskip}
+    \centering
+
+    \label{tabular:tfidf_wmtfg}
+        \begin{tabular}{|c|c|c|c|c|c|c|}
+            \hline
+            \bf{\multirow{2}{*}{\specialcell{Набор данных}}} &
+            \multicolumn{2}{|c|}{\bf{Метрика RR}} &
+            \multicolumn{2}{|c|}{\bf{Метрика $TOP_1$}} &
+            \multicolumn{2}{|c|}{\bf{Метрика $TOP_3$}} \\ \cline{2-7}
+            & \bf{TF-IDF} & \bf{WTMF-G} & \bf{TF-IDF} & \bf{WTMF-G} & \bf{TF-IDF} & \bf{WTMF-G} \\ \hline
+            manual & 0.8336 & 0. & 0. & 0. & 0. & 0. \\ \hline
+            auto & 0.8817 & 0. & 0. & 0. & 0. & 0. \\ \hline
+            total & 0.8610 & 0. & 0. & 0. & 0. & 0. \\ \hline
+            cutted & 0.9075 & 0. & 0. & 0. & 0. & 0. \\ \hline
+            manual\_nt & 0.7565 & 0. & 0. & 0. & 0. & 0. \\ \hline
+            auto\_nt & 0.6048 & 0.5695 & 0. & 0. & 0. & 0. \\ \hline
+            total\_nt & 0.6914 & 0. & 0. & 0. & 0. & 0. \\ \hline
+            cutted\_nt & 0.7485 & 0. & 0. & 0. & 0. & 0. \\ \hline
+        \end{tabular}
+    \end{table}
+    Как видно из таблицы~\ref{tabular:tfidf_wmtfg} \textcolor{red}{...}
+
+    объяснение влияния различных датасетов, специфики русского языка и сравнение с результатами статьи.

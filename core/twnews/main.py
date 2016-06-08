@@ -111,7 +111,6 @@ def main():
                     'DIM': 90,
                     'WM': 0.95,
                     'ITERATIONS': 1,
-                    'LAMBDA': 1.95,
                     'DELTA': delta
                 }
 
