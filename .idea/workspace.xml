@@ -4,10 +4,8 @@
     <list default="true" id="ffb373a2-2447-441d-a126-db864d7e684a" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/report/report.pdf" afterPath="$PROJECT_DIR$/report/report.pdf" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/twnews/evaluation.py" afterPath="$PROJECT_DIR$/core/twnews/evaluation.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/twnews/main.py" afterPath="$PROJECT_DIR$/core/twnews/main.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/examples/parse_eval.py" afterPath="$PROJECT_DIR$/examples/parse_eval.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/report/tex/testing/result.tex" afterPath="$PROJECT_DIR$/report/tex/testing/result.tex" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/report/tex/conclusion.tex" afterPath="$PROJECT_DIR$/report/tex/conclusion.tex" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/report/tex/testing/wtmf.tex" afterPath="$PROJECT_DIR$/report/tex/testing/wtmf.tex" />
     </list>
     <ignored path="twnews.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -32,7 +30,7 @@
       <file leaf-file-name="wtmf-g.tex" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/report/tex/testing/wtmf-g.tex">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="650">
+            <state relative-caret-position="2070">
               <caret line="115" column="46" selection-start-line="115" selection-start-column="46" selection-end-line="115" selection-end-column="46" />
               <folding>
                 <element signature="e#919#932#0" expanded="true" />
@@ -44,7 +42,7 @@
       <file leaf-file-name="main.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/core/twnews/main.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-2955">
+            <state relative-caret-position="126">
               <caret line="7" column="31" selection-start-line="7" selection-start-column="31" selection-end-line="7" selection-end-column="31" />
               <folding />
             </state>
@@ -54,15 +52,29 @@
       <file leaf-file-name="evaluation.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/core/twnews/evaluation.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="794">
+            <state relative-caret-position="1152">
               <caret line="64" column="0" selection-start-line="64" selection-start-column="0" selection-end-line="64" selection-end-column="0" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="report.tex" pinned="false" current-in-tab="true">
+      <file leaf-file-name="report.tex" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/report/report.tex">
+          <provider selected="true" editor-type-id="LaTeXFileEditor">
+            <state />
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="wtmf.tex" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/report/tex/testing/wtmf.tex">
+          <provider selected="true" editor-type-id="LaTeXFileEditor">
+            <state />
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="conclusion.tex" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/report/tex/conclusion.tex">
           <provider selected="true" editor-type-id="LaTeXFileEditor">
             <state />
           </provider>
@@ -102,26 +114,6 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="eval_wtmfg" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/examples/eval_wtmfg">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="108">
-              <caret line="6" column="53" selection-start-line="6" selection-start-column="53" selection-end-line="6" selection-end-column="53" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="train_wtmf-g" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/examples/train_wtmf-g">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="306">
-              <caret line="17" column="104" selection-start-line="17" selection-start-column="104" selection-end-line="17" selection-end-column="104" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
     </leaf>
   </component>
   <component name="FileTemplateManagerImpl">
@@ -140,7 +132,6 @@
         <option value="$PROJECT_DIR$/report/style.sty" />
         <option value="$PROJECT_DIR$/report/tex/dataset.tex" />
         <option value="$PROJECT_DIR$/report/tex/random.tex" />
-        <option value="$PROJECT_DIR$/report/tex/conclusion.tex" />
         <option value="$PROJECT_DIR$/report/tex/review/nlp.tex" />
         <option value="$PROJECT_DIR$/core/twnews/dataset/texts.py" />
         <option value="$PROJECT_DIR$/core/twnews/model/wtmf_g.py" />
@@ -165,7 +156,6 @@
         <option value="$PROJECT_DIR$/report/tex/review.tex" />
         <option value="$PROJECT_DIR$/report/tex/testing.tex" />
         <option value="$PROJECT_DIR$/report/tex/review/wtmfg.tex" />
-        <option value="$PROJECT_DIR$/report/tex/testing/wtmf.tex" />
         <option value="$PROJECT_DIR$/report/tex/problem.tex" />
         <option value="$PROJECT_DIR$/report/tex/implementation.tex" />
         <option value="$PROJECT_DIR$/report/tex/testing/evaluation.tex" />
@@ -188,6 +178,8 @@
         <option value="$PROJECT_DIR$/examples/eval_wtmf" />
         <option value="$PROJECT_DIR$/report/tex/testing/result.tex" />
         <option value="$PROJECT_DIR$/report/report.tex" />
+        <option value="$PROJECT_DIR$/report/tex/testing/wtmf.tex" />
+        <option value="$PROJECT_DIR$/report/tex/conclusion.tex" />
       </list>
     </option>
   </component>
@@ -227,6 +219,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -419,7 +412,6 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scope" />
       <pane id="Scratches" />
     </panes>
   </component>
@@ -746,13 +738,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/core/twnews/dataset/texts.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-214">
-          <caret line="3" column="54" selection-start-line="3" selection-start-column="54" selection-end-line="3" selection-end-column="54" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/report/tex/title.tex">
       <provider selected="true" editor-type-id="LaTeXFileEditor">
         <state />
@@ -857,7 +842,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="252">
           <caret line="20" column="72" selection-start-line="20" selection-start-column="72" selection-end-line="20" selection-end-column="72" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -884,11 +868,6 @@
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
         </state>
       </provider>
-      <provider selected="true" editor-type-id="LaTeXFileEditor">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/report/tex/testing/wtmf.tex">
       <provider selected="true" editor-type-id="LaTeXFileEditor">
         <state />
       </provider>
@@ -947,7 +926,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
       <provider editor-type-id="LaTeXFileEditor">
@@ -958,7 +936,6 @@
       <provider editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
       <provider selected="true" editor-type-id="LaTeXFileEditor">
@@ -969,7 +946,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="792">
           <caret line="47" column="31" selection-start-line="44" selection-start-column="0" selection-end-line="47" selection-end-column="31" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1002,9 +978,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="468">
           <caret line="92" column="15" selection-start-line="92" selection-start-column="15" selection-end-line="92" selection-end-column="28" />
-          <folding>
-            <element signature="e#0#14#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1026,7 +999,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/core/twnews/evaluation.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="794">
+        <state relative-caret-position="1152">
           <caret line="64" column="0" selection-start-line="64" selection-start-column="0" selection-end-line="64" selection-end-column="0" />
           <folding />
         </state>
@@ -1055,7 +1028,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/core/twnews/main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-2955">
+        <state relative-caret-position="126">
           <caret line="7" column="31" selection-start-line="7" selection-start-column="31" selection-end-line="7" selection-end-column="31" />
           <folding />
         </state>
@@ -1063,7 +1036,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/report/tex/testing/wtmf-g.tex">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="650">
+        <state relative-caret-position="2070">
           <caret line="115" column="46" selection-start-line="115" selection-start-column="46" selection-end-line="115" selection-end-column="46" />
           <folding>
             <element signature="e#919#932#0" expanded="true" />
@@ -1080,6 +1053,16 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/report/report.tex">
+      <provider selected="true" editor-type-id="LaTeXFileEditor">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/report/tex/testing/wtmf.tex">
+      <provider selected="true" editor-type-id="LaTeXFileEditor">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/report/tex/conclusion.tex">
       <provider selected="true" editor-type-id="LaTeXFileEditor">
         <state />
       </provider>
