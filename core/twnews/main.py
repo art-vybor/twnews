@@ -115,20 +115,21 @@ def main():
             # for delta in [0.06, 0.08, 0.1, 0.12, 0.14]:
             #     for lmbd in [6, 8, 10, 12, 14]:
             #for wm in [1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0, 5.5, 6.0, 6.5, 7.5]:
-            for dim in [160, 170, 180, 190, 200, 210, 220, 230]:
-                    options = {
-                        'DIM': dim,
-                        'WM': 5,
-                        'ITERATIONS': 2,
-                        'DELTA': 0.06,
-                        'LAMBDA': 6
-                    }
-                    from copy import deepcopy
-                    options = deepcopy(options)
-                    options_list.append((options, dataset))
+            #for dim in [160, 170, 180, 190, 200, 210, 220, 230]:
+            options = {
+                'DIM': 220,
+                'WM': 5,
+                'ITERATIONS': 1,
+                'DELTA': 0.06,
+                'LAMBDA': 6
+            }
+            from copy import deepcopy
+            options = deepcopy(options)
+            options_list.append((options, dataset))
 
-            pool = Pool(5)
-            pool.map(wtmg_test, options_list)
+            wtmg_test((options, dataset))
+            # pool = Pool(8)
+            # pool.map(wtmg_test, options_list)
 
             #wtmg_test(options)
                     # model = WTMF_G(dataset, options=options)

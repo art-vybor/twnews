@@ -2,32 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="ffb373a2-2447-441d-a126-db864d7e684a" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/report/tex/dataset_building.tex" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/report/tex/dataset_building/data.tex" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/report/tex/dataset_building/dataset.tex" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/report/tex/dataset_building/linking.tex" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/report/tex/problem.tex" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/report/pictures/twnews_flowchart.png" afterPath="" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/report/tex/implementation/dataset.tex" afterPath="$PROJECT_DIR$/report/tex/dataset_building/marking.tex" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/report/tex/implementation/fetching.tex" afterPath="$PROJECT_DIR$/report/tex/dataset_building/fetching.tex" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/report/tex/review/evaluation.tex" afterPath="$PROJECT_DIR$/report/tex/testing/evaluation.tex" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/report/report.pdf" afterPath="$PROJECT_DIR$/report/report.pdf" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/twnews/main.py" afterPath="$PROJECT_DIR$/core/twnews/main.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/examples/eval_wtmfg" afterPath="$PROJECT_DIR$/examples/eval_wtmfg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/report/report.tex" afterPath="$PROJECT_DIR$/report/report.tex" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/report/tex/implementation.tex" afterPath="$PROJECT_DIR$/report/tex/implementation.tex" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/report/tex/implementation/architecture.tex" afterPath="$PROJECT_DIR$/report/tex/implementation/architecture.tex" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/report/tex/implementation/nlp.tex" afterPath="$PROJECT_DIR$/report/tex/implementation/nlp.tex" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/report/tex/implementation/optimization.tex" afterPath="$PROJECT_DIR$/report/tex/implementation/optimization.tex" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/report/tex/implementation/wtmf.tex" afterPath="$PROJECT_DIR$/report/tex/implementation/wtmf.tex" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/report/tex/implementation/wtmfg.tex" afterPath="$PROJECT_DIR$/report/tex/implementation/wtmfg.tex" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/report/tex/review.tex" afterPath="$PROJECT_DIR$/report/tex/review.tex" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/report/tex/review/approach.tex" afterPath="$PROJECT_DIR$/report/tex/review/approach.tex" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/report/tex/review/wtmfg.tex" afterPath="$PROJECT_DIR$/report/tex/review/wtmfg.tex" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/report/tex/testing.tex" afterPath="$PROJECT_DIR$/report/tex/testing.tex" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/examples/parse_eval.py" afterPath="$PROJECT_DIR$/examples/parse_eval.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/examples/train_wtmf-g" afterPath="$PROJECT_DIR$/examples/train_wtmf-g" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/report/tex/testing/wtmf-g.tex" afterPath="$PROJECT_DIR$/report/tex/testing/wtmf-g.tex" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/report/tex/testing/wtmf.tex" afterPath="$PROJECT_DIR$/report/tex/testing/wtmf.tex" />
     </list>
     <ignored path="twnews.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -49,21 +28,41 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="wtmf-g.tex" pinned="false" current-in-tab="true">
+      <file leaf-file-name="wtmf-g.tex" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/report/tex/testing/wtmf-g.tex">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="720">
-              <caret line="91" column="71" selection-start-line="91" selection-start-column="71" selection-end-line="91" selection-end-column="71" />
+            <state relative-caret-position="702">
+              <caret line="99" column="46" selection-start-line="99" selection-start-column="46" selection-end-line="99" selection-end-column="46" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="main.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="main.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/core/twnews/main.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="38">
-              <caret line="117" column="62" selection-start-line="117" selection-start-column="62" selection-end-line="117" selection-end-column="62" />
+            <state relative-caret-position="524">
+              <caret line="129" column="41" selection-start-line="129" selection-start-column="41" selection-end-line="129" selection-end-column="41" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="eval_wtmfg" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/examples/eval_wtmfg">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="108">
+              <caret line="6" column="53" selection-start-line="6" selection-start-column="53" selection-end-line="6" selection-end-column="53" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="train_wtmf-g" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/examples/train_wtmf-g">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="306">
+              <caret line="17" column="104" selection-start-line="17" selection-start-column="104" selection-end-line="17" selection-end-column="104" />
               <folding />
             </state>
           </provider>
@@ -107,13 +106,6 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="approach.tex" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/report/tex/review/approach.tex">
-          <provider selected="true" editor-type-id="LaTeXFileEditor">
-            <state />
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="fetching.tex" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/report/tex/dataset_building/fetching.tex">
           <provider selected="true" editor-type-id="LaTeXFileEditor">
@@ -148,7 +140,6 @@
         <option value="$PROJECT_DIR$/core/twnews/utils/sparse_math.py" />
         <option value="$PROJECT_DIR$/core/twnews/dataset/dataset.py" />
         <option value="$PROJECT_DIR$/core/twnews/dataset/text_to_text_relation.py" />
-        <option value="$PROJECT_DIR$/examples/train_wtmf-g" />
         <option value="$PROJECT_DIR$/examples/eval_wtmfg" />
         <option value="$PROJECT_DIR$/report/tex/review/evaluation.tex" />
         <option value="$PROJECT_DIR$/core/twnews/utils/text_processors.py" />
@@ -185,8 +176,9 @@
         <option value="$PROJECT_DIR$/report/tex/dataset_building/data.tex" />
         <option value="$PROJECT_DIR$/report/tex/dataset_building/marking.tex" />
         <option value="$PROJECT_DIR$/core/twnews/model/wtmf.py" />
-        <option value="$PROJECT_DIR$/core/twnews/main.py" />
         <option value="$PROJECT_DIR$/report/tex/testing/wtmf-g.tex" />
+        <option value="$PROJECT_DIR$/examples/train_wtmf-g" />
+        <option value="$PROJECT_DIR$/core/twnews/main.py" />
       </list>
     </option>
   </component>
@@ -282,99 +274,7 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="report" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="tex" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="twnews" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="twnews" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="report" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="tex" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="testing" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="twnews" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="twnews" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="report" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="tex" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="review" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="twnews" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="twnews" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="report" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="tex" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="implementation" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="twnews" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="twnews" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="report" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="tex" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="dataset_building" />
+              <option name="myItemId" value="examples" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -797,20 +697,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/core/twnews/evaluation.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="794">
-          <caret line="56" column="21" selection-start-line="56" selection-start-column="21" selection-end-line="56" selection-end-column="21" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/consumer/twnews_consumer/main.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/consumer/twnews_consumer/defaults.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="270">
@@ -1107,28 +993,44 @@
         <state relative-caret-position="468">
           <caret line="92" column="15" selection-start-line="92" selection-start-column="15" selection-end-line="92" selection-end-column="28" />
           <folding>
-            <element signature="e#0#14#0" expanded="true" />
+            <element signature="e#0#14#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/core/twnews/main.py">
+    <entry file="file://$PROJECT_DIR$/examples/eval_wtmfg">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="38">
-          <caret line="117" column="62" selection-start-line="117" selection-start-column="62" selection-end-line="117" selection-end-column="62" />
+        <state relative-caret-position="108">
+          <caret line="6" column="53" selection-start-line="6" selection-start-column="53" selection-end-line="6" selection-end-column="53" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/examples/train_wtmf-g">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="306">
+          <caret line="17" column="104" selection-start-line="17" selection-start-column="104" selection-end-line="17" selection-end-column="104" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/report/tex/testing/wtmf-g.tex">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="720">
-          <caret line="91" column="71" selection-start-line="91" selection-start-column="71" selection-end-line="91" selection-end-column="71" />
+        <state relative-caret-position="702">
+          <caret line="99" column="46" selection-start-line="99" selection-start-column="46" selection-end-line="99" selection-end-column="46" />
           <folding />
         </state>
       </provider>
       <provider editor-type-id="LaTeXFileEditor">
         <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/twnews/main.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="524">
+          <caret line="129" column="41" selection-start-line="129" selection-start-column="41" selection-end-line="129" selection-end-column="41" />
+          <folding />
+        </state>
       </provider>
     </entry>
   </component>

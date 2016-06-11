@@ -35,7 +35,7 @@ while idx < len(lines):
     dim, iterations, lmbd, wm, delta = header.split('_')[5:]
     RR = RR_line.split()[-1][:6]
     result[dim][iterations] = RR
-    #print dim, iterations, RR
+    print dim, iterations, RR
 
 for k, v in sorted(result[result.keys()[0]].items(), key=lambda x: int(x[0])):
     print '& ' + k,
