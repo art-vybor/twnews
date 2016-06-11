@@ -51,9 +51,17 @@ def ATOP(correct_news_idxs, total_news):
     return ATOPu_sum *1.0 / len(correct_news_idxs)
 
 
-def TOP10(correct_news_idxs):
-    TOP10_sum = 0.0
+def TOPI(correct_news_idxs, I):
+    TOPI_sum = 0.0
     for idx in correct_news_idxs:
-        if idx <= 10:
-            TOP10_sum += 1
-    return TOP10_sum * 1.0 / len(correct_news_idxs)
+        if idx <= I:
+            TOPI_sum += 1
+    return TOPI_sum * 1.0 / len(correct_news_idxs)
+
+
+def TOP1(correct_news_idxs):
+    return TOPI(correct_news_idxs, 1)
+
+
+def TOP3(correct_news_idxs):
+    return TOPI(correct_news_idxs, 3)

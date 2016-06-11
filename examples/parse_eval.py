@@ -21,7 +21,7 @@ TOP10 = 0.611935150052
 ------------------------------------
 """
 
-data = open('/home/avybornov/git/twnews/examples/out').read()
+data = open('/home/avybornov/git/twnews/examples/out1').read()
 lines = filter(None, data.splitlines())
 idx = 0
 
@@ -29,22 +29,32 @@ result = defaultdict(dict)
 
 while idx < len(lines):
     header = lines[idx]
-    idx += 6
+    idx += 7
     RR_line = lines[idx]
-    idx += 3
-    dim, iterations, lmbd, wm, delta = header.split('_')[5:]
+    idx += 1
+    TOP1_line = lines[idx]
+    idx += 1
+    TOP3_line = lines[idx]
+    idx += 2
+    #dataset =  header.split('_')[3:5]
+    print header
+    #dim, iterations, lmbd, wm, delta = header.split('_')[5:]
+    #dim, iterations, lmbd, wm = header.split('_')[4:]
     RR = RR_line.split()[-1][:6]
-    result[dim][iterations] = RR
-    print dim, iterations, RR
+    TOP1 = TOP1_line.split()[-1][:6]
+    TOP3 = TOP3_line.split()[-1][:6]
 
-for k, v in sorted(result[result.keys()[0]].items(), key=lambda x: int(x[0])):
-    print '& ' + k,
-print ' \\\\ \hline'
-for key, value in sorted(result.items(), key=lambda x: int(x[0])):
-    print key,
-    for k, v in sorted(value.items(), key=lambda x: int(x[0])):
-        print '& ' + v,
-    print ' \\\\ \hline'
+    #result[dim][iterations] = RR
+    print RR, TOP1, TOP3
 
-#print result
+# for k, v in sorted(result[result.keys()[0]].items(), key=lambda x: int(x[0])):
+#     print '& ' + k,
+# print ' \\\\ \hline'
+# for key, value in sorted(result.items(), key=lambda x: int(x[0])):
+#     print key,
+#     for k, v in sorted(value.items(), key=lambda x: int(x[0])):
+#         print '& ' + v,
+#     print ' \\\\ \hline'
+
+# #print result
         

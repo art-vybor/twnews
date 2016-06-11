@@ -5,7 +5,7 @@ import sys
 
 from twnews import defaults
 from twnews.dataset.dataset import Dataset
-from twnews.evaluation import RR, ATOP, TOP10
+from twnews.evaluation import RR, ATOP, TOP1, TOP3
 from twnews.model.wtmf import WTMF
 from twnews.model.wtmf_g import WTMF_G
 from twnews.recommend import recommend, set_compare_vector, dump_to_csv
@@ -210,9 +210,10 @@ def main():
         elif args.eval:
             log_and_print(logging.INFO, 'eval recommendation result')
             correct_news_idxs, total_news = load('correct_news_idxs')
-            print 'ATOP =', ATOP(correct_news_idxs, total_news)
+            #print 'ATOP =', ATOP(correct_news_idxs, total_news)
             print 'RR =', RR(correct_news_idxs)
-            print 'TOP10 =', TOP10(correct_news_idxs)
+            print 'TOP1 =', TOP1(correct_news_idxs)
+            print 'TOP3 =', TOP3(correct_news_idxs)
 
         elif args.dump_to_csv:
             log_and_print(logging.INFO, 'dump recommendation to csv')
