@@ -1,50 +1,80 @@
 import argparse
-
+import copy
+import defaults
 
 
 ARGUMENTS = {
-    'some_arg' : ''
+    'dataset': {'required': True, 'help': 'dataset name'},
+    'model': {'required': True, 'help': 'model name'},
+    'tweets': {'required': True, 'help': 'name of file with tweets'},
+    'dataset_applied': {'required': True, 'help': 'dataset_applied name'},
+    'tweets_applied': {'required': True, 'help': 'tweets_applied name'},
+
+    'input_dir': { 'default': defaults.TMP_FILE_DIRECTORY, 'help': 'input directory'},
+    'output_dir': {'default': defaults.TMP_FILE_DIRECTORY, 'help': 'output directory'},
+
+    'wtmf': {'action': 'store_true', 'help': 'wtmf method'},
+    'wtmf_g': {'action': 'store_true', 'help': 'wtmf_g method'},
+    'resolve': {'action': 'store_true', 'help': 'resolve urls from all tweets'},
+    'analyze': {'action': 'store_true', 'help': 'print stats of resolved urls'},
+    'recommend': {'action': 'store_true', 'help': 'build recomendation'},
+    'eval': {'action': 'store_true', 'help': 'eval recomendation results'},
+    'dump': {'action': 'store_true', 'help': 'dump recomendation result to file'},
+    'print': {'action': 'store_true', 'help': 'print recomendation result to stdout'},
+
+    'unique_words': {'default': 0.0, 'type': float, 'help': 'percent of unique words in tweet by corresponding news'},
+    'length': {'default': 10, 'type': int, 'help': 'num of tweets in sample'},
 }
+
+PARSER_KWARGS = {'formatter_class': argparse.ArgumentDefaultsHelpFormatter}
+
+
+def get_arg(name):
+    arg = copy.deepcopy(ARGUMENTS[name])
+    arg['dest'] = name
+    return arg
+
+
+def add_arg(group, name):
+    group.add_argument('--' + name, **get_arg(name))
+
+
+def add_args(group, names):
+    for name in names:
+        add_arg(group, name)
 
 
 def parse_args():
-    parser = argparse.ArgumentParser(description='twnews command line interface.', formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-    #subparsers = parser.add_subparsers(dest='subparser_name', help='sub-commands')
-    argument = {'dest':'--build_automatic', 'dest': 'automatic', 'action':'store_true', 'help':'build automatic dataset'}
+    parser = argparse.ArgumentParser(description='twnews command line interface', **PARSER_KWARGS)
+    subparsers = parser.add_subparsers(dest='subparser', help='sub-commands')
 
-    parser.add_argument(**argument)
+    random_tweets_parser = subparsers.add_parser(name='tweets_sample', help='get sample of random tweets', **PARSER_KWARGS)
+    add_args(random_tweets_parser, ['length'])
 
-    # dataset_parser = subparsers.add_parser('dataset', help='construct dataset')
-    # dataset_group = dataset_parser.add_mutually_exclusive_group(required=True)
-    # dataset_group.add_argument('--build_automatic', dest='automatic', action='store_true', help='build automatic dataset')
-    # dataset_group.add_argument('--build_manual', dest='manual', action='store_true', help='build manual dataset')
-    # dataset_parser.add_argument('--unique_words_in_tweet', dest='percent_of_unique_words', default=0.0, type=float, help='percent of unique words in tweet by corresponding news')
-    #
-    # train_parser = subparsers.add_parser('train', help='train model')
-    # train_group = train_parser.add_mutually_exclusive_group(required=True)
-    # train_group.add_argument('--wtmf', dest='wtmf', action='store_true', help='train wtmf model')
-    # train_group.add_argument('--wtmf_g', dest='wtmf_g', action='store_true', help='train wtmf-g model')
-    # train_group.add_argument('--tfidf', dest='tfidf', action='store_true', help='train tfidf model')
-    # train_parser.add_argument('--try_to_load', dest='try_to_load', action='store_true', help='try_to_load flag')
-    # train_parser.add_argument('--dataset_file', dest='dataset_file', help='load dataset from file')
-    #
-    # apply_parser = subparsers.add_parser('apply', help='apply model')
-    # apply_group = apply_parser.add_mutually_exclusive_group(required=True)
-    # apply_group.add_argument('--wtmf', dest='wtmf', action='store_true', help='apply wtmf model')
-    # apply_group.add_argument('--wtmf_g', dest='wtmf_g', action='store_true', help='apply wtmf-g model')
-    # apply_group.add_argument('--tfidf', dest='tfidf', action='store_true', help='apply tfidf model')
-    #
-    # resolve_parser = subparsers.add_parser('resolver', help='url resorlver')
-    # resolve_group = resolve_parser.add_mutually_exclusive_group(required=True)
-    # resolve_group.add_argument('--resolve', dest='resolve', action='store_true', help='resolve urls from all tweets')
-    # resolve_group.add_argument('--analyze', dest='analyze', action='store_true', help='print stats of resolved urls')
-    #
-    # recommend_parser = subparsers.add_parser('recommend', help='recommendation')
-    # reccomend_group = recommend_parser.add_mutually_exclusive_group(required=True)
-    # reccomend_group.add_argument('--recommend', dest='recommend', action='store_true', help='build recomendation')
-    # reccomend_group.add_argument('--recommend_by_model', dest='recommend_by_model', help='recommend on dev set for prebuilded model')
-    # reccomend_group.add_argument('--eval', dest='eval', action='store_true', help='eval recomendation result')
-    # reccomend_group.add_argument('--dump_to_csv', dest='dump_to_csv', action='store_true', help='dump recommendation to csv')
+    dataset_parser = subparsers.add_parser('build_dataset', help='construct dataset', **PARSER_KWARGS)
+    add_args(dataset_parser, ['unique_words', 'output_dir'])
+
+    resolve_parser = subparsers.add_parser('resolver', help='url resorlver', **PARSER_KWARGS)
+    resolve_group = resolve_parser.add_mutually_exclusive_group(required=True)
+    add_args(resolve_group, ['resolve', 'analyze'])
+
+    train_parser = subparsers.add_parser('train', help='train model', **PARSER_KWARGS)
+    train_group = train_parser.add_mutually_exclusive_group(required=True)
+    add_args(train_group, ['wtmf', 'wtmf_g'])
+    add_args(train_parser, ['dataset', 'input_dir', 'output_dir'])
+
+    apply_parser = subparsers.add_parser('apply', help='apply WTMF or WTMF-G model', **PARSER_KWARGS)
+    apply_group = apply_parser.add_mutually_exclusive_group(required=True)
+    add_args(apply_group, ['wtmf', 'wtmf_g'])
+    add_args(apply_parser, ['model', 'tweets', 'input_dir', 'output_dir'])
+
+    tfidf_parser = subparsers.add_parser(name='tfidf', help='apply tfidf', **PARSER_KWARGS)
+    add_args(tfidf_parser, ['dataset', 'tweets', 'input_dir', 'output_dir'])
+
+    recommendation_parser = subparsers.add_parser('recommendation', help='recommendation', **PARSER_KWARGS)
+    recommendation_group = recommendation_parser.add_mutually_exclusive_group(required=True)
+    add_args(recommendation_group, ['recommend', 'eval', 'dump', 'print'])
+    add_args(recommendation_parser, ['dataset_applied', 'tweets_applied', 'input_dir', 'output_dir'])
 
     args = parser.parse_args()
 

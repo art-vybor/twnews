@@ -2,9 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="ffb373a2-2447-441d-a126-db864d7e684a" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/core/twnews/cli.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/Makefile" afterPath="$PROJECT_DIR$/core/Makefile" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/twnews/cli.py" afterPath="$PROJECT_DIR$/core/twnews/cli.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/twnews/defaults.py" afterPath="$PROJECT_DIR$/core/twnews/defaults.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/twnews/main.py" afterPath="$PROJECT_DIR$/core/twnews/main.py" />
     </list>
     <ignored path="twnews.iws" />
@@ -30,8 +30,8 @@
       <file leaf-file-name="main.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/core/twnews/main.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-1996">
-              <caret line="23" column="0" selection-start-line="23" selection-start-column="0" selection-end-line="23" selection-end-column="0" />
+            <state relative-caret-position="270">
+              <caret line="119" column="41" selection-start-line="119" selection-start-column="41" selection-end-line="119" selection-end-column="41" />
               <folding>
                 <element signature="e#0#15#0" expanded="true" />
               </folding>
@@ -39,12 +39,44 @@
           </provider>
         </entry>
       </file>
+      <file leaf-file-name="wtmf_g.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/core/twnews/model/wtmf_g.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="72">
+              <caret line="10" column="54" selection-start-line="10" selection-start-column="54" selection-end-line="10" selection-end-column="54" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="defaults.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/core/twnews/defaults.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="486">
+              <caret line="28" column="25" selection-start-line="28" selection-start-column="25" selection-end-line="28" selection-end-column="25" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="dataset.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/core/twnews/dataset/dataset.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="830">
+              <caret line="71" column="29" selection-start-line="71" selection-start-column="29" selection-end-line="71" selection-end-column="29" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file leaf-file-name="cli.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/core/twnews/cli.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="270">
-              <caret line="15" column="0" selection-start-line="15" selection-start-column="0" selection-end-line="15" selection-end-column="0" />
-              <folding />
+            <state relative-caret-position="108">
+              <caret line="6" column="32" selection-start-line="6" selection-start-column="16" selection-end-line="6" selection-end-column="32" />
+              <folding>
+                <element signature="e#0#15#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -62,38 +94,8 @@
       <file leaf-file-name="argparse.py" pinned="false" current-in-tab="false">
         <entry file="file:///usr/lib/python2.7/argparse.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="264">
-              <caret line="1262" column="8" selection-start-line="1262" selection-start-column="8" selection-end-line="1262" selection-end-column="8" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="implementation.tex" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/report/tex/implementation.tex">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="0">
-              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="documentation.tex" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/report/tex/documentation.tex">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="0">
-              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="style.sty" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/report/style.sty">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="144">
-              <caret line="8" column="0" selection-start-line="8" selection-start-column="0" selection-end-line="8" selection-end-column="0" />
+            <state relative-caret-position="308">
+              <caret line="650" column="6" selection-start-line="650" selection-start-column="6" selection-end-line="650" selection-end-column="6" />
               <folding />
             </state>
           </provider>
@@ -148,7 +150,6 @@
         <option value="$PROJECT_DIR$/report/tex/review/evaluation.tex" />
         <option value="$PROJECT_DIR$/core/twnews/utils/text_processors.py" />
         <option value="$PROJECT_DIR$/report/tex/review/dataset.tex" />
-        <option value="$PROJECT_DIR$/core/twnews/defaults.py" />
         <option value="$PROJECT_DIR$/scripts/unshortener_test.py" />
         <option value="$PROJECT_DIR$/report/tex/implementation/dataset.tex" />
         <option value="$PROJECT_DIR$/report/tex/annotation.tex" />
@@ -186,9 +187,10 @@
         <option value="$PROJECT_DIR$/report/tex/implementation/architecture.tex" />
         <option value="$PROJECT_DIR$/report/tex/documentation.tex" />
         <option value="$PROJECT_DIR$/report/report.tex" />
-        <option value="$PROJECT_DIR$/core/twnews/main.py" />
         <option value="$PROJECT_DIR$/core/Makefile" />
         <option value="$PROJECT_DIR$/core/twnews/cli.py" />
+        <option value="$PROJECT_DIR$/core/twnews/defaults.py" />
+        <option value="$PROJECT_DIR$/core/twnews/main.py" />
       </list>
     </option>
   </component>
@@ -693,13 +695,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/consumer/twnews_consumer/twitter_fetcher/stream_listerner.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="72">
-          <caret line="10" column="38" selection-start-line="10" selection-start-column="28" selection-end-line="10" selection-end-column="38" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/consumer/twnews_consumer/rss_fetcher.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -735,13 +730,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/core/twnews/defaults.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="11" column="68" selection-start-line="11" selection-start-column="68" selection-end-line="11" selection-end-column="68" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/report/tex/annotation.tex">
       <provider selected="true" editor-type-id="LaTeXFileEditor">
         <state />
@@ -768,13 +756,6 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/report/tex/random.tex" />
-    <entry file="file://$PROJECT_DIR$/core/twnews/model/wtmf_g.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="252">
-          <caret line="20" column="72" selection-start-line="20" selection-start-column="72" selection-end-line="20" selection-end-column="72" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/report/report.aux">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="210">
@@ -1036,14 +1017,6 @@
         <state />
       </provider>
     </entry>
-    <entry file="file:///usr/lib/python2.7/argparse.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="264">
-          <caret line="1262" column="8" selection-start-line="1262" selection-start-column="8" selection-end-line="1262" selection-end-column="8" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/core/Makefile">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="234">
@@ -1052,18 +1025,52 @@
         </state>
       </provider>
     </entry>
+    <entry file="file:///usr/lib/python2.7/argparse.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="308">
+          <caret line="650" column="6" selection-start-line="650" selection-start-column="6" selection-end-line="650" selection-end-column="6" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/twnews/dataset/dataset.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="830">
+          <caret line="71" column="29" selection-start-line="71" selection-start-column="29" selection-end-line="71" selection-end-column="29" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/core/twnews/cli.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="270">
-          <caret line="15" column="0" selection-start-line="15" selection-start-column="0" selection-end-line="15" selection-end-column="0" />
+        <state relative-caret-position="108">
+          <caret line="6" column="32" selection-start-line="6" selection-start-column="16" selection-end-line="6" selection-end-column="32" />
+          <folding>
+            <element signature="e#0#15#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/twnews/defaults.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="486">
+          <caret line="28" column="25" selection-start-line="28" selection-start-column="25" selection-end-line="28" selection-end-column="25" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/twnews/model/wtmf_g.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="72">
+          <caret line="10" column="54" selection-start-line="10" selection-start-column="54" selection-end-line="10" selection-end-column="54" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/core/twnews/main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1996">
-          <caret line="23" column="0" selection-start-line="23" selection-start-column="0" selection-end-line="23" selection-end-column="0" />
+        <state relative-caret-position="270">
+          <caret line="119" column="41" selection-start-line="119" selection-start-column="41" selection-end-line="119" selection-end-column="41" />
           <folding>
             <element signature="e#0#15#0" expanded="true" />
           </folding>

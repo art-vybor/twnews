@@ -23,89 +23,66 @@ logging.basicConfig(
     datefmt="%Y-%m-%d %H:%M:%S")
 
 
-
-def wtmg_test((options, dataset)):
-    model = WTMF_G(dataset, options=options)
-    model.build()
-
 def main():
     args = parse_args()
-    import sys
-    sys.exit(0)
+
     logging.info('--------------- Twnews started ------------------')
 
-    if args.subparser_name == 'dataset':
-        log_and_print(logging.INFO, 'dataset builder')
+    if args.subparser == 'tweets_sample':
+        log_and_print(logging.INFO, 'get sample of tweets')
+        length = args.length
+        raise NotImplementedError()
 
-        if args.automatic or args.manual:
-            dataset = None
-            if args.automatic:
-                log_and_print(logging.INFO, 'building automatic dataset')
-                dataset = Dataset(fraction=1, percent_of_unique_words=args.percent_of_unique_words)
-            elif args.manual:
-                log_and_print(logging.INFO, 'building manual dataset')
-                manual_tweets = load('manual_tweets')
-                dataset = Dataset(fraction=1, init_by_prepared_tweets=manual_tweets, percent_of_unique_words=args.percent_of_unique_words)
+    elif args.subparser == 'dataset':
+        log_and_print(logging.INFO, 'building automatic dataset')
+        output_dir = args.output_dir
+        unique_words = args.unique_words
 
-            dataset.init_text_to_text_links()
+        dataset = Dataset(fraction=1, percent_of_unique_words=unique_words)
+        dataset.init_text_to_text_links()
 
-            dump(dataset, dataset.name())
-            dump(dataset, 'dataset')
+        log_and_print(logging.INFO, 'Dataset {NAME} builded'.format(NAME=dataset.name()))
+        dump(dataset, dataset.name())
 
-    elif args.subparser_name == 'train':
+    elif args.subparser_name == 'resolver':
+        log_and_print(logging.INFO, 'url resolver')
+
+        if args.resolve:
+            log_and_print(logging.INFO, 'resolve all urls')
+            resolve(sample_size=None)
+            log_and_print(logging.INFO, 'all urls resolved')
+        elif args.analyze:
+            log_and_print(logging.INFO, 'stats of resolved urls')
+            url_analyse()
+
+    elif args.subparser == 'train':
         log_and_print(logging.INFO, 'train model')
+        input_dir = args.input_dir
+        output_dir = args.output_dir
+        dataset_name = args.dataset
 
-        if args.dataset_file:
-            dirname, filename = os.path.dirname(args.dataset_file), os.path.basename(args.dataset_file)
-            dataset = load(filename, dirname)
-        else:
-            dataset = load('dataset')
+        dataset = load(dataset_name, input_dir)
 
         if args.wtmf:
-            log_and_print(logging.INFO, 'train wtmf')
-
             model = WTMF(dataset)
-            model.build()
-
         elif args.wtmf_g:
-            log_and_print(logging.INFO, 'train wtmf-g')
-            options_list = []
-            from multiprocessing import Pool
-            #
-            # for delta in [0.06, 0.08, 0.1, 0.12, 0.14]:
-            #     for lmbd in [6, 8, 10, 12, 14]:
-            #for wm in [1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0, 5.5, 6.0, 6.5, 7.5]:
-            #for dim in [160, 170, 180, 190, 200, 210, 220, 230]:
-            options = {
-                'DIM': 220,
-                'WM': 5,
-                'ITERATIONS': 1,
-                'DELTA': 0.06,
-                'LAMBDA': 6
-            }
-            from copy import deepcopy
-            options = deepcopy(options)
-            options_list.append((options, dataset))
+            model = WTMF_G(dataset)
 
-            wtmg_test((options, dataset))
-            # pool = Pool(8)
-            # pool.map(wtmg_test, options_list)
+        log_and_print(logging.INFO, 'train {NAME} model'.format(NAME=model.name()))
+        model.build()
+        log_and_print(logging.INFO, 'model {NAME} builded'.format(NAME=model.name()))
 
-            #wtmg_test(options)
-                    # model = WTMF_G(dataset, options=options)
-                    # model.build()
-
-        elif args.tfidf:
-            log_and_print(logging.INFO, 'apply tfidf model to dataset')
-            news_num = dataset.news.length()
-            documents = dataset.get_documents()
-
-            set_compare_vector(documents, dataset.tf_idf_matrix)
-            news, tweets = documents[:news_num], documents[news_num:]
-            dump((news, tweets), 'dataset_applied')
-            #dump(tweets, 'dataset_tweets_applied')
+        # elif args.tfidf:
+        #     log_and_print(logging.INFO, 'apply tfidf model to dataset')
+        #     news_num = dataset.news.length()
+        #     documents = dataset.get_documents()
+        #
+        #     set_compare_vector(documents, dataset.tf_idf_matrix)
+        #     news, tweets = documents[:news_num], documents[news_num:]
+        #     dump((news, tweets), 'dataset_applied')
+        #     #dump(tweets, 'dataset_tweets_applied')
     #
-    # elif args.subparser_name == 'apply':
+    # elif args.subparser == 'apply':
     #     log_and_print(logging.INFO, 'apply model')
     #     corpus, tf_idf_matrix = load('tf_idf_corpus')
     #     dataset = load('dataset')
@@ -135,19 +112,9 @@ def main():
     #     set_compare_vector(tweets, result_matrix)
     #     dump(tweets, 'tweets_applied')
 
-    elif args.subparser_name == 'resolver':
-        log_and_print(logging.INFO, 'url resolver')
 
-        if args.resolve:
-            log_and_print(logging.INFO, 'resolve all urls')
-            resolve(sample_size=None)
-        elif args.analyze:
-            log_and_print(logging.INFO, 'stats of resolved urls')
-            url_analyse()
 
-    elif args.subparser_name == 'recommend':
-        log_and_print(logging.INFO, 'recommendation')
-
+    elif args.subparser == 'recommendation':
         if args.recommend:
             log_and_print(logging.INFO, 'recommend tweets to news')
             news, tweets = load('dataset_applied')
@@ -181,19 +148,19 @@ def main():
             filepath = os.path.join(defaults.TMP_FILE_DIRECTORY, 'recommendation.csv')
             dump_to_csv(recommendation, filepath)
 
-
+#
 # random_tweets:
 #     out: file_with_texts
-
+#
 # resolver:
 #     resolve_urls
-
+#
 #     analyze_urls
-    
+#
 # dataset
 #     automatic
 #         out: dataset_auto_1000_2000
-
+#
 # traing:
 #     wtmf
 #         in: dataset
@@ -204,18 +171,18 @@ def main():
 #     tfidf:
 #         in: dataset
 #         out: dataset_applied
-
+#
 # apply:
 #     wtmf:
-#         in: model, file_with_tweets 
+#         in: model, file_with_tweets
 #         out: tweets_applied
 #     wtmf-g:
-#         in: model, file_with_tweets 
+#         in: model, file_with_tweets
 #         out: tweets_applied
 #     tfidf:
 #         in: file_with_tweets, dataset
 #         out: tweets_applied
-
+#
 # recommendation:
 #     build:
 #         in: dataset_applied tweets_applied

@@ -27,9 +27,9 @@ DEFAULT_WTMF_OPTIONS = {
 }
 
 DEFAULT_WTMFG_OPTIONS = {
-    'DIM': 90,
-    'WM': 0.95,
+    'DIM': 220,
+    'WM': 5,
     'ITERATIONS': 1,
-    'LAMBDA': 1.95,
-    'DELTA': 0.1
+    'DELTA': 0.06,
+    'LAMBDA': 6
 }
