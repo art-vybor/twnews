@@ -180,3 +180,56 @@ def main():
             recommendation = load('recommendation')
             filepath = os.path.join(defaults.TMP_FILE_DIRECTORY, 'recommendation.csv')
             dump_to_csv(recommendation, filepath)
+
+
+# random_tweets:
+#     out: file_with_texts
+
+# resolver:
+#     resolve_urls
+
+#     analyze_urls
+    
+# dataset
+#     automatic
+#         out: dataset_auto_1000_2000
+
+# traing:
+#     wtmf
+#         in: dataset
+#         out: model, dataset_applied
+#     wtmf-g
+#         in: dataset
+#         out: model, dataset_applied
+#     tfidf:
+#         in: dataset
+#         out: dataset_applied
+
+# apply:
+#     wtmf:
+#         in: model, file_with_tweets 
+#         out: tweets_applied
+#     wtmf-g:
+#         in: model, file_with_tweets 
+#         out: tweets_applied
+#     tfidf:
+#         in: file_with_tweets, dataset
+#         out: tweets_applied
+
+# recommendation:
+#     build:
+#         in: dataset_applied tweets_applied
+#         out: recommendation
+#     eval:
+#         in: recommendation
+#         out: print metrics
+#     dump:
+#         in: recommendation
+#         out: text file
+
+
+
+
+
+
+
