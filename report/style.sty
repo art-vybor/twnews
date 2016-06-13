@@ -2,10 +2,9 @@
 
 \renewcommand{\baselinestretch}{1.5}
 
-% Рукопись оформлена в соответствии с правилами оформления 
-% электронной версии авторского оригинала, 
-% принятыми в Издательстве МГТУ им. Н.Э. Баумана.
-%https://habrahabr.ru/post/144648/
+% Рукопись оформлена в соответствии с ГОСТом
+%    https://habrahabr.ru/post/144648/
+%    https://raw.githubusercontent.com/protsenkovi/latex-ssau-gost-style/master/mutavel.sty
 
 \usepackage{geometry} % А4, примерно 28-31 строк(а) на странице 
     \geometry{paper=a4paper}
@@ -90,6 +89,10 @@
 \renewcommand{\fnum@figure}[1]{Рисунок~\thefigure~---~\sffamily}
 \makeatother
 
+\makeatletter
+\renewcommand{\fnum@table}[1]{Таблица~\thetable~---~\sffamily}
+\makeatother
+
 \usepackage{array}
 
 % перенос ячеек в таблице
@@ -97,3 +100,47 @@
    \begin{tabular}[#1]{@{}c@{}}#2\end{tabular}}
 
  \usepackage{multirow}
+
+\usepackage{lastpage}
+
+
+%%% Счётчики для страницы реферата. Подсчёт общего количества элементов: иллюстраций, таблиц, приложений, страниц, источников.
+%%% (Источник http://habrahabr.ru/post/144648/)
+%%% Объявление счётчиков.
+\newcounter{totpages}
+\newcounter{totfigures}
+\newcounter{tottables}
+\newcounter{totreferences}
+%%% Корректировка некоторых счётчиков перед записью.
+%%% Запись всех необходимых значений в .aux файл в конце документа.
+\makeatletter
+    \AtEndDocument{
+      \clearpage
+      \addtocounter{page}{-1}
+      \addtocounter{totreferences}{-1}
+      \addtocounter{totpages}{\value{page}}
+      \addtocounter{totfigures}{\value{figure}}
+      \addtocounter{tottables}{\value{table}}
+      \immediate\write\@mainaux{
+        \string\gdef\string\totpages{\number\value{totpages}}
+        \string\gdef\string\totfig{\number\value{totfigures}}
+        \string\gdef\string\tottab{\number\value{tottables}}
+        \string\gdef\string\totbibref{\number\value{totreferences}}
+      }
+    }
+\makeatother
+%%% Объявление глобальных переменных. Необходимы при отсутствии файла .aux для компиляции без ошибок.
+\gdef\totpages{??}
+\gdef\totfig{??}
+\gdef\tottab{??}
+\gdef\totbibref{??}
+
+
+%%%
+%%% Работа с библиографическим списком.
+%%%
+%%% Формат списка источников. По-умолчанию <<[1]>>, в стандарте <<1.>>.
+%%% Увеличение счётчика количества источников для команды \totbibref.
+\makeatletter
+\renewcommand{\@biblabel}[1]{\stepcounter{totreferences}#1.\hfill}
+\makeatother
