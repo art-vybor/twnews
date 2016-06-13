@@ -6,20 +6,20 @@
 %    https://habrahabr.ru/post/144648/
 %    https://raw.githubusercontent.com/protsenkovi/latex-ssau-gost-style/master/mutavel.sty
 
-\usepackage{geometry} % А4, примерно 28-31 строк(а) на странице 
+\usepackage{geometry} % А4, примерно 28-31 строк(а) на странице
     \geometry{paper=a4paper}
     \geometry{includehead=false} % Нет верх. колонтитула
     \geometry{includefoot=true}  % Есть номер страницы
     \geometry{bindingoffset=0mm} % Переплет    : 0  мм
     \geometry{top=20mm}          % Поле верхнее: 20 мм
-    \geometry{bottom=20mm}       % Поле нижнее : 25 мм 
+    \geometry{bottom=20mm}       % Поле нижнее : 25 мм
     \geometry{left=20mm}         % Поле левое  : 25 мм
     \geometry{right=10mm}        % Поле правое : 25 мм
     \geometry{headsep=10mm}  % От края до верх. колонтитула: 10 мм
-    \geometry{footskip=20mm} % От края до нижн. колонтитула: 20 мм 
+    \geometry{footskip=20mm} % От края до нижн. колонтитула: 20 мм
 
 \usepackage{cmap}
-\usepackage[T2A]{fontenc} 
+\usepackage[T2A]{fontenc}
 \usepackage[utf8x]{inputenc}
 \usepackage[english,russian]{babel}
 \usepackage{misccorr}
@@ -31,10 +31,10 @@
 
 %\usepackage{cm-super} %человеческий рендер русских шрифтов
 
-\setlength{\parindent}{1.27cm}  % Абзацный отступ: 1,25 см
+\setlength{\parindent}{1.27cm}  % Абзацный отступ: 1,27 см
 \usepackage{indentfirst}        % 1-й абзац имеет отступ
 
-\usepackage{setspace}   
+\usepackage{setspace}
 
 \onehalfspacing % Полуторный интервал между строками
 
@@ -47,9 +47,9 @@
 
 \usepackage{fancyvrb}
 
-\usepackage[nounderscore]{syntax} %для поддержки рбнф
+%\usepackage[nounderscore]{syntax} %для поддержки рбнф
 %\setlength{\grammarindent}{12em} %устанавливает нужный отступ перед ::=
-\setlength{\grammarparsep}{6pt plus 1pt minus 1pt}  %сокращает расстояние между правилами
+%\setlength{\grammarparsep}{6pt plus 1pt minus 1pt}  %сокращает расстояние между правилами
 
 
 \usepackage[pdftex]{graphicx}  % поддержка картинок для пдф
@@ -58,9 +58,18 @@
 \usepackage{graphicx}
 %\DeclareGraphicsExtensions{.jpg,.png}
 
-\renewcommand{\labelenumi}{\theenumi.} %меняет вид нумерованного списка
+%\renewcommand{\labelenumi}{\theenumi.} %меняет вид нумерованного списка
 
-\usepackage{perpage} %нумерация сносок 
+\usepackage{enumitem}
+\makeatletter
+    \AddEnumerateCounter{\asbuk}{\@asbuk}{м)}
+\makeatother
+\setlist{nolistsep}
+\renewcommand{\labelitemi}{-}
+\renewcommand{\labelenumi}{\asbuk{enumi})}
+\renewcommand{\labelenumii}{\arabic{enumii})}
+
+\usepackage{perpage} %нумерация сносок
 \MakePerPage{footnote}
 
 \usepackage[all]{xy} %поддержка графов
@@ -84,14 +93,21 @@
 \usepackage{rotating}
 \newcommand*\rot{\rotatebox{90}}
 
+%\usepackage[nooneline]{caption}
+%\captionsetup[table]{justification=raggedright} %
+
 \usepackage{ccaption}%изменяет подпись к рисунку
-\makeatletter 
+\makeatletter
 \renewcommand{\fnum@figure}[1]{Рисунок~\thefigure~---~\sffamily}
 \makeatother
 
 \makeatletter
 \renewcommand{\fnum@table}[1]{Таблица~\thetable~---~\sffamily}
+\captionstyle{\raggedright}
 \makeatother
+
+%\captionsetup[table]{singlelinecheck=off, justification=raggedright}
+
 
 \usepackage{array}
 
@@ -144,3 +160,116 @@
 \makeatletter
 \renewcommand{\@biblabel}[1]{\stepcounter{totreferences}#1.\hfill}
 \makeatother
+
+\usepackage{calc}
+\RequirePackage{misccorr}
+
+%%% Пакет для настройки оформления стиля заголовков.
+\usepackage{titlesec}
+\usepackage{hyphenat}
+%%%
+%%% 4.1.3 Основную часть документа следует делить на разделы (\section), подразделы (\subsection) и пункты (\subsubsection).
+%%% Пункты, при необходиомсти делятся на подпункты (\paragraph). Разделы, подразделы, пункты и подпункты следует нумеровать
+%%% последовательно арабскими цифрами и записывать с абзацного отступа. Разделы должны иметь порядковую нумерацию в пределах
+%%% всего текста, за исключением приложений.
+%%%
+%%% Номер подраздела или пункта включает номера раздела и подраздела или пункта, разделённые точкой. Номер подпункта включает номера
+%%% раздела, подраздела, пункта и подпункта, разделённые точкой. После последней цифры номера раздела, подраздела, пункта и подпункта
+%%% точка не ставится.
+%%% Установка используемой далее переменной \normalparindent в величину абзацного отступа, в начале документа.
+\newlength{\normalparindent}
+\AtBeginDocument{\setlength{\normalparindent}{\parindent}}
+%%%
+%%% 4.1.10 Каждый раздел учебного текстового документа следует начинать с новой страницы.
+%%% Команда \clearpage заставляет все отложенные до неё фигуры, таблицы, листинги отрисоваться, \newpage - команда начала новой страницы.
+\newcommand{\sectionbreak}{\clearpage\newpage}
+%%%
+%%% 4.1.9 Разделы и подразделы должны иметь заголовки. Пункты и подпункты, как правило, заголовков не имеют. Заголовки должны чётко и
+%%% кратко отражать содержание разделов и подразделов. Заголовки начинаются с прописной буквы, без точки в конце (ответственность
+%%% оформителя), не подчеркиваются. Переносы слов в заголовках не допускаются. ...
+%%%
+%%% Latex по-умолчанию нумерует разделы, подразделы, пункты арабскими цифрами. Выполняются требования абзаца о разделении номеров точкой.
+%%% Ниже добавляются: абзацные отступы, запрещается перенос слов, новая строка начинается под первым словом предыдущей.
+\newcommand{\sectionFormat}[2][0em]{
+         \begin{minipage}[t]{\textwidth-\normalparindent-\widthof{\quad#1}}   % \quad is hardcoded value for separator between number and body.
+             %\tolerance=10000                                                 % Длинные слова не вылезут за пределы границы отступа.
+             \raggedright                                                     % Сбивка слов влево. По-умолчанию слова растягиваются по всей строке,
+                                                                              % равномерно заполняя пространство между словами пробелами.
+             \nohyphens{#2}                                                  % Запрет переносов.
+         \end{minipage}}
+
+
+%%% Изменяется формат для раздела. Шрифт: \Large, жирный.
+\titleformat{name=\section}[block]
+            {\Large\bfseries}                        % Стиль.
+            {\hspace*{\normalparindent}\thesection}  % Запись с абзацного отступа.
+            {0em}                                    % Без дополнительного пробела между номером и текстом заголовка.
+            {\sectionFormat[\thesection]}
+%%% Изменяется формат для подраздела.
+\titleformat{name=\subsection}[block]
+    {\large\bfseries}
+    {\hspace*{\normalparindent}\thesubsection}
+    {0em}
+    {\sectionFormat[\thesubsection]}
+%%% Изменяется формат для пунтка.
+\titleformat{name=\subsubsection}[block]
+    {\large\bfseries}
+    {\hspace*{\normalparindent}\thesubsubsection}
+    {0em}
+    {\sectionFormat[\thesubsubsection]}
+
+%%%
+%%% Оформление содержания.
+%%%
+\RequirePackage{tocloft}
+%%%
+%%% Центрирование заголовка содержания, стиль: размер шрифта \Large, жирный.
+\renewcommand{\cfttoctitlefont}{~\hfill\Large\bfseries\MakeUppercase}
+\renewcommand{\cftaftertoctitle}{\hfill~}
+%%%
+%%% 4.1.1 Структурными элементами учебного текстового документа в порядке их расположения в документе являются:
+%%% титульный лист, задание(при наличии), реферат, содержание, определения/обозначения/сокращения(при наличии),
+%%% введение, основная часть, заключение, список использованных источников(при наличии), приложения(при наличии).
+%%%
+%%% 4.1.2 .. Заголовки структурных элементов следует располагать в середине строки без точки в конце и печатать прописными буквами,
+%%% не подчёркивая, например ВВЕДЕНИЕ, ЗАКЛЮЧЕНИЕ.
+%%%
+%%% 5.4.2 (В содержании) Введение, заключение, список использованных источников и приложения не нумеруются как разделы.
+\newcommand{\structureElementFormat}[1]{
+    \tolerance=10000
+    \nohyphens{#1}
+}
+\titleformat{name=\section, numberless=true}[block] % [shape]
+    {\Large\bfseries}                               % format
+    {}                                              % label
+    {0em}                                           % separation
+    {}                                              % before section text.
+%%% Структурный элемент: реферат.
+%%% В тексте прописными, в центре страницы, жирным, не добавляется в содержание.
+\newcommand{\summarytitle}{
+    \section*{\hfillАННОТАЦИЯ\hfill}
+}
+%%% Структурный элемент: введение.
+%%% В тексте прописными, в центре страницы, жирным, добавляется в содержание, в содержании с большой буквы.
+\newcommand{\introductiontitle}{
+    \section*{\hfillВВЕДЕНИЕ\hfill}
+    \addcontentsline{toc}{section}{Введение}  % Добавление в toc.
+}
+
+%%% Структурный элемент: заключение.
+%%% В тексте прописными,в центре страницы, жирным, добавляется в содержание, в содержании с большой буквы.
+\newcommand{\conclusiontitle}{
+    \section*{\hfillЗАКЛЮЧЕНИЕ\hfill}
+    \addcontentsline{toc}{section}{Заключение} % Добавление в toc.
+}
+
+%%% Структурный элемент: определения.
+%%% В тексте прописными,в центре страницы, жирным, добавляется в содержание, в содержании с большой буквы.
+\newcommand{\vocabularytitle}{
+    \section*{\hfillОПРЕДЕЛЕНИЯ\hfill}
+    \addcontentsline{toc}{section}{Определения} % Добавление в toc.
+}
+
+%%% Заголовок списка использованных источников. По-умолчанию <<Список литературы>>.
+%%% Заголовок центрируется, также добавляется \phantomsection для правильной ссылки (для hyperref).
+\AtBeginDocument{\renewcommand{\refname}{\large\hfillСПИСОК ИСПОЛЬЗОВАННЫХ ИСТОЧНИКОВ\hfill\phantomsection\addcontentsline{toc}{section}{Список использованных источников}}}
