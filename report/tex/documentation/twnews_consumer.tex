@@ -1,0 +1,89 @@
+\subsection{Пакет twnews\_consumer}
+    Исходный код приложения twnews\_consumer расположен в папке \lstinline{consumer} в корне репозитория.
+    Приложение позволяет выкачивать и сохранять твиты и новости в формате, удобном для дальнейшей работы пакета twnews.
+
+    \subsubsection{Конфигурирование}
+        Конфигурирование пакета twnews\_consumer производится в файле \lstinline{twnews_consumer/defaults.py}.
+        После изменения параметров, необходимо переустановить пакет.
+        Описание задаваемых параметров находится в таблице~\ref{tabular:consumer_config}.
+
+        \begin{table}[h!]
+            \small
+            \caption{Описание конфигурации пакета twnews\_consumer \bigskip}
+            \center
+
+            %\begin{sideways}
+            \label{tabular:consumer_config}
+            %\begin{tabular}{|m{0.18cm}|m{0.18cm}|m{0.18cm}|@{}m{0pt}@{}}
+            \begin{tabular}{|c|c|m{5cm}|}
+                \hline
+                \bf{Имя параметра} & \bf{Пример значения} & \bf{Описание} \\ \hline
+
+                LOG\_FILE & \begin{lstlisting}[basicstyle=\small]
+'/var/log/twnews_consumer.log'
+                \end{lstlisting} & Путь до файла с логом \\ \hline
+
+                LOG\_LEVEL & \begin{lstlisting}[basicstyle=\small]
+logging.INFO
+                \end{lstlisting} & Уровень подробности лога \\ \hline
+
+                TWNEWS\_DATA\_PATH & \begin{lstlisting}[basicstyle=\small]
+'/home/user/twnews_data/'
+                \end{lstlisting} & Путь до директории, в которую будут сохранены данные \\ \hline
+
+                RSS\_FEEDS &
+                \begin{lstlisting}[basicstyle=\small]
+{
+'lenta': {'rss_url':
+'http://lenta.ru/rss'},
+'rt': {'rss_url':
+'https://russian.rt.com/rss'},
+}
+                \end{lstlisting} & Новостные источники, которые требуется выкачать \\ \hline
+
+                TWEETS\_LANGUAGES & \begin{lstlisting}[basicstyle=\small]
+['ru']
+                \end{lstlisting} & Список языков, твиты с использованием которых выкачиваются из твиттера \\ \hline
+            \end{tabular}
+            %\end{sideways}
+        \end{table}
+
+    \subsubsection{Установка}
+        Для установки приложения, необходимо зайти в папку \lstinline{consumer} с исходным кодом пакет twnews\_consumer, находящуюся в корне репозитория, и выполнить команду:
+
+        \begin{lstlisting}
+$ make install
+        \end{lstlisting}
+        Во время установки, с целью распаковки секретного ключа, необходимого для работы с API твиттера, требуется ввести секретный пароль.
+
+    \subsubsection{Использование}
+        Результатом работы пакета является множество новостей и твитов, выкаченных за время работы программы.
+        Для новостей сохраняются заголовок, краткое описание, ссылка на новость, время публикации и имя ресурса, на котором новость была опубликована.
+        Для твитов сохраняются текст, численный уникальный идентификатор ,время публикации, информацию о хэштегах и ссылках и является ли он ретвитом.
+
+        Приложение обладает интерфейсом командной строки.
+        Для старта скачивания новостей, необходимо запустить команду:
+        \begin{lstlisting}
+$ twnews_consumer download --news
+        \end{lstlisting}
+        Для старта скачивания сообщения твиттера, необходимо запустить команду:
+        \begin{lstlisting}
+$ twnews_consumer download --tweets
+        \end{lstlisting}
+        Для завершения скачивания, необходимо использовать сочетание клавиш <<Ctrl-C>>.
+        Приложение обработает прерывание и корректно завершится.
+
+        Приложение записывает вспомогательную информацию о своём статусе и обработанных ошибках в файл лога.
+        Поэтому из файла лога можно узнать актуальную информацию о работе приложения. Пример:
+        \begin{lstlisting}
+$ tail -f  /var/log/twnews_consumer.log
+2016-04-05 11:37:14: RSS> Start consume rss feeds
+2016-04-05 11:37:17: TWITTER> Starting write to /mnt/yandex.disk/twnews_data/logs/tweets.shelve
+2016-04-05 11:37:17: TWITTER> Starting to consume twitter
+2016-04-05 12:33:32: TWITTER> ('Connection broken: IncompleteRead(0 bytes read, 512 more expected)', IncompleteRead(0 bytes read, 512 more expected))
+        \end{lstlisting}
+
+        Приложение twnews\_consumer устойчиво к ошибкам, возникающим при получении новостей и твитов,
+        востановление работы заключается в перезапуске скачивания информации.
+        Ввиду этого приложение реализует скачивание данных согласно семантики \textit{at-most-once}~---~
+        гарантируется отсутствие дублей, но допускается потеря данных.

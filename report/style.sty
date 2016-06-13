@@ -67,10 +67,13 @@
 \usepackage[all]{xy} %поддержка графов
 
 \usepackage{listings} %листинги
+\usepackage{textcomp}
+%\lstset{language=Python,}
 \renewcommand{\lstlistingname}{Листинг}
 \lstset{
   basicstyle=\small,
-  breaklines=true
+  breaklines=true,
+  upquote=true
   }
 
 \usepackage{url}
@@ -86,6 +89,8 @@
 \makeatletter 
 \renewcommand{\fnum@figure}[1]{Рисунок~\thefigure~---~\sffamily}
 \makeatother
+
+\usepackage{array}
 
 % перенос ячеек в таблице
 \newcommand{\specialcell}[2][c]{%

@@ -1,0 +1,330 @@
+\subsection{Пакет twnews}
+    Пакет twnews располагается в папке \lstinline{core} в корне репозитория.
+    Приложение позволяет обрабатывать данные полученные с помощью консьюмера с целью автоматического установления связей
+    между твитами и новостными статьями и оценки качества полученного решения.
+
+    \subsubsection{Конфигурирование}
+        Конфигурирование пакета twnews производится в файле \lstinline{twnews/defaults.py}.
+        После изменения параметров, необходимо переустановить пакет.
+        Описание задаваемых параметров находится в таблице~\ref{tabular:core_config}.
+        \begin{table}[h!]
+            \small
+            \caption{Описание конфигурации пакета twnews \bigskip}
+            \center
+
+            \label{tabular:core_config}
+            \begin{tabular}{|c|c|m{5cm}|}
+                \hline
+                \bf{Имя параметра} & \bf{Пример значения} & \bf{Описание} \\ \hline
+
+                LOG\_FILE & \begin{lstlisting}[basicstyle=\small]
+'/var/log/twnews.log'
+                \end{lstlisting} & Путь до файла с логом \\ \hline
+
+                LOG\_LEVEL & \begin{lstlisting}[basicstyle=\small]
+logging.INFO
+                \end{lstlisting} & Уровень подробности лога \\ \hline
+
+                TWNEWS\_DATA\_PATH & \begin{lstlisting}[basicstyle=\small]
+'/home/user/twnews_data/'
+                \end{lstlisting} & Путь до директории, в которую были скачены данные приложением twnews\_consumer \\ \hline
+
+                DATASET\_FRACTION & \begin{lstlisting}[basicstyle=\small]
+1.0
+\end{lstlisting} & Часть множества скаченных твитов на основе которых происходит построение набора данных \\ \hline
+
+                TMP\_FILE\_DIRECTORY & \begin{lstlisting}[basicstyle=\small]
+'/tmp/twnews/'
+                \end{lstlisting} & Путь до директории в которую будут сохранены временные данные \\ \hline
+
+                 DEFAULT\_WTMF\_OPTIONS & \begin{lstlisting}[basicstyle=\small]
+{
+    'DIM': 90,
+    'WM': 0.95,
+    'ITERATIONS': 1,
+    'LAMBDA': 1.95
+}
+                \end{lstlisting} & Настройки метода WTMF \\ \hline
+
+                 DEFAULT\_WTMFG\_OPTIONS & \begin{lstlisting}[basicstyle=\small]
+{
+    'DIM': 220,
+    'WM': 5,
+    'ITERATIONS': 1,
+    'DELTA': 0.06,
+    'LAMBDA': 6
+}
+                \end{lstlisting} & Настройки метода WTMF-G \\ \hline
+
+            \end{tabular}
+        \end{table}
+
+    \subsubsection{Установка}
+        Для установки приложения, необходимо зайти в папку \lstinline{core} с исходным кодом пакет twnews, находящуюся в корне репозитория, и выполнить команду:
+        \begin{lstlisting}
+$ make install
+        \end{lstlisting}
+        Для повышения производительности рекомендуется вручную собрать пакет numpy с использованием низкоуровневой математической библиотеки OpenBLAS~\cite{blas_installation}.
+
+    \subsubsection{Использование}
+        Финальным результатом работы приложения является получение рекомендаций для произвольных твитов.
+        Построение рекомендаций происходит в несколько стадий~(каждая стадия представляет собой отдельный вызов приложения),
+        количество стадий различается для различных методов рекомендаций.
+
+        Приложение обладает интерфейсом командной строки.
+        Для удобства использования функционал приложения разбивается на набор независимых друг от друга точек входа,
+        каждая из которых представляет интерфейс для выполнения одной из стадий работы построения рекомендаций.
+        Список всех точек входа представлен в таблице~\ref{tabular:entry_point}.
+
+         \begin{table}[h!]
+            \small
+            \caption{Описание точек входа пакета twnews \bigskip}
+            \center
+
+            \label{tabular:entry_point}
+            \begin{tabular}{|c|c|m{7cm}|}
+                \hline
+                \bf{Название точки входа} & \bf{Пример команды запуска} & \bf{Описание} \\ \hline
+                tweets\_sample & twnews tweets\_sample & Получение случайного набора твитов из собранных данных \\ \hline
+                resolver & twnews resolver & Расшифровка сокращённых ссылок \\ \hline
+                build\_dataset & twnews build\_dataset & автоматическое построение набора данных \\ \hline
+                train & twnews train & Построение модели для методов WTMF и WTMF-G \\ \hline
+                apply & twnews apply & Применение модели для методов WTMG и WTMF-G \\ \hline
+                tfidf & twnews tfidf & Применение метода TF-IDF \\ \hline
+                build\_recommendation & twnews build\_recommendation & Построение рекомендаций \\ \hline
+                recommendation & twnews recommendation & Обработка полученных рекомендаций \\ \hline
+            \end{tabular}
+        \end{table}
+        В дальнейшем приводится более детальное описание каждой точки входа. Для каждой точки входа в качестве примера использования
+        приводится две команды командной строки: вызов и результат вызова автоматически порождаемой приложением справочной информации,
+        которая описывает параметры передаваемые в точку входа,
+        и один из вариантов вызова точки входа.
+
+        %
+        % tweets_sample
+        %
+
+        Точка входа tweets\_sample позволяет получить случайный набор твитов из собранных данных; параметризуется двумя необязательными параметрами
+        length~---~задаёт количество твитов в результате, и output\_dir~---~определяет директорию в которой будет сохранён файл с твитами;
+        на выход в результирующей директории порождается файл с твитами, его имя печается на экран. Пример использования:
+        \begin{lstlisting}
+$ twnews tweets_sample -h
+usage: twnews tweets_sample [-h] [--length LENGTH] [--output_dir OUTPUT_DIR]
+
+optional arguments:
+  -h, --help            show this help message and exit
+  --length LENGTH       num of tweets in sample (default: 10)
+  --output_dir OUTPUT_DIR
+                        output directory (default: /home/avybornov/tmp)
+$ twnews tweets_sample --length 100
+        \end{lstlisting}
+
+        %
+        % resolver
+        %
+
+        Точка входа resolver позволяет расшифровать все сокращённые ссылки, используемые в скаченном приложением twnews\_consumer множестве данных~(параметр resolve).
+        Отображение коротких ссылок в расшифрованные хранится отдельным файлом и в дальнешем используется при построении набора данных.
+        Также точка входа resolver позволяет получить статистику по все расшифрованным ссылкам~(параметр analyze).
+        Пример использования:
+        \begin{lstlisting}
+$ twnews resolver -h
+usage: twnews resolver [-h] (--resolve | --analyze)
+
+optional arguments:
+  -h, --help  show this help message and exit
+  --resolve   resolve urls from all tweets (default: False)
+  --analyze   print stats of resolved urls (default: False)
+
+$ twnews resolver resolve
+        \end{lstlisting}
+
+        %
+        % build_dataset
+        %
+
+        Точка входа build\_dataset позволяет автоматически построить набор данных; параметризуется двумя параметрами
+        unique\_words~---~задаёт процент уникальных слов в твите для пар твит-новость, и output\_dir~---~определяет директорию в которой будет сохранён файл с набором данных;
+        Имя построенного набора данных печается на экран. Пример использования:
+        \begin{lstlisting}
+$ twnews build_dataset -h
+usage: twnews build_dataset [-h] [--unique_words UNIQUE_WORDS]
+                            [--output_dir OUTPUT_DIR]
+
+optional arguments:
+  -h, --help            show this help message and exit
+  --unique_words UNIQUE_WORDS
+                        percent of unique words in tweet by corresponding news
+                        (default: 0.0)
+  --output_dir OUTPUT_DIR
+                        output directory (default: /home/avybornov/tmp)
+
+$ twnews build_dataset
+        \end{lstlisting}
+
+        %
+        % train
+        %
+
+        Точка входа train позволяет построить модели для методов WTMF и WTMF-G; каждый метод параметризуется тремя параметрами
+        dataset~---~название используемого набора данных, input\_dir~---~директория где находится используемый набор данных и
+        output\_dir~---~директория в которую будет сохранён файл с модель и файл содержащий новости и твиты из набора данных с векторами для сравнения;
+        Имя построенной модели печается на экран. Пример использования:
+        \begin{lstlisting}
+$ twnews train -h
+usage: twnews train [-h] (--wtmf | --wtmf_g) --dataset DATASET
+                    [--input_dir INPUT_DIR] [--output_dir OUTPUT_DIR]
+
+optional arguments:
+  -h, --help            show this help message and exit
+  --wtmf                wtmf method (default: False)
+  --wtmf_g              wtmf_g method (default: False)
+  --dataset DATASET     dataset name (default: None)
+  --input_dir INPUT_DIR
+                        input directory (default: /home/avybornov/tmp)
+  --output_dir OUTPUT_DIR
+                        output directory (default: /home/avybornov/tmp)
+
+$ twnews train --wtmf --dataset dataset_auto
+        \end{lstlisting}
+
+        %
+        % apply
+        %
+
+        Точка входа apply позволяет применить ранее построенные модели для методов WTMF и WTMF-G на набор твитов;
+        каждый метод параметризуется четырьмя параметрами: model~---~название используемого набора данных,
+        tweets~---~название файла с набором твитов, который был построен с использованием точки входа tweets\_sample,
+        input\_dir~---~директория где находится используемая модель и набор твитов;
+        output\_dir~---~директория в которую будет сохранён файл содержащий новости из набора данных (использованного на этапе обучения)
+        и твиты из переданного файла с векторами для сравнения;
+        Имя полученного файла печается на экран. Пример использования:
+        \begin{lstlisting}
+$ twnews apply -h
+usage: twnews apply [-h] (--wtmf | --wtmf_g) --model MODEL --tweets TWEETS
+                    [--input_dir INPUT_DIR] [--output_dir OUTPUT_DIR]
+
+optional arguments:
+  -h, --help            show this help message and exit
+  --wtmf                wtmf method (default: False)
+  --wtmf_g              wtmf_g method (default: False)
+  --model MODEL         model name (default: None)
+  --tweets TWEETS       name of file with tweets (default: None)
+  --input_dir INPUT_DIR
+                        input directory (default: /home/avybornov/tmp)
+  --output_dir OUTPUT_DIR
+                        output directory (default: /home/avybornov/tmp)
+$ twnews apply --wtmf --model WTMF_model --tweets tweets_file
+        \end{lstlisting}
+
+        %
+        % tfidf
+        %
+
+        Точка входа tfidf позволяет применить метод TFIDF для нахождения векторов сравнения для новостей из набора данных и твитов из
+        переданного файла~(если файл не указан используются твиты из набора данных);
+        параметризуется четырьмя параметрами
+        dataset~---~название используемого набора данных,
+        tweets~---~название файла с набором твитов, который был построен с использованием точки входа tweets\_sample,
+        input\_dir~---~директория где находится используемый датасет и набор твитов;
+        output\_dir~---~директория в которую будет сохранён файл содержащий новости и твиты с векторами для сравнения;
+        Имя порождённого файла, который содержит новости и твиты с векторами для сравнения, печается на экран. Пример использования:
+        \begin{lstlisting}
+$ twnews tfidf -h
+usage: twnews tfidf [-h] --dataset DATASET --tweets TWEETS
+                    [--input_dir INPUT_DIR] [--output_dir OUTPUT_DIR]
+
+optional arguments:
+  -h, --help            show this help message and exit
+  --dataset DATASET     dataset name (default: None)
+  --tweets TWEETS       name of file with tweets (default: None)
+  --input_dir INPUT_DIR
+                        input directory (default: /home/avybornov/tmp)
+  --output_dir OUTPUT_DIR
+                        output directory (default: /home/avybornov/tmp)
+
+$ twnews tfidf --dataset dataset_manual --tweets tweets_file
+        \end{lstlisting}
+
+
+        %
+        % build_recommendation
+        %
+
+        Точка входа build\_recomendation позволяет построить рекомендации по набору новостей и твитов из набора данных с векторами для сравнения
+        ~(если указан файл содержащий твиты с векторами для сравнения, то твиты берутся из него);
+        параметризуется четырьмя параметрами
+        dataset\_applied~---~название используемого набора данных с векторами для сравнения,
+        tweets\_applied~---~название файла с набором твитов c векторами для сравнения,
+        input\_dir~---~директория где находится используемый датасет и набор твитов;
+        output\_dir~---~директория в которую будет сохранён файл с рекомендациями;
+        Имя порождённого файла, который содержит рекомендации, печается на экран. Пример использования:
+        \begin{lstlisting}
+$ twnews build_recommendation -h
+usage: twnews build_recommendation [-h] --dataset_applied DATASET_APPLIED
+                                   --tweets_applied TWEETS_APPLIED
+                                   [--input_dir INPUT_DIR]
+                                   [--output_dir OUTPUT_DIR]
+
+optional arguments:
+  -h, --help            show this help message and exit
+  --dataset_applied DATASET_APPLIED
+                        dataset_applied name (default: None)
+  --tweets_applied TWEETS_APPLIED
+                        tweets_applied name (default: None)
+  --input_dir INPUT_DIR
+                        input directory (default: /home/avybornov/tmp)
+  --output_dir OUTPUT_DIR
+                        output directory (default: /home/avybornov/tmp)
+
+$ twnews build_recommendation --dataset_applied dataset_auto_applied
+        \end{lstlisting}
+
+        %
+        % recommendation
+        %
+
+        Точка входа recommendation позволяет вывести на экран~(параметр eval) или в текстовый файл~(параметр print) построенныe ранее рекомендациям или снять с них метрики~(параметр eval),
+        дополнительно параметризуется параметризуется тремя параметрами
+        recomended~---~название файла с рекомендациями,
+        input\_dir~---~директория где находятся файл с рекомендациями;
+        output\_dir~---~директория в которую будет сохранён текстовый файл с рекомендациями;
+        Имя порождённого файла, который рекомендации в человекочитаемом формате, печается на экран. Пример использования:
+        \begin{lstlisting}
+$ twnews recommendation -h
+usage: twnews recommendation [-h] (--eval | --dump | --print) --recommended
+                             RECOMMENDED [--input_dir INPUT_DIR]
+                             [--output_dir OUTPUT_DIR]
+
+optional arguments:
+  -h, --help            show this help message and exit
+  --eval                eval recomendation results (default: False)
+  --dump                dump recomendation result to file (default: False)
+  --print               print recomendation result to stdout (default: False)
+  --recommended RECOMMENDED
+                        tweets_applied name (default: None)
+  --input_dir INPUT_DIR
+                        input directory (default: /home/avybornov/tmp)
+  --output_dir OUTPUT_DIR
+                        output directory (default: /home/avybornov/tmp)
+
+
+$ twnews recommended --eval --recommended dataset_auto_applied
+        \end{lstlisting}
+
+
+        Приложение записывает вспомогательную информацию о своём статусе и обработанных ошибках в файл лога.
+        Поэтому из файла лога можно узнать актуальную информацию о работе приложения. Пример:
+        \begin{lstlisting}
+$ tail -f /var/log/twnews.log
+INFO:root:2016-04-08 10:20:08.256411: News successfully loaded
+INFO:root:2016-04-08 10:20:23.006948: Function iteration started with time measure
+INFO:root:2016-04-08 10:33:32.930520: Function iteration finished in 13m9.9234058857s
+INFO:root:2016-04-08 10:33:32.940666: Function find_topk_sim_news_to_tweets started with time measure
+INFO:root:2016-04-08 10:34:42.360326: Function find_topk_sim_news_to_tweets finished in 1m9.41950583458s
+INFO:root:2016-04-08 10:34:42.587674: Function iteration started with time measure
+INFO:root:2016-04-08 10:48:04.453983: Function iteration finished in 13m21.8661620617s
+INFO:root:2016-04-08 10:48:04.466846: Function find_topk_sim_news_to_tweets started with time measure
+INFO:root:2016-04-08 10:49:18.958096: Function find_topk_sim_news_to_tweets finished in 1m14.4910538197s
+INFO:root:2016-04-08 10:49:19.171160: Function iteration started with time measure
+        \end{lstlisting}

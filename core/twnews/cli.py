@@ -9,6 +9,7 @@ ARGUMENTS = {
     'tweets': {'required': True, 'help': 'name of file with tweets'},
     'dataset_applied': {'required': True, 'help': 'dataset_applied name'},
     'tweets_applied': {'required': True, 'help': 'tweets_applied name'},
+    'recommended': {'required': True, 'help': 'tweets_applied name'},
 
     'input_dir': { 'default': defaults.TMP_FILE_DIRECTORY, 'help': 'input directory'},
     'output_dir': {'default': defaults.TMP_FILE_DIRECTORY, 'help': 'output directory'},
@@ -49,7 +50,7 @@ def parse_args():
     subparsers = parser.add_subparsers(dest='subparser', help='sub-commands')
 
     random_tweets_parser = subparsers.add_parser(name='tweets_sample', help='get sample of random tweets', **PARSER_KWARGS)
-    add_args(random_tweets_parser, ['length'])
+    add_args(random_tweets_parser, ['length', 'output_dir'])
 
     dataset_parser = subparsers.add_parser('build_dataset', help='construct dataset', **PARSER_KWARGS)
     add_args(dataset_parser, ['unique_words', 'output_dir'])
@@ -71,10 +72,13 @@ def parse_args():
     tfidf_parser = subparsers.add_parser(name='tfidf', help='apply tfidf', **PARSER_KWARGS)
     add_args(tfidf_parser, ['dataset', 'tweets', 'input_dir', 'output_dir'])
 
-    recommendation_parser = subparsers.add_parser('recommendation', help='recommendation', **PARSER_KWARGS)
+    build_recommendation_parser = subparsers.add_parser('build_recommendation', help='build recommendation', **PARSER_KWARGS)
+    add_args(build_recommendation_parser, ['dataset_applied', 'tweets_applied', 'input_dir', 'output_dir'])
+
+    recommendation_parser = subparsers.add_parser('recommendation', help='work with recommendation', **PARSER_KWARGS)
     recommendation_group = recommendation_parser.add_mutually_exclusive_group(required=True)
-    add_args(recommendation_group, ['recommend', 'eval', 'dump', 'print'])
-    add_args(recommendation_parser, ['dataset_applied', 'tweets_applied', 'input_dir', 'output_dir'])
+    add_args(recommendation_group, ['eval', 'dump', 'print'])
+    add_args(recommendation_parser, ['recommended', 'input_dir', 'output_dir'])
 
     args = parser.parse_args()
 
