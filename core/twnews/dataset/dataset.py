@@ -30,11 +30,11 @@ class Dataset(object):
             self.tweets.resolve_urls(url_resolver)
             self.tweets.filter(self.news)
 
-        print self.tweets.length()
+        #print self.tweets.length()
         if self.percent_of_unique_words > 0.0:
             self.tweets.filter_not_unique_tweets(self.news, self.percent_of_unique_words)
 
-        print self.tweets.length()
+        #print self.tweets.length()
         self.lemmatized_texts = lemmatize_texts(self.get_texts())
         self.corpus, self.tf_idf_matrix = build_tf_idf_matrix(self.lemmatized_texts)
 
@@ -65,7 +65,7 @@ class Dataset(object):
 
         #print len(tweets), len(news)
         similarity_matrix = get_similarity_matrix(self.get_documents(), self.get_documents(), self.corpus, self.tf_idf_matrix)
-        print 'preparation finished'
+        #print 'preparation finished'
         self.text_to_text_links = get_text_to_text_relation(self.news.get_documents(), self.tweets.get_documents(), similarity_matrix)
 
     def name(self):

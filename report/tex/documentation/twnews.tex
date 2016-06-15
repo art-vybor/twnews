@@ -95,28 +95,54 @@ $ make install
                 recommendation & twnews recommendation & Обработка полученных рекомендаций \\ \hline
             \end{tabular}
         \end{table}
-        В дальнейшем приводится более детальное описание каждой точки входа. Для каждой точки входа в качестве примера использования
-        приводится две команды командной строки: вызов и результат вызова автоматически порождаемой приложением справочной информации,
-        которая описывает параметры передаваемые в точку входа,
-        и один из вариантов вызова точки входа.
+        Далее приводится более детальное описание каждой точки входа. Для каждой точки входа в качестве примера использования
+        приводится две команды командной строки: результат вызова автоматически порождаемой приложением справочной информации и пример вызова точки входа.
 
         %
         % tweets_sample
         %
 
-        Точка входа tweets\_sample позволяет получить случайный набор твитов из собранных данных; параметризуется двумя необязательными параметрами
-        length~---~задаёт количество твитов в результате, и output\_dir~---~определяет директорию в которой будет сохранён файл с твитами;
-        на выход в результирующей директории порождается файл с твитами, его имя печается на экран. Пример использования:
+        Точка входа tweets\_sample позволяет получить случайный набор твитов из собранных данных. Параметризуется двумя необязательными параметрами
+        length~---~задаёт количество твитов в результате, и tweets~---~определяет полное имя создаваемого файла, который содержит список твитов.
+        Пример использования:
         \begin{lstlisting}
 $ twnews tweets_sample -h
-usage: twnews tweets_sample [-h] [--length LENGTH] [--output_dir OUTPUT_DIR]
+usage: twnews tweets_sample [-h] [--length LENGTH] [--tweets TWEETS]
+
+optional arguments:
+  -h, --help       show this help message and exit
+  --length LENGTH  num of tweets in sample (default: 1000)
+  --tweets TWEETS  tweets sample filepath (default:
+                   /home/avybornov/tmp/tweets_sample)
+
+$ twnews tweets_sample
+get sample of random tweets
+sample generated and saved at /home/avybornov/tmp/tweets_sample
+        \end{lstlisting}
+
+        %
+        % build_dataset
+        %
+
+        Точка входа build\_dataset позволяет автоматически построить набор данных. Параметризуется двумя необязательными параметрами
+        unique\_words~---~задаёт процент уникальных слов в твите для пар твит-новость, и dataset~---~задаёт полное имя создаваемого файла, который содержит набор данных;
+        Пример использования:
+        \begin{lstlisting}
+$ twnews build_dataset -h
+usage: twnews build_dataset [-h] [--unique_words UNIQUE_WORDS]
+                            [--dataset DATASET]
 
 optional arguments:
   -h, --help            show this help message and exit
-  --length LENGTH       num of tweets in sample (default: 10)
-  --output_dir OUTPUT_DIR
-                        output directory (default: /home/avybornov/tmp)
-$ twnews tweets_sample --length 100
+  --unique_words UNIQUE_WORDS
+                        percent of unique words in tweet by corresponding news
+                        (default: 0.0)
+  --dataset DATASET     dataset filepath (default:
+                        /home/avybornov/tmp/dataset)
+
+$ twnews build_dataset
+building automatic dataset
+dataset builded and saved at /home/avybornov/tmp/dataset
         \end{lstlisting}
 
         %
@@ -140,118 +166,143 @@ $ twnews resolver resolve
         \end{lstlisting}
 
         %
-        % build_dataset
-        %
-
-        Точка входа build\_dataset позволяет автоматически построить набор данных; параметризуется двумя параметрами
-        unique\_words~---~задаёт процент уникальных слов в твите для пар твит-новость, и output\_dir~---~определяет директорию в которой будет сохранён файл с набором данных;
-        Имя построенного набора данных печается на экран. Пример использования:
-        \begin{lstlisting}
-$ twnews build_dataset -h
-usage: twnews build_dataset [-h] [--unique_words UNIQUE_WORDS]
-                            [--output_dir OUTPUT_DIR]
-
-optional arguments:
-  -h, --help            show this help message and exit
-  --unique_words UNIQUE_WORDS
-                        percent of unique words in tweet by corresponding news
-                        (default: 0.0)
-  --output_dir OUTPUT_DIR
-                        output directory (default: /home/avybornov/tmp)
-
-$ twnews build_dataset
-        \end{lstlisting}
-
-        %
         % train
         %
 
-        Точка входа train позволяет построить модели для методов WTMF и WTMF-G; каждый метод параметризуется тремя параметрами
-        dataset~---~название используемого набора данных, input\_dir~---~директория где находится используемый набор данных и
-        output\_dir~---~директория в которую будет сохранён файл с модель и файл содержащий новости и твиты из набора данных с векторами для сравнения;
-        Имя построенной модели печается на экран. Пример использования:
+        Точка входа train позволяет построить модели для методов WTMF и WTMF-G. Каждый метод параметризуется тремя необязательными параметрами:
+        dataset~---~полное имя файла, содержащего набора данных, model\_dir~---~директория в которую будет сохранён файл модели,
+        dataset_applied~---~полное имя файла, в который будут записаны новости и твиты из набора данных с векторами для сравнения.
+        Пример использования:
         \begin{lstlisting}
 $ twnews train -h
-usage: twnews train [-h] (--wtmf | --wtmf_g) --dataset DATASET
-                    [--input_dir INPUT_DIR] [--output_dir OUTPUT_DIR]
+usage: twnews train [-h] (--wtmf | --wtmf_g) [--dataset DATASET]
+                    [--model_dir MODEL_DIR]
+                    [--dataset_applied DATASET_APPLIED]
 
 optional arguments:
   -h, --help            show this help message and exit
   --wtmf                wtmf method (default: False)
   --wtmf_g              wtmf_g method (default: False)
-  --dataset DATASET     dataset name (default: None)
-  --input_dir INPUT_DIR
-                        input directory (default: /home/avybornov/tmp)
-  --output_dir OUTPUT_DIR
-                        output directory (default: /home/avybornov/tmp)
+  --dataset DATASET     dataset filepath (default:
+                        /home/avybornov/tmp/dataset)
+  --model_dir MODEL_DIR
+                        name of directory to save model (default:
+                        /home/avybornov/tmp)
+  --dataset_applied DATASET_APPLIED
+                        dataset_applied filepath (default:
+                        /home/avybornov/tmp/dataset_applied)
 
-$ twnews train --wtmf --dataset dataset_auto
+$ twnews train --wtmf
+train model
+apply model to dataset
+model dumped to /home/avybornov/tmp/WTMF_(dataset_auto_0.0)_90_1_1.95_0.95
+applied dataset saved: /home/avybornov/tmp/dataset_applied
+
+
         \end{lstlisting}
 
         %
         % apply
         %
 
-        Точка входа apply позволяет применить ранее построенные модели для методов WTMF и WTMF-G на набор твитов;
-        каждый метод параметризуется четырьмя параметрами: model~---~название используемого набора данных,
-        tweets~---~название файла с набором твитов, который был построен с использованием точки входа tweets\_sample,
-        input\_dir~---~директория где находится используемая модель и набор твитов;
-        output\_dir~---~директория в которую будет сохранён файл содержащий новости из набора данных (использованного на этапе обучения)
-        и твиты из переданного файла с векторами для сравнения;
-        Имя полученного файла печается на экран. Пример использования:
+        Точка входа apply позволяет применить ранее построенные модели для методов WTMF и WTMF-G на набор твитов.
+        Каждый метод параметризуется тремя параметрами: model~---~полное имя файла, содержащего модель,
+        tweets~---~полное имя файла с множеством твитов, который был построен с использованием точки входа tweets\_sample,
+        tweets_applied~---~полное имя файла, в который будут записаны полученнные твиты с векторами для сравнения.
+        Пример использования:
         \begin{lstlisting}
 $ twnews apply -h
-usage: twnews apply [-h] (--wtmf | --wtmf_g) --model MODEL --tweets TWEETS
-                    [--input_dir INPUT_DIR] [--output_dir OUTPUT_DIR]
+usage: twnews apply [-h] (--wtmf | --wtmf_g) [--model MODEL] [--tweets TWEETS]
+                    [--tweets_applied TWEETS_APPLIED]
 
 optional arguments:
   -h, --help            show this help message and exit
   --wtmf                wtmf method (default: False)
   --wtmf_g              wtmf_g method (default: False)
-  --model MODEL         model name (default: None)
-  --tweets TWEETS       name of file with tweets (default: None)
-  --input_dir INPUT_DIR
-                        input directory (default: /home/avybornov/tmp)
-  --output_dir OUTPUT_DIR
-                        output directory (default: /home/avybornov/tmp)
-$ twnews apply --wtmf --model WTMF_model --tweets tweets_file
+  --model MODEL         model filepath (default: /home/avybornov/tmp/WTMF_(dat
+                        aset_auto_0.0)_90_1_1.95_0.95)
+  --tweets TWEETS       tweets sample filepath (default:
+                        /home/avybornov/tmp/tweets_sample)
+  --tweets_applied TWEETS_APPLIED
+                        tweets_applied filepath (default:
+                        /home/avybornov/tmp/tweets_applied)
+
+$ twnews apply --wtmf --model /home/avybornov/tmp/WTMF_\(dataset_auto_0.0\)_90_1_1.95_0.95
+apply model
+tweets applied and stored at /home/avybornov/tmp/tweets_applied
+
         \end{lstlisting}
 
         %
-        % tfidf
+        % tfidf_dataset
         %
 
-        Точка входа tfidf позволяет применить метод TFIDF для нахождения векторов сравнения для новостей из набора данных и твитов из
-        переданного файла~(если файл не указан используются твиты из набора данных);
-        параметризуется четырьмя параметрами
-        dataset~---~название используемого набора данных,
-        tweets~---~название файла с набором твитов, который был построен с использованием точки входа tweets\_sample,
-        input\_dir~---~директория где находится используемый датасет и набор твитов;
-        output\_dir~---~директория в которую будет сохранён файл содержащий новости и твиты с векторами для сравнения;
-        Имя порождённого файла, который содержит новости и твиты с векторами для сравнения, печается на экран. Пример использования:
+        Точка входа tfidf\_dataset позволяет применить метод TFIDF для нахождения векторов сравнения для новостей и твитов из набора данных.
+        Параметризуется двумя параметрами
+        dataset~---~полное имя файла, содержащего набор данных,
+        dataset_applied~---~полное имя файла, в который будут записаны новости и твиты из набора данных с векторами для сравнения.
+        Пример использования:
         \begin{lstlisting}
-$ twnews tfidf -h
-usage: twnews tfidf [-h] --dataset DATASET --tweets TWEETS
-                    [--input_dir INPUT_DIR] [--output_dir OUTPUT_DIR]
+twnews tfidf_dataset -h
+usage: twnews tfidf_dataset [-h] [--dataset DATASET]
+                            [--dataset_applied DATASET_APPLIED]
 
 optional arguments:
   -h, --help            show this help message and exit
-  --dataset DATASET     dataset name (default: None)
-  --tweets TWEETS       name of file with tweets (default: None)
-  --input_dir INPUT_DIR
-                        input directory (default: /home/avybornov/tmp)
-  --output_dir OUTPUT_DIR
-                        output directory (default: /home/avybornov/tmp)
+  --dataset DATASET     dataset filepath (default:
+                        /home/avybornov/tmp/dataset)
+  --dataset_applied DATASET_APPLIED
+                        dataset_applied filepath (default:
+                        /home/avybornov/tmp/dataset_applied)
 
-$ twnews tfidf --dataset dataset_manual --tweets tweets_file
+$ twnews tfidf_dataset
+apply tfidf to dataset
+dataset applied and stored at /home/avybornov/tmp/dataset_applied
+        \end{lstlisting}
+
+        %
+        % tfidf_tweets
+        %
+
+        Точка входа tfidf\_tweets позволяет применить метод TFIDF для нахождения векторов сравнения для набора данных~(как в случае с точкой входа tfidf\_dataset).
+        Параметризуется четырьмы параметрами
+        dataset~---~полное имя файла, содержащего набор данных,
+        dataset_applied~---~полное имя файла, в который будут записаны новости и твиты из набора данных с векторами для сравнения,
+        tweets~---~полное имя файла с множеством твитов, который был построен с использованием точки входа tweets\_sample,
+        tweets_applied~---~полное имя файла, в который будут записаны полученнные твиты с векторами для сравнения.
+        Пример использования:
+        \begin{lstlisting}
+$ twnews tfidf_tweets -h
+usage: twnews tfidf_tweets [-h] [--dataset DATASET]
+                           [--dataset_applied DATASET_APPLIED]
+                           [--tweets TWEETS] [--tweets_applied TWEETS_APPLIED]
+
+optional arguments:
+  -h, --help            show this help message and exit
+  --dataset DATASET     dataset filepath (default:
+                        /home/avybornov/tmp/dataset)
+  --dataset_applied DATASET_APPLIED
+                        dataset_applied filepath (default:
+                        /home/avybornov/tmp/dataset_applied)
+  --tweets TWEETS       tweets sample filepath (default:
+                        /home/avybornov/tmp/tweets_sample)
+  --tweets_applied TWEETS_APPLIED
+                        tweets_applied filepath (default:
+                        /home/avybornov/tmp/tweets_applied)
+
+$ twnews tfidf_tweets
+apply tfidf to dataset
+dataset applied and stored at /home/avybornov/tmp/dataset_applied
+apply tfidf to tweets
+tweets applied and stored at /home/avybornov/tmp/tweets_applied
         \end{lstlisting}
 
 
         %
-        % build_recommendation
+        % recommendation
         %
 
-        Точка входа build\_recomendation позволяет построить рекомендации по набору новостей и твитов из набора данных с векторами для сравнения
+        Точка входа recomendation позволяет построить рекомендации по набору новостей и твитов из набора данных с векторами для сравнения
         ~(если указан файл содержащий твиты с векторами для сравнения, то твиты берутся из него);
         параметризуется четырьмя параметрами
         dataset\_applied~---~название используемого набора данных с векторами для сравнения,
@@ -260,24 +311,24 @@ $ twnews tfidf --dataset dataset_manual --tweets tweets_file
         output\_dir~---~директория в которую будет сохранён файл с рекомендациями;
         Имя порождённого файла, который содержит рекомендации, печается на экран. Пример использования:
         \begin{lstlisting}
-$ twnews build_recommendation -h
-usage: twnews build_recommendation [-h] --dataset_applied DATASET_APPLIED
-                                   --tweets_applied TWEETS_APPLIED
-                                   [--input_dir INPUT_DIR]
-                                   [--output_dir OUTPUT_DIR]
+$ twnews recommendation -h
+usage: twnews recommendation [-h] (--evaluate | --dump)
+                             [--dataset_applied DATASET_APPLIED]
+                             [--tweets_applied TWEETS_APPLIED] [--file FILE]
 
 optional arguments:
   -h, --help            show this help message and exit
+  --evaluate            eval recomendation results (default: False)
+  --dump                dump recomendation result to file (default: False)
   --dataset_applied DATASET_APPLIED
-                        dataset_applied name (default: None)
+                        dataset_applied filepath (default:
+                        /home/avybornov/tmp/dataset_applied)
   --tweets_applied TWEETS_APPLIED
-                        tweets_applied name (default: None)
-  --input_dir INPUT_DIR
-                        input directory (default: /home/avybornov/tmp)
-  --output_dir OUTPUT_DIR
-                        output directory (default: /home/avybornov/tmp)
+                        tweets_applied filepath (default:
+                        /home/avybornov/tmp/tweets_applied)
+  --file FILE           recommendation dump filepath (default:
+                        /home/avybornov/tmp/reccommendation_dump)
 
-$ twnews build_recommendation --dataset_applied dataset_auto_applied
         \end{lstlisting}
 
         %

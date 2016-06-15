@@ -14,6 +14,15 @@ from twnews.resolver.analyze import url_analyse
 from twnews.utils.logger_wrapper import log_and_print
 from twnews.utils.memoize import load, dump
 from twnews.cli import parse_args
+from twnews.dataset.storage import TweetsStorage
+from twnews.utils.text_processors import lemmatize_texts, build_tf_idf_matrix
+
+# suppress scipy warning
+import warnings
+from scipy.sparse import SparseEfficiencyWarning
+
+warnings.simplefilter('ignore', SparseEfficiencyWarning)
+
 
 logging.basicConfig(
     filename=defaults.LOG_FILE,
@@ -23,28 +32,31 @@ logging.basicConfig(
     datefmt="%Y-%m-%d %H:%M:%S")
 
 
+def split_filepath(filepath):
+    return os.path.dirname(filepath), os.path.basename(filepath)
+
+
 def main():
     args = parse_args()
 
     logging.info('--------------- Twnews started ------------------')
 
     if args.subparser == 'tweets_sample':
-        log_and_print(logging.INFO, 'get sample of tweets')
+        log_and_print(logging.INFO, 'get sample of random tweets')
         length = args.length
-        raise NotImplementedError()
+        tweets_filepath = args.tweets
+        tweets_dirname, tweets_filename = split_filepath(tweets_filepath)
 
-    elif args.subparser == 'dataset':
-        log_and_print(logging.INFO, 'building automatic dataset')
-        output_dir = args.output_dir
-        unique_words = args.unique_words
+        storage = TweetsStorage(defaults.TWEETS_PATH, num_of_documents=length, sorted_keys=False)
 
-        dataset = Dataset(fraction=1, percent_of_unique_words=unique_words)
-        dataset.init_text_to_text_links()
+        dump(storage.get_documents(), tweets_filename, tweets_dirname)
+        # with open(tweets_filepath, 'w') as f:
+        #     for doc in storage.get_documents():
+        #         f.write('{ID} {TEXT}\n'.format(ID=doc.tweet_id, TEXT=str(doc).replace('\n',' ')))
 
-        log_and_print(logging.INFO, 'Dataset {NAME} builded'.format(NAME=dataset.name()))
-        dump(dataset, dataset.name())
+        log_and_print(logging.INFO, 'sample generated and saved at {PATH}'.format(PATH=tweets_filepath))
 
-    elif args.subparser_name == 'resolver':
+    elif args.subparser == 'resolver':
         log_and_print(logging.INFO, 'url resolver')
 
         if args.resolve:
@@ -55,144 +67,158 @@ def main():
             log_and_print(logging.INFO, 'stats of resolved urls')
             url_analyse()
 
+    elif args.subparser == 'build_dataset':
+        log_and_print(logging.INFO, 'building automatic dataset')
+        dataset_filepath = args.dataset
+        dataset_dirname, dataset_filename = split_filepath(dataset_filepath)
+        unique_words = args.unique_words
+
+        dataset = Dataset(fraction=1, percent_of_unique_words=unique_words)
+        dataset.init_text_to_text_links()
+
+        dump(dataset, dataset_filename, dataset_dirname)
+
+        log_and_print(logging.INFO, 'dataset builded and saved at {PATH}'.format(PATH=dataset_filepath))
+
     elif args.subparser == 'train':
         log_and_print(logging.INFO, 'train model')
-        input_dir = args.input_dir
-        output_dir = args.output_dir
-        dataset_name = args.dataset
+        dataset_filepath = args.dataset
+        dataset_dirname, dataset_filename = split_filepath(dataset_filepath)
+        dataset_applied_filepath = args.dataset_applied
+        dataset_applied_dirname, dataset_applied_filename = split_filepath(dataset_applied_filepath)
+        model_dirname = args.model_dir
 
-        dataset = load(dataset_name, input_dir)
+        dataset = load(dataset_filename, dataset_dirname)
 
         if args.wtmf:
-            model = WTMF(dataset)
+            model = WTMF(dataset, dirname=model_dirname)
         elif args.wtmf_g:
-            model = WTMF_G(dataset)
+            model = WTMF_G(dataset, dirname=model_dirname)
 
-        log_and_print(logging.INFO, 'train {NAME} model'.format(NAME=model.name()))
+        #log_and_print(logging.INFO, 'train {NAME} model'.format(NAME=model.name()))
         model.build()
-        log_and_print(logging.INFO, 'model {NAME} builded'.format(NAME=model.name()))
+        #log_and_print(logging.INFO, 'model {NAME} builded'.format(NAME=model.name()))
+        #log_and_print(logging.INFO, 'model saved: {PATH}'.format(PATH=os.path.join(model_dirname, model.name())))
 
-        # elif args.tfidf:
-        #     log_and_print(logging.INFO, 'apply tfidf model to dataset')
-        #     news_num = dataset.news.length()
-        #     documents = dataset.get_documents()
-        #
-        #     set_compare_vector(documents, dataset.tf_idf_matrix)
-        #     news, tweets = documents[:news_num], documents[news_num:]
-        #     dump((news, tweets), 'dataset_applied')
-        #     #dump(tweets, 'dataset_tweets_applied')
-    #
-    # elif args.subparser == 'apply':
-    #     log_and_print(logging.INFO, 'apply model')
-    #     corpus, tf_idf_matrix = load('tf_idf_corpus')
-    #     dataset = load('dataset')
-    #     tweets = dataset.tweets.get_documents()[:1000]
-    #     #tweets = TweetsStorage(defaults.TWEETS_PATH, 0.01)
-    #     #documents = tweets.get_dataset_texts()[:1000]
-    #
-    #     texts = map(lambda x: x.get_text(), tweets)
-    #     texts = lemmatize_texts(texts)
-    #     _, tf_idf_matrix = build_tf_idf_matrix(texts, vocabulary=corpus)
-    #
-    #     result_matrix = None
-    #     if args.wtmf:
-    #         log_and_print(logging.INFO, 'apply wtmf')
-    #         model = WTMF(texts, corpus, tf_idf_matrix, try_to_load=True)
-    #         result_matrix = model.apply()
-    #     elif args.wtmf_g:
-    #         log_and_print(logging.INFO, 'apply wtmg-g')
-    #         raise Exception('not realized yet')
-    #         #links = dataset.text_to_text_links
-    #         #model = WTMF_G(texts, corpus, tf_idf_matrix, links, try_to_load=True)
-    #         #result_matrix = model.apply()
-    #     elif args.tfidf:
-    #         log_and_print(logging.INFO, 'apply tf_idf')
-    #         _, result_matrix = build_tf_idf_matrix(texts, vocabulary=corpus)
-    #
-    #     set_compare_vector(tweets, result_matrix)
-    #     dump(tweets, 'tweets_applied')
+        dump(model.dataset_applied, dataset_applied_filename, dataset_applied_dirname)
+        log_and_print(logging.INFO, 'applied dataset saved: {PATH}'.format(PATH=dataset_applied_filepath))
 
+    elif args.subparser == 'apply':
+        log_and_print(logging.INFO, 'apply model')
+        model_filepath = args.model
+        model_dirname, model_filename = split_filepath(model_filepath)
+        tweets_filepath = args.tweets
+        tweets_dirname, tweets_filename = split_filepath(tweets_filepath)
+        tweets_applied_filepath = args.tweets_applied
+        tweets_applied_dirname, tweets_applied_filename = split_filepath(tweets_applied_filepath)
 
+        if args.wtmf:
+            model = WTMF(model_name=model_filename, dirname=model_dirname)
+        elif args.wtmf_g:
+            model = WTMF_G(model_name=model_filename, dirname=model_dirname)
+
+        tweets = load(tweets_filename, tweets_dirname)
+
+        corpus = model.words
+
+        texts = map(lambda x: x.get_text(), tweets)
+        texts = lemmatize_texts(texts)
+        _, tf_idf_matrix = build_tf_idf_matrix(texts, vocabulary=corpus)
+
+        model.texts = texts
+        model.tf_idf_matrix = tf_idf_matrix
+        result_matrix = model.apply()
+
+        set_compare_vector(tweets, result_matrix)
+        dump(tweets, tweets_applied_filename, tweets_applied_dirname)
+
+        log_and_print(logging.INFO, 'tweets applied and stored at {PATH}'.format(PATH=tweets_applied_filepath))
+
+    elif 'tfidf' in args.subparser:
+        log_and_print(logging.INFO, 'apply tfidf to dataset')
+        dataset_filepath = args.dataset
+        dataset_dirname, dataset_filename = split_filepath(dataset_filepath)
+        dataset_applied_filepath = args.dataset_applied
+        dataset_applied_dirname, dataset_applied_filename = split_filepath(dataset_applied_filepath)
+
+        dataset = load(dataset_filename, dataset_dirname)
+
+        news_num = dataset.news.length()
+        documents = dataset.get_documents()
+
+        set_compare_vector(documents, dataset.tf_idf_matrix)
+        news, tweets = documents[:news_num], documents[news_num:]
+        dump((news, tweets), dataset_applied_filename, dataset_applied_dirname)
+
+        log_and_print(logging.INFO, 'dataset applied and stored at {PATH}'.format(
+            PATH=dataset_applied_filepath))
+
+        if args.subparser == 'tfidf_dataset':
+            pass
+        elif args.subparser == 'tfidf_tweets':
+            log_and_print(logging.INFO, 'apply tfidf to tweets')
+            tweets_filepath = args.tweets
+            tweets_dirname, tweets_filename = split_filepath(tweets_filepath)
+            tweets_applied_filepath = args.tweets_applied
+            tweets_applied_dirname, tweets_applied_filename = split_filepath(tweets_applied_filepath)
+
+            tweets = load(tweets_filename, tweets_dirname)
+
+            texts = map(lambda x: x.get_text(), tweets)
+            texts = lemmatize_texts(texts)
+            _, result_matrix = build_tf_idf_matrix(texts, vocabulary=dataset.corpus)
+            set_compare_vector(tweets, result_matrix)
+
+            dump(tweets, tweets_applied_filename, tweets_applied_dirname)
+            log_and_print(logging.INFO, 'tweets applied and stored at {PATH}'.format(
+                PATH=tweets_applied_filepath))
+        else:
+            raise Exception('unexpected tfidf parser')
+
+    elif args.subparser == 'build_recommendation':
+        input_dir = args.input_dir
+        output_dir = args.output_dir
+        tweets_applied_filename = args.tweets_applied
+        dataset_applied_filename = args.dataset_applied
+
+        news, tweets = load(dataset_applied_filename, input_dir)
+        is_dataset = True
+        if tweets_applied_filename:
+            tweets = load(tweets_applied_filename, input_dir)
+            is_dataset = False
+
+        recommendation, correct_news_idxs = recommend(news, tweets, top_size=10, is_dataset=is_dataset)
+        dump((recommendation, correct_news_idxs), 'recommendation', output_dir)
+
+        log_and_print(logging.INFO, 'recommendation builded and stored at {PATH}'.format(PATH=os.path.join(output_dir, 'recommendation')))
 
     elif args.subparser == 'recommendation':
-        if args.recommend:
-            log_and_print(logging.INFO, 'recommend tweets to news')
-            news, tweets = load('dataset_applied')
-            #tweets = load('dataset_tweets_applied')
+        dataset_applied_filepath = args.dataset_applied
+        dataset_applied_dirname, dataset_applied_filename = split_filepath(dataset_applied_filepath)
 
-            recommendation, correct_news_idxs = recommend(news, tweets, top_size=10)
-            dump(recommendation, 'recommendation')
-            dump((correct_news_idxs, len(news)), 'correct_news_idxs')
+        tweets_applied_filepath = args.tweets_applied
+        tweets_applied_dirname, tweets_applied_filename = split_filepath(tweets_applied_filepath)
 
-        elif args.recommend_by_model:
-            log_and_print(logging.INFO, 'recommend dev by {MODEL}'.format(MODEL=args.recommend_by_model))
-            model = load(args.recommend_by_model)
-            _, _, _, _, dataset_applied = model
-            news, tweets = dataset_applied
+        dump_filepath = args.tweets_applied
 
-            recommendation, correct_news_idxs = recommend(news, tweets, top_size=10)
-            dump(recommendation, 'recommendation')
-            dump((correct_news_idxs, len(news)), 'correct_news_idxs')
+        news, tweets = load(dataset_applied_filename, dataset_applied_dirname)
+        evaluate = False
+        if args.evaluate:
+            tweets = load(tweets_applied_filename, tweets_applied_dirname)
+            evaluate = True
 
-        elif args.eval:
-            log_and_print(logging.INFO, 'eval recommendation result')
-            correct_news_idxs, total_news = load('correct_news_idxs')
-            #print 'ATOP =', ATOP(correct_news_idxs, total_news)
+        recommendation, correct_news_idxs = recommend(news, tweets, top_size=10, evaluate=(not evaluate))
+
+        if args.evaluate:
+            log_and_print(logging.INFO, 'recommendation result evaluation')
             print 'RR =', RR(correct_news_idxs)
             print 'TOP1 =', TOP1(correct_news_idxs)
             print 'TOP3 =', TOP3(correct_news_idxs)
 
-        elif args.dump_to_csv:
-            log_and_print(logging.INFO, 'dump recommendation to csv')
-            recommendation = load('recommendation')
-            filepath = os.path.join(defaults.TMP_FILE_DIRECTORY, 'recommendation.csv')
-            dump_to_csv(recommendation, filepath)
-
-#
-# random_tweets:
-#     out: file_with_texts
-#
-# resolver:
-#     resolve_urls
-#
-#     analyze_urls
-#
-# dataset
-#     automatic
-#         out: dataset_auto_1000_2000
-#
-# traing:
-#     wtmf
-#         in: dataset
-#         out: model, dataset_applied
-#     wtmf-g
-#         in: dataset
-#         out: model, dataset_applied
-#     tfidf:
-#         in: dataset
-#         out: dataset_applied
-#
-# apply:
-#     wtmf:
-#         in: model, file_with_tweets
-#         out: tweets_applied
-#     wtmf-g:
-#         in: model, file_with_tweets
-#         out: tweets_applied
-#     tfidf:
-#         in: file_with_tweets, dataset
-#         out: tweets_applied
-#
-# recommendation:
-#     build:
-#         in: dataset_applied tweets_applied
-#         out: recommendation
-#     eval:
-#         in: recommendation
-#         out: print metrics
-#     dump:
-#         in: recommendation
-#         out: text file
+        elif args.dump:
+            log_and_print(logging.INFO, 'dump recommendation to file')
+            dump_to_csv(recommendation, dump_filepath)
+            log_and_print(logging.INFO, 'recommendation dumped to {PATH}'.format(PATH=dump_filepath))
 
 
 

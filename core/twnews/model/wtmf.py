@@ -1,7 +1,7 @@
 import logging
 import numpy as np
 from scipy import sparse
-from copy import deepcopy
+import os
 
 from twnews.utils.memoize import load, dump
 from twnews.utils.extra import timeit
@@ -11,13 +11,14 @@ from twnews import defaults
 
 
 class WTMF(object):
-    def __init__(self, dataset, options=defaults.DEFAULT_WTMF_OPTIONS, try_to_load=False):
+    def __init__(self, dataset=None, options=defaults.DEFAULT_WTMF_OPTIONS, model_name=False, dirname=defaults.TMP_FILE_DIRECTORY):
         P, Q = None, None
         dataset_applied = None
+        self.dirname = dirname
 
-        if try_to_load:
-            log_and_print(logging.WARN, 'model will be loaded, all arguments will be ignored')
-            dataset, options, P, Q, dataset_applied = self.load_model()
+        if model_name:
+            logging.info('model will be loaded, all arguments will be ignored')
+            dataset, options, P, Q, dataset_applied = self.load_model(model_name)
 
         self.dataset = dataset
         self.texts = dataset.lemmatized_texts
@@ -27,11 +28,14 @@ class WTMF(object):
         self.dataset_applied = dataset_applied
         self.options = options
 
-        log_and_print(logging.INFO, 'model {NAME} of {TEXTS_NUM} texts and {WORDS_NUM} words initialized'.
+
+        logging.info('model {NAME} of {TEXTS_NUM} texts and {WORDS_NUM} words initialized'.
                       format(NAME=self.name(), TEXTS_NUM=len(self.texts), WORDS_NUM=len(self.words)))
 
-    def load_model(self):
-        return load(self.name())
+    def load_model(self, name=None):
+        if not name:
+            name = self.name()
+        return load(name, self.dirname)
 
     def save_model(self, iterations=None):
         self.apply_to_dataset()
@@ -40,7 +44,9 @@ class WTMF(object):
             iterations_backup = self.options['ITERATIONS']
             self.options['ITERATIONS'] = iterations
 
-        dump((self.dataset, self.options, self.P, self.Q, self.dataset_applied), self.name())
+        dump((self.dataset, self.options, self.P, self.Q, self.dataset_applied), self.name(), self.dirname)
+
+        log_and_print(logging.INFO, 'model dumped to {PATH}'.format(PATH=os.path.join(self.dirname, self.name())))
 
         if iterations:
             self.options['ITERATIONS'] = iterations_backup
@@ -74,7 +80,7 @@ class WTMF(object):
             lI = np.identity(self.options['DIM']) * self.options['LAMBDA']
 
             for i in range(self.options['ITERATIONS']):
-                print '%d/%d iteration' % (i + 1,self.options['ITERATIONS'])
+                logging.info('%d/%d iteration' % (i + 1,self.options['ITERATIONS']))
                 P, Q = self.iteration(P, Q, W, X, lI)
 
                 self.P, self.Q = P, Q
@@ -90,25 +96,25 @@ class WTMF(object):
         return P, Q
 
     def new_Q(self, P, old_Q, W, X, lI):
-        print 'start build Q'
+        logging.info('start build Q')
         Q = sparse.csc_matrix(old_Q.shape)
 
         for i in range(Q.shape[1]):
             Q[:, i] = self.build_row(P, W[:, i].T, X[:, i].T, lI)
 
             if i % 1000 == 0:
-                print '%dth iteration of %d' % (i, Q.shape[1])
+                logging.info('%dth row of %d' % (i, Q.shape[1]))
         return Q
 
     def new_P(self, old_P, Q, W, X, lI):
-        print 'start build P'
+        logging.info('start build P')
         P = sparse.csr_matrix(old_P.shape)
 
         for i in range(P.shape[1]):
             P[:, i] = self.build_row(Q, W[i, :], X[i, :], lI)
 
             if i % 1000 == 0:
-                print '%dth iteration of %d' % (i, P.shape[1])
+                logging.info('%dth row of %d' % (i, P.shape[1]))
         return P
 
     def build_row(self, A, w_row, x_row, lI):

@@ -1,5 +1,6 @@
 import shelve
 import logging
+import random
 
 from collections import OrderedDict
 from twnews import defaults
@@ -10,13 +11,22 @@ from twnews.utils.text_processors import Lemmatizer
 class DocumentsStorage:
     TextClass = DatasetText
 
-    def __init__(self, data_path, fraction=None):
+    def __init__(self, data_path, fraction=None, num_of_documents=None, sorted_keys=True, keys=None):
         logging.info('Start of loading storage of {TYPE} from {PATH}'.format(TYPE=self.TextClass.__name__, PATH=data_path))
         data_shelve = shelve.open(data_path)
 
-        keys = sorted(data_shelve.keys())
+        if not keys:
+            keys = data_shelve.keys()
+
+        if sorted_keys:
+            keys = sorted(keys)
+        else:
+            random.shuffle(keys)
+
         if fraction:
             keys = keys[:int(len(keys)*fraction)]
+        else:
+            keys = keys[:num_of_documents]
 
         self.documents = OrderedDict()
         for key in keys:
@@ -45,13 +55,13 @@ class DocumentsStorage:
 class TweetsStorage(DocumentsStorage):
     TextClass = Tweet
 
-    def __init__(self, tweets_path=defaults.TWEETS_PATH, fraction=None, init_by_prepared_tweets=None):
+    def __init__(self, tweets_path=defaults.TWEETS_PATH, fraction=None, init_by_prepared_tweets=None, num_of_documents=None, sorted_keys=True, keys=None):
         if init_by_prepared_tweets:
             self.documents = OrderedDict()
             for tweet in init_by_prepared_tweets:
                 self.documents[tweet.tweet_id] = tweet
         else:
-            DocumentsStorage.__init__(self, tweets_path, fraction)
+            DocumentsStorage.__init__(self, tweets_path, fraction, num_of_documents=num_of_documents, sorted_keys=sorted_keys, keys=keys)
 
     def resolve_urls(self, url_resolver):
         for tweet in self.documents.itervalues():

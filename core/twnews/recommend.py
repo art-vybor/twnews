@@ -13,7 +13,7 @@ def get_index_of_correct_news(tweet, news_list):
     raise Exception('Correct news not founded')
 
 
-def recommend(news, tweets, top_size=10):
+def recommend(news, tweets, top_size=10, evaluate=False):
     from sklearn.metrics.pairwise import cosine_similarity
 
     def convert_to_compare_matrix(documents):
@@ -46,7 +46,8 @@ def recommend(news, tweets, top_size=10):
         news_list = [(single_news, mat[tweet_idx][news_idx]) for news_idx, single_news in enumerate(news)]
         news_list_top = heapq.nlargest(top_size, news_list, key=lambda x: x[1])
 
-        correct_news_idxs.append(get_index_of_correct_news(tweet, news_list))
+        if evaluate:
+            correct_news_idxs.append(get_index_of_correct_news(tweet, news_list))
         recommendation.append((tweet, news_list_top))
 
     return recommendation, correct_news_idxs

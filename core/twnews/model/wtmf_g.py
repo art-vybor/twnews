@@ -8,8 +8,8 @@ from twnews.utils.sparse_math import get_matrix_slice_by_column, get_vectors_len
 
 
 class WTMF_G(WTMF):
-    def __init__(self, dataset, options=defaults.DEFAULT_WTMFG_OPTIONS, try_to_load=False):
-        super(WTMF_G, self).__init__(dataset, options, try_to_load)
+    def __init__(self, dataset=None, options=defaults.DEFAULT_WTMFG_OPTIONS, model_name=None, dirname=defaults.TMP_FILE_DIRECTORY):
+        super(WTMF_G, self).__init__(dataset, options, model_name, dirname=dirname)
         self.links = dataset.text_to_text_links
 
         self.text_to_text = defaultdict(set)
@@ -43,7 +43,7 @@ class WTMF_G(WTMF):
             Q[:, i] = self.build_relation_row(P, W[:, i].T, X[:, i].T, lI, Qi, LQi, Qn_i, LQn_i)
 
             if i % 1000 == 0:
-                print '%dth iteration of %d' % (i, Q.shape[1])
+                print '%dth row of %d' % (i, Q.shape[1])
         return Q
 
     def build_relation_row(self, A, w_row, x_row, lI, Qi, LQi, Qn_i, LQn_i):

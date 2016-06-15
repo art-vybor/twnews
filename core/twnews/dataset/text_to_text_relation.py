@@ -1,4 +1,5 @@
 import heapq
+import logging
 
 from twnews.utils.extra import timeit
 from twnews.utils.text_processors import Lemmatizer, extract_entities
@@ -10,20 +11,20 @@ def get_text_to_text_relation(news, tweets, similarity_matrix, k=10):
     # news = news[:500]
 
     tweet_to_tweet_hashtags = get_tweet_to_tweet_hashtags_relation(tweets, k, similarity_matrix)
-    print 'num of tweet to tweet by hashtags relation', len(tweet_to_tweet_hashtags)
+    logging.info('num of tweet to tweet by hashtags relation %s' % len(tweet_to_tweet_hashtags))
 
     NE_set = get_NE_from_news(news)
     tweet_to_tweet_NER = get_tweet_to_tweet_NER_relation(tweets, NE_set, k, similarity_matrix)
-    print 'num of tweet to tweet by NER relation', len(tweet_to_tweet_NER)
+    logging.info('num of tweet to tweet by NER relation %s' % len(tweet_to_tweet_NER))
 
     tweet_to_tweet_time = get_document_to_documet_time_relation(tweets, k, similarity_matrix)
-    print 'num of tweet to tweet by time relation', len(tweet_to_tweet_time)
+    logging.info('num of tweet to tweet by time relation %s' % len(tweet_to_tweet_time))
 
     news_to_news_time = get_document_to_documet_time_relation(news, k, similarity_matrix)
-    print 'num of news to news by time relation', len(news_to_news_time)
+    logging.info('num of news to news by time relation %s' % len(news_to_news_time))
 
     total_relations = filter_links(tweet_to_tweet_hashtags | tweet_to_tweet_NER | tweet_to_tweet_time | news_to_news_time)
-    print 'num of total relations', len(total_relations)
+    logging.info('num of total relations %s' % len(total_relations))
     return filter_links(total_relations)
 
 
