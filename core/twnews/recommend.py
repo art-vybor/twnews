@@ -42,7 +42,7 @@ def recommend(news, tweets, top_size=10, evaluate=False):
     logging.info('build recommendation')
     recommendation = []
     correct_news_idxs = []
-    for tweet_idx, tweet in enumerate(tweets):
+    for tweet_idx, tweet in enumerate(progressbar_iterate(tweets)):
         news_list = [(single_news, mat[tweet_idx][news_idx]) for news_idx, single_news in enumerate(news)]
         news_list_top = heapq.nlargest(top_size, news_list, key=lambda x: x[1])
 
@@ -61,18 +61,18 @@ def set_compare_vector(documents, Q):
         documents[i].set_compare_vector(compare_vector)
 
 
-def dump_to_csv(recommendation, filename):
-    batch_size = 1000
+def dump_to_csv(recommendation, filename, score_threshold=0.4):
+    recommendation_filtered = filter(lambda x: x[1][0][1] > score_threshold, recommendation)
 
-    batchs = [recommendation[i:i + batch_size] for i in xrange(0, len(recommendation), batch_size)]
-    for batch_idx, recoms_batch in enumerate(batchs):
-        with open(filename, 'w') as f:
-            for i, (tweet, news_list) in enumerate(recoms_batch):
-                f.write('%d) %s\n' % (i, tweet.text.replace('\n', ' ').encode('utf-8')))
-                f.write('%s\n' % tweet.tweet_id)
-                if tweet.urls:
-                    f.write('%s\n' % ' '.join(tweet.urls))
-                for news, score in news_list:
-                    f.write('\t%s\n' % news)
+    with open(filename, 'w') as f:
+        f.write('total_tweets: %s\nrecommended_tweets: %s\n' % (len(recommendation), len(recommendation_filtered)))
+        for i, (tweet, news_list) in enumerate(recommendation_filtered):
+            f.write('%d) %s\n' % (i, tweet.text.replace('\n', ' ').encode('utf-8')))
+            f.write('%s\n' % tweet.tweet_id)
+            if tweet.urls:
+                f.write('%s\n' % ' '.join(tweet.urls))
+            for news, score in news_list:
+                if score > score_threshold:
+                    f.write('\t%s %s\n' % (news, score))
                     f.write('\t%s\n' % news.link)
                     f.write('\t---------------------\n')

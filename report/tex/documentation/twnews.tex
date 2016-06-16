@@ -335,6 +335,9 @@ recommendation dumped to /home/avybornov/tmp/reccommendation_dump
         %
 
         Точка входа recommend\_tweets позволяет построить рекомендации для произвольных твитов с векторами для сравнения.
+        Ввиду большого количества "мусорных" твитов, то есть тех, которые не имеют отношения к новостям, результаты рекомендаций
+        для произвольных твитов фильтруются, а именно, оставляются только те твиты, для которых нашлась новость похожая на них
+        с коэффициентом схожести превышающем 0.4~(значение было подобрано эмпирически).
         Параметризуется тремя параметрами
         dataset\_applied~---~название используемого набора данных с векторами для сравнения;
         tweets\_applied~---~название файла с набором твитов c векторами для сравнения;
@@ -365,11 +368,9 @@ recommendation dumped to /home/avybornov/tmp/reccommendation_dump
         Поэтому из файла лога можно узнать актуальную информацию о работе приложения. Пример:
         \begin{lstlisting}
 $ tail -f /var/log/twnews.log
-INFO:root:2016-04-08 10:20:08.256411: News successfully loaded
-INFO:root:2016-04-08 10:20:23.006948: Function iteration started with time measure
-INFO:root:2016-04-08 10:33:32.930520: Function iteration finished in 13m9.9234058857s
-INFO:root:2016-04-08 10:33:32.940666: Function find_topk_sim_news_to_tweets started with time measure
-INFO:root:2016-04-08 10:34:42.360326: Function find_topk_sim_news_to_tweets finished in 1m9.41950583458s
-INFO:root:2016-04-08 10:34:42.587674: Function iteration started with time measure
-INFO:root:2016-04-08 10:48:04.453983: Function iteration finished in 13m21.8661620617s
+INFO:root:70.00% of iteration finished
+INFO:root:80.00% of iteration finished
+INFO:root:90.00% of iteration finished
+INFO:root:100% of iteration finished
+INFO:root:recommendation dumped to /home/avybornov/tmp/reccommendation_dump
         \end{lstlisting}

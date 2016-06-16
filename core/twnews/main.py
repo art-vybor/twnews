@@ -207,6 +207,7 @@ def main():
             print 'RR =', RR(correct_news_idxs)
             print 'TOP1 =', TOP1(correct_news_idxs)
             print 'TOP3 =', TOP3(correct_news_idxs)
+            dump_to_csv(recommendation, dump_filepath, score_threshold=0.0)
 
         elif args.subparser == 'recommend_tweets':
             tweets_applied_filepath = args.tweets_applied
@@ -214,10 +215,11 @@ def main():
             tweets = load(tweets_applied_filename, tweets_applied_dirname)
 
             recommendation, _ = recommend(news, tweets, top_size=10, evaluate=False)
+            dump_to_csv(recommendation, dump_filepath)
         else:
             raise Exception('unexpected recommend parser')
 
-        dump_to_csv(recommendation, dump_filepath)
+
         log_and_print(logging.INFO, 'recommendation dumped to {PATH}'.format(PATH=dump_filepath))
 
 

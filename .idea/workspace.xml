@@ -3,11 +3,12 @@
   <component name="ChangeListManager">
     <list default="true" id="ffb373a2-2447-441d-a126-db864d7e684a" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/report/report.pdf" afterPath="$PROJECT_DIR$/report/report.pdf" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/twnews/cli.py" afterPath="$PROJECT_DIR$/core/twnews/cli.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/twnews/main.py" afterPath="$PROJECT_DIR$/core/twnews/main.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/twnews/recommend.py" afterPath="$PROJECT_DIR$/core/twnews/recommend.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/report/report.tex" afterPath="$PROJECT_DIR$/report/report.tex" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/report/tex/documentation.tex" afterPath="$PROJECT_DIR$/report/tex/documentation.tex" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/report/style.sty" afterPath="$PROJECT_DIR$/report/style.sty" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/report/tex/annotation.tex" afterPath="$PROJECT_DIR$/report/tex/annotation.tex" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/report/tex/bibliography.tex" afterPath="$PROJECT_DIR$/report/tex/bibliography.tex" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/report/tex/documentation/twnews.tex" afterPath="$PROJECT_DIR$/report/tex/documentation/twnews.tex" />
     </list>
     <ignored path="twnews.iws" />
@@ -33,8 +34,8 @@
       <file leaf-file-name="main.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/core/twnews/main.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="668">
-              <caret line="215" column="83" selection-start-line="215" selection-start-column="83" selection-end-line="215" selection-end-column="83" />
+            <state relative-caret-position="704">
+              <caret line="217" column="20" selection-start-line="217" selection-start-column="20" selection-end-line="217" selection-end-column="20" />
               <folding>
                 <element signature="e#0#15#0" expanded="true" />
               </folding>
@@ -45,18 +46,8 @@
       <file leaf-file-name="recommend.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/core/twnews/recommend.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="54">
-              <caret line="15" column="41" selection-start-line="15" selection-start-column="41" selection-end-line="15" selection-end-column="41" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="text_to_text_relation.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/core/twnews/dataset/text_to_text_relation.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="396">
-              <caret line="26" column="46" selection-start-line="26" selection-start-column="46" selection-end-line="26" selection-end-column="46" />
+            <state relative-caret-position="614">
+              <caret line="63" column="61" selection-start-line="63" selection-start-column="61" selection-end-line="63" selection-end-column="61" />
               <folding>
                 <element signature="e#0#12#0" expanded="true" />
               </folding>
@@ -64,33 +55,13 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="dataset.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/core/twnews/dataset/dataset.py">
+      <file leaf-file-name="text_to_text_relation.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/core/twnews/dataset/text_to_text_relation.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="72">
-              <caret line="14" column="8" selection-start-line="14" selection-start-column="8" selection-end-line="14" selection-end-column="8" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="url_resolver.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/core/twnews/dataset/url_resolver.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="90">
-              <caret line="9" column="94" selection-start-line="9" selection-start-column="94" selection-end-line="9" selection-end-column="94" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="cli.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/core/twnews/cli.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-304">
-              <caret line="21" column="79" selection-start-line="21" selection-start-column="79" selection-end-line="21" selection-end-column="79" />
+            <state relative-caret-position="468">
+              <caret line="26" column="46" selection-start-line="26" selection-start-column="46" selection-end-line="26" selection-end-column="46" />
               <folding>
-                <element signature="e#0#9#0" expanded="true" />
+                <element signature="e#0#12#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -103,22 +74,46 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="twnews.tex" pinned="false" current-in-tab="true">
+      <file leaf-file-name="twnews.tex" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/report/tex/documentation/twnews.tex">
           <provider selected="true" editor-type-id="LaTeXFileEditor">
             <state />
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="report.tex" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/report/report.tex">
+      <file leaf-file-name="bibliography.tex" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/report/tex/bibliography.tex">
           <provider selected="true" editor-type-id="LaTeXFileEditor">
             <state />
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="twnews_consumer.tex" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/report/tex/documentation/twnews_consumer.tex">
+      <file leaf-file-name="style.sty" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/report/style.sty">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="0">
+              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="architecture.tex" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/report/tex/implementation/architecture.tex">
+          <provider selected="true" editor-type-id="LaTeXFileEditor">
+            <state />
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="wtmf.tex" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/report/tex/testing/wtmf.tex">
+          <provider selected="true" editor-type-id="LaTeXFileEditor">
+            <state />
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="report.tex" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/report/report.tex">
           <provider selected="true" editor-type-id="LaTeXFileEditor">
             <state />
           </provider>
@@ -152,13 +147,10 @@
         <option value="$PROJECT_DIR$/core/Makefile" />
         <option value="$PROJECT_DIR$/core/twnews/defaults.py" />
         <option value="$PROJECT_DIR$/report/tex/documentation/twnews_consumer.tex" />
-        <option value="$PROJECT_DIR$/report/tex/annotation.tex" />
         <option value="$PROJECT_DIR$/report/tex/introduction.tex" />
         <option value="$PROJECT_DIR$/report/tex/conclusion.tex" />
         <option value="$PROJECT_DIR$/report/tex/review.tex" />
-        <option value="$PROJECT_DIR$/report/style.sty" />
         <option value="$PROJECT_DIR$/report/tex/vocabulary.tex" />
-        <option value="$PROJECT_DIR$/report/tex/bibliography.tex" />
         <option value="$PROJECT_DIR$/report/tex/economic.tex" />
         <option value="$PROJECT_DIR$/report/tex/problem.tex" />
         <option value="$PROJECT_DIR$/report/tex/dataset_building.tex" />
@@ -184,12 +176,15 @@
         <option value="$PROJECT_DIR$/core/twnews/dataset/storage.py" />
         <option value="$PROJECT_DIR$/core/twnews/model/wtmf.py" />
         <option value="$PROJECT_DIR$/core/twnews/model/wtmf_g.py" />
-        <option value="$PROJECT_DIR$/core/twnews/recommend.py" />
-        <option value="$PROJECT_DIR$/core/twnews/main.py" />
         <option value="$PROJECT_DIR$/core/twnews/cli.py" />
-        <option value="$PROJECT_DIR$/report/report.tex" />
         <option value="$PROJECT_DIR$/report/tex/documentation.tex" />
+        <option value="$PROJECT_DIR$/report/tex/annotation.tex" />
+        <option value="$PROJECT_DIR$/core/twnews/main.py" />
+        <option value="$PROJECT_DIR$/core/twnews/recommend.py" />
         <option value="$PROJECT_DIR$/report/tex/documentation/twnews.tex" />
+        <option value="$PROJECT_DIR$/report/tex/bibliography.tex" />
+        <option value="$PROJECT_DIR$/report/style.sty" />
+        <option value="$PROJECT_DIR$/report/report.tex" />
       </list>
     </option>
   </component>
@@ -782,6 +777,7 @@
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32994923" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32994923" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32994923" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -793,7 +789,6 @@
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32994923" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32994923" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
     </layout>
@@ -892,13 +887,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/report/style.sty">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="782">
-          <caret line="267" column="12" selection-start-line="267" selection-start-column="12" selection-end-line="267" selection-end-column="28" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/report/tex/vocabulary.tex">
       <provider selected="true" editor-type-id="LaTeXFileEditor">
         <state />
@@ -924,16 +912,6 @@
         <state relative-caret-position="324">
           <caret line="19" column="0" selection-start-line="19" selection-start-column="0" selection-end-line="19" selection-end-column="0" />
         </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/report/tex/annotation.tex">
-      <provider selected="true" editor-type-id="LaTeXFileEditor">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/report/tex/bibliography.tex">
-      <provider selected="true" editor-type-id="LaTeXFileEditor">
-        <state />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/report/tex/introduction.tex">
@@ -1006,16 +984,6 @@
         <state />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/report/tex/implementation/architecture.tex">
-      <provider selected="true" editor-type-id="LaTeXFileEditor">
-        <state />
-      </provider>
-      <provider editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/report/tex/implementation/nlp.tex">
       <provider selected="true" editor-type-id="LaTeXFileEditor">
         <state />
@@ -1051,16 +1019,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/report/tex/testing/wtmf.tex">
-      <provider editor-type-id="LaTeXFileEditor">
-        <state />
-      </provider>
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/report/tex/testing/wtmf-g.tex">
       <provider editor-type-id="LaTeXFileEditor">
         <state />
@@ -1068,6 +1026,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1098,6 +1057,7 @@
       <provider editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1115,6 +1075,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1123,7 +1084,7 @@
         <state relative-caret-position="498">
           <caret line="63" column="132" selection-start-line="63" selection-start-column="132" selection-end-line="63" selection-end-column="132" />
           <folding>
-            <element signature="e#0#13#0" expanded="true" />
+            <element signature="e#0#13#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1152,24 +1113,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/core/twnews/dataset/text_to_text_relation.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="396">
-          <caret line="26" column="46" selection-start-line="26" selection-start-column="46" selection-end-line="26" selection-end-column="46" />
-          <folding>
-            <element signature="e#0#12#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/core/twnews/dataset/dataset.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="72">
-          <caret line="14" column="8" selection-start-line="14" selection-start-column="8" selection-end-line="14" selection-end-column="8" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/core/twnews/cli.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-304">
@@ -1185,13 +1128,26 @@
         <state />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/report/report.tex">
+    <entry file="file://$PROJECT_DIR$/report/tex/annotation.tex">
       <provider selected="true" editor-type-id="LaTeXFileEditor">
         <state />
       </provider>
-      <provider editor-type-id="text-editor">
-        <state relative-caret-position="216">
-          <caret line="12" column="16" selection-start-line="12" selection-start-column="16" selection-end-line="12" selection-end-column="16" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/twnews/dataset/dataset.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="72">
+          <caret line="14" column="8" selection-start-line="14" selection-start-column="8" selection-end-line="14" selection-end-column="8" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/twnews/dataset/text_to_text_relation.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="468">
+          <caret line="26" column="46" selection-start-line="26" selection-start-column="46" selection-end-line="26" selection-end-column="46" />
+          <folding>
+            <element signature="e#0#12#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -1206,18 +1162,41 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/report/tex/implementation/architecture.tex">
+      <provider selected="true" editor-type-id="LaTeXFileEditor">
+        <state />
+      </provider>
+      <provider editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/report/tex/testing/wtmf.tex">
+      <provider selected="true" editor-type-id="LaTeXFileEditor">
+        <state />
+      </provider>
+      <provider editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/core/twnews/recommend.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="54">
-          <caret line="15" column="41" selection-start-line="15" selection-start-column="41" selection-end-line="15" selection-end-column="41" />
-          <folding />
+        <state relative-caret-position="614">
+          <caret line="63" column="61" selection-start-line="63" selection-start-column="61" selection-end-line="63" selection-end-column="61" />
+          <folding>
+            <element signature="e#0#12#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/core/twnews/main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="668">
-          <caret line="215" column="83" selection-start-line="215" selection-start-column="83" selection-end-line="215" selection-end-column="83" />
+        <state relative-caret-position="704">
+          <caret line="217" column="20" selection-start-line="217" selection-start-column="20" selection-end-line="217" selection-end-column="20" />
           <folding>
             <element signature="e#0#15#0" expanded="true" />
           </folding>
@@ -1227,6 +1206,29 @@
     <entry file="file://$PROJECT_DIR$/report/tex/documentation/twnews.tex">
       <provider selected="true" editor-type-id="LaTeXFileEditor">
         <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/report/tex/bibliography.tex">
+      <provider selected="true" editor-type-id="LaTeXFileEditor">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/report/style.sty">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/report/report.tex">
+      <provider selected="true" editor-type-id="LaTeXFileEditor">
+        <state />
+      </provider>
+      <provider editor-type-id="text-editor">
+        <state relative-caret-position="216">
+          <caret line="12" column="16" selection-start-line="12" selection-start-column="16" selection-end-line="12" selection-end-column="16" />
+        </state>
       </provider>
     </entry>
   </component>
