@@ -12,7 +12,7 @@ ARGUMENTS = {
 
     'dataset_applied': {'default': os.path.join(defaults.TMP_FILE_DIRECTORY, 'dataset_applied'), 'help': 'dataset_applied filepath'},
     'tweets_applied': {'default': os.path.join(defaults.TMP_FILE_DIRECTORY, 'tweets_applied'), 'help': 'tweets_applied filepath'},
-    'file': {'default': os.path.join(defaults.TMP_FILE_DIRECTORY, 'reccommendation_dump'), 'help': 'recommendation dump filepath'},
+    'dump': {'default': os.path.join(defaults.TMP_FILE_DIRECTORY, 'reccommendation_dump'), 'help': 'recommendation dump filepath'},
 
 
     'wtmf': {'action': 'store_true', 'help': 'wtmf method'},
@@ -20,7 +20,6 @@ ARGUMENTS = {
     'resolve': {'action': 'store_true', 'help': 'resolve urls from all tweets'},
     'analyze': {'action': 'store_true', 'help': 'print stats of resolved urls'},
     'evaluate': {'action': 'store_true', 'help': 'eval recomendation results'},
-    'dump': {'action': 'store_true', 'help': 'dump recomendation result to file'},
 
     'unique_words': {'default': 0.0, 'type': float, 'help': 'percent of unique words in tweet by corresponding news'},
     'length': {'default': 1000, 'type': int, 'help': 'num of tweets in sample'},
@@ -76,10 +75,11 @@ def parse_args():
     tfidf1_parser = subparsers.add_parser(name='tfidf_tweets', help='apply tfidf to tweets', **PARSER_KWARGS)
     add_args(tfidf1_parser, ['dataset', 'dataset_applied', 'tweets', 'tweets_applied'])
 
-    recommendation_parser = subparsers.add_parser('recommendation', help='work with recommendation', **PARSER_KWARGS)
-    recommendation_group = recommendation_parser.add_mutually_exclusive_group(required=True)
-    add_args(recommendation_group, ['evaluate', 'dump'])
-    add_args(recommendation_parser, ['dataset_applied', 'tweets_applied', 'file'])
+    recommend_dataset_parser = subparsers.add_parser('recommend_dataset', help='build recommendation for dataset', **PARSER_KWARGS)
+    add_args(recommend_dataset_parser, ['dataset_applied', 'dump'])
+
+    recommend_tweets_parser = subparsers.add_parser('recommend_tweets', help='build recommendation for tweets', **PARSER_KWARGS)
+    add_args(recommend_tweets_parser, ['dataset_applied', 'tweets_applied', 'dump'])
 
     args = parser.parse_args()
     return args

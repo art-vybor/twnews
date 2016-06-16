@@ -192,33 +192,33 @@ def main():
 
         log_and_print(logging.INFO, 'recommendation builded and stored at {PATH}'.format(PATH=os.path.join(output_dir, 'recommendation')))
 
-    elif args.subparser == 'recommendation':
+    elif 'recommend' in args.subparser:
         dataset_applied_filepath = args.dataset_applied
         dataset_applied_dirname, dataset_applied_filename = split_filepath(dataset_applied_filepath)
 
-        tweets_applied_filepath = args.tweets_applied
-        tweets_applied_dirname, tweets_applied_filename = split_filepath(tweets_applied_filepath)
-
-        dump_filepath = args.tweets_applied
+        dump_filepath = args.dump
 
         news, tweets = load(dataset_applied_filename, dataset_applied_dirname)
-        evaluate = False
-        if args.evaluate:
-            tweets = load(tweets_applied_filename, tweets_applied_dirname)
-            evaluate = True
 
-        recommendation, correct_news_idxs = recommend(news, tweets, top_size=10, evaluate=(not evaluate))
-
-        if args.evaluate:
+        if args.subparser == 'recommend_dataset':
+            log_and_print(logging.INFO, 'build recommendation')
+            recommendation, correct_news_idxs = recommend(news, tweets, top_size=10, evaluate=True)
             log_and_print(logging.INFO, 'recommendation result evaluation')
             print 'RR =', RR(correct_news_idxs)
             print 'TOP1 =', TOP1(correct_news_idxs)
             print 'TOP3 =', TOP3(correct_news_idxs)
 
-        elif args.dump:
-            log_and_print(logging.INFO, 'dump recommendation to file')
-            dump_to_csv(recommendation, dump_filepath)
-            log_and_print(logging.INFO, 'recommendation dumped to {PATH}'.format(PATH=dump_filepath))
+        elif args.subparser == 'recommend_tweets':
+            tweets_applied_filepath = args.tweets_applied
+            tweets_applied_dirname, tweets_applied_filename = split_filepath(tweets_applied_filepath)
+            tweets = load(tweets_applied_filename, tweets_applied_dirname)
+
+            recommendation, _ = recommend(news, tweets, top_size=10, evaluate=False)
+        else:
+            raise Exception('unexpected recommend parser')
+
+        dump_to_csv(recommendation, dump_filepath)
+        log_and_print(logging.INFO, 'recommendation dumped to {PATH}'.format(PATH=dump_filepath))
 
 
 
