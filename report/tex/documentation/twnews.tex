@@ -13,7 +13,7 @@
             \center
 
             \label{tabular:core_config}
-            \begin{tabular}{|c|c|m{5cm}|}
+            \begin{tabular}{|c|c|m{4.8cm}|}
                 \hline
                 \bf{Имя параметра} & \bf{Пример значения} & \bf{Описание} \\ \hline
 
@@ -26,7 +26,7 @@ logging.INFO
                 \end{lstlisting} & Уровень подробности лога \\ \hline
 
                 TWNEWS\_DATA\_PATH & \begin{lstlisting}[basicstyle=\small]
-'/home/user/twnews_data/'
+'/home/user/data/'
                 \end{lstlisting} & Путь до директории, в которую были скачены данные приложением twnews\_consumer \\ \hline
 
                 DATASET\_FRACTION & \begin{lstlisting}[basicstyle=\small]
@@ -82,7 +82,7 @@ $ make install
             \center
 
             \label{tabular:entry_point}
-            \begin{tabular}{|c|c|m{7cm}|}
+            \begin{tabular}{|c|c|m{6cm}|}
                 \hline
                 \bf{Название точки входа} & \bf{Пример команды запуска} & \bf{Описание} \\ \hline
                 tweets\_sample & twnews tweets\_sample & Получение случайного набора твитов из собранных данных \\ \hline
@@ -368,7 +368,6 @@ recommendation dumped to /home/avybornov/tmp/reccommendation_dump
         Поэтому из файла лога можно узнать актуальную информацию о работе приложения. Пример:
         \begin{lstlisting}
 $ tail -f /var/log/twnews.log
-INFO:root:70.00% of iteration finished
 INFO:root:80.00% of iteration finished
 INFO:root:90.00% of iteration finished
 INFO:root:100% of iteration finished
