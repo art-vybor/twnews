@@ -7,5 +7,13 @@ setup(name='twnews',
             'twnews = twnews.main:main',
         ]
       },
-      install_requires=['pymorphy2', 'python-dateutil','nltk', 'tabulate'],
+      install_requires=[
+          'numpy',
+          'scipy',
+          'pymorphy2',
+          'python-dateutil',
+          'nltk',
+          'tabulate',
+          'polyglot'
+      ],
       zip_safe=False)
